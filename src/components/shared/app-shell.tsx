@@ -12,7 +12,7 @@ import type { LucideIcon } from "lucide-react"
 import {
   Search, Bell, Menu, PanelLeftClose, PanelLeftOpen, Sun, Moon,
   ChevronDown, LogOut, Settings, User as UserIcon, Shield,
-  GraduationCap, BookOpen, Sparkles, X, Command,
+  GraduationCap, BookOpen, Sparkles, X, Command, HeartHandshake,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -31,12 +31,14 @@ const ROLE_ICON = {
   principal: Shield,
   teacher: GraduationCap,
   student: BookOpen,
+  parent: HeartHandshake,
 } as const
 
 const ROLE_LABEL = {
   principal: "Principal",
   teacher: "Teacher",
   student: "Student",
+  parent: "Parent",
 } as const
 
 function Sidebar({
@@ -178,7 +180,7 @@ function SidebarInner({
                     {isActive && (
                       <motion.span
                         layoutId={`nav-active-${role}`}
-                        className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary"
+                        className="pointer-events-none absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary"
                       />
                     )}
                     <Icon className={cn("h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-110", isActive && "text-primary")} />
@@ -459,7 +461,7 @@ export function AppShell({
         />
         <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8">
           <AnimatePresence mode="wait">
-            <PageTransition key={moduleKey}>{children}</PageTransition>
+            <PageTransition key={moduleKey} k={moduleKey}>{children}</PageTransition>
           </AnimatePresence>
         </main>
         <AppFooter />

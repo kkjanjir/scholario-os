@@ -8,6 +8,7 @@ import { StaggerItem, AnimatedCounter } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine } from "@/components/shared/charts"
 import { STUDENTS, studentResult, EXAMS, SCHOOL } from "@/lib/mock/data"
+import { downloadReportCard } from "@/components/shared/skeleton"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import {
@@ -85,7 +86,7 @@ export function ResultsModule() {
                 ))}
               </SelectContent>
             </Select>
-            <Button className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:opacity-90" onClick={() => { setShowReport(true); toast.success("Report card generated!") }}>
+            <Button className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:opacity-90" onClick={() => { downloadReportCard(me, subjects); toast.success("Report card downloaded! 📄") }}>
               <Download className="h-4 w-4" /> Download Report Card
             </Button>
           </div>
@@ -368,7 +369,7 @@ export function ResultsModule() {
           </div>
           <DialogFooter>
             <Button variant="outline" className="rounded-xl" onClick={() => setShowReport(false)}>Close</Button>
-            <Button className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:opacity-90" onClick={() => toast.success("Report card PDF download started! 📄")}>
+            <Button className="rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:opacity-90" onClick={() => { downloadReportCard(me, subjects); toast.success("Report card PDF downloaded! 📄") }}>
               <Download className="h-4 w-4" /> Download PDF
             </Button>
           </DialogFooter>

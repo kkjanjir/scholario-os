@@ -5,6 +5,7 @@ import { AppShell } from "@/components/shared/app-shell"
 import { STUDENT_NAV } from "./nav"
 import { StudentDashboard } from "./modules/dashboard"
 import { ProfileModule } from "./modules/profile"
+import { GamificationModule } from "./modules/gamification"
 import { AttendanceModule } from "./modules/attendance"
 import { HomeworkModule } from "./modules/homework"
 import { AssignmentsModule } from "./modules/assignments"
@@ -22,6 +23,7 @@ export function StudentApp() {
     switch (activeModule) {
       case "dashboard": return <StudentDashboard />
       case "profile": return <ProfileModule />
+      case "gamification": return <GamificationModule />
       case "attendance": return <AttendanceModule />
       case "homework": return <HomeworkModule />
       case "assignments": return <AssignmentsModule />

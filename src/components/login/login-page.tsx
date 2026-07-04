@@ -9,13 +9,14 @@ import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import {
   GraduationCap, Shield, BookOpen, ArrowRight, User, Lock,
-  Sparkles, Eye, EyeOff, Loader2, CheckCircle2, Mail,
+  Sparkles, Eye, EyeOff, Loader2, CheckCircle2, Mail, HeartHandshake,
 } from "lucide-react"
 
 const ROLE_ICON = {
   principal: Shield,
   teacher: GraduationCap,
   student: BookOpen,
+  parent: HeartHandshake,
 } as const
 
 function AuroraBackground() {

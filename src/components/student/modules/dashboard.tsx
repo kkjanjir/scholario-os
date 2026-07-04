@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine, RadialGauge, DonutChart } from "@/components/shared/charts"
-import { studentResult, studentAttendanceHeatmap, TIMETABLE, HOMEWORK, ASSIGNMENTS, ANNOUNCEMENTS, CALENDAR_EVENTS, STUDENTS } from "@/lib/mock/data"
+import { studentResult, studentAttendanceHeatmap, TIMETABLE, HOMEWORK, ASSIGNMENTS, ANNOUNCEMENTS, CALENDAR_EVENTS, STUDENTS, ACHIEVEMENTS, LEADERBOARD } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   CalendarClock, CalendarCheck, BookOpen, FileText, Award,
-  TrendingUp, Sparkles, ArrowUpRight, Cake, Megaphone, Clock, Wallet,
+  TrendingUp, Sparkles, ArrowUpRight, Cake, Megaphone, Clock, Wallet, Trophy, Flame,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -123,6 +123,38 @@ export function StudentDashboard() {
           </SectionCard>
         </StaggerItem>
       </div>
+
+      {/* gamification widget */}
+      <StaggerItem index={5}>
+        <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-violet-500/90 via-fuchsia-500/90 to-violet-600/90 p-5 text-white shadow-premium">
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-300/20 blur-2xl" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-3xl backdrop-blur-sm ring-2 ring-white/20">⭐</div>
+              <div>
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium backdrop-blur-sm">
+                  <Flame className="h-3 w-3" /> Level 10 • Achiever
+                </div>
+                <p className="mt-1 text-lg font-bold">4,150 XP • Rank #4 in class</p>
+                <p className="text-xs text-white/80">1,350 XP to Level 11 — Champion 🏆</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {ACHIEVEMENTS.filter((a) => a.unlocked).slice(0, 5).map((a) => (
+                  <span key={a.id} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-lg ring-2 ring-violet-500" title={a.title}>{a.icon}</span>
+                ))}
+              </div>
+              <button onClick={() => setModule("student", "gamification")} className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-xs font-bold text-violet-700 transition-transform hover:scale-105">
+                <Trophy className="h-3.5 w-3.5" /> View All
+              </button>
+            </div>
+          </div>
+          <div className="relative mt-3 h-1.5 overflow-hidden rounded-full bg-white/20">
+            <motion.div initial={{ width: 0 }} animate={{ width: "75%" }} transition={{ duration: 1.2, delay: 0.4 }} className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-100" />
+          </div>
+        </div>
+      </StaggerItem>
 
       {/* homework + announcements */}
       <div className="grid gap-4 lg:grid-cols-2">

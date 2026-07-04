@@ -498,6 +498,129 @@ export const TIMETABLE = [
 ]
 
 // ---------------------------------------------------------------------------
+// Gamification — achievements, streaks, leaderboard, XP
+// ---------------------------------------------------------------------------
+export interface Achievement {
+  id: string
+  title: string
+  desc: string
+  icon: string
+  color: string
+  unlocked: boolean
+  date?: string
+  progress?: number
+  total?: number
+}
+export const ACHIEVEMENTS: Achievement[] = [
+  { id: "a1", title: "Perfect Attendance", desc: "Attend 30 consecutive days", icon: "🔥", color: "amber", unlocked: true, date: "2025-11-28" },
+  { id: "a2", title: "Math Whiz", desc: "Score 90+ in Mathematics", icon: "🧮", color: "emerald", unlocked: true, date: "2025-11-15" },
+  { id: "a3", title: "Bookworm", desc: "Read 10 library books", icon: "📚", color: "violet", unlocked: true, date: "2025-10-20" },
+  { id: "a4", title: "Early Bird", desc: "Submit homework before time", icon: "⏰", color: "sky", unlocked: true, date: "2025-11-30" },
+  { id: "a5", title: "Quiz Champion", desc: "Win an inter-house quiz", icon: "🏆", color: "amber", unlocked: false, progress: 2, total: 3 },
+  { id: "a6", title: "Science Star", desc: "Complete 5 lab experiments", icon: "🔬", color: "teal", unlocked: false, progress: 3, total: 5 },
+  { id: "a7", title: "Top 3 Ranker", desc: "Rank in top 3 of class", icon: "🥇", color: "rose", unlocked: false, progress: 5, total: 3 },
+  { id: "a8", title: "All-Rounder", desc: "Excel in academics + sports + arts", icon: "⭐", color: "fuchsia", unlocked: false, progress: 2, total: 3 },
+  { id: "a9", title: "Helping Hand", desc: "Help 10 classmates with doubts", icon: "🤝", color: "cyan", unlocked: true, date: "2025-11-10" },
+  { id: "a10", title: "100 Days Strong", desc: "100 days of attendance", icon: "💯", color: "violet", unlocked: false, progress: 82, total: 100 },
+  { id: "a11", title: "Coding Wizard", desc: "Complete all CS assignments", icon: "💻", color: "indigo", unlocked: false, progress: 7, total: 10 },
+  { id: "a12", title: "Green Warrior", desc: "Participate in 3 eco drives", icon: "🌱", color: "emerald", unlocked: true, date: "2025-09-05" },
+]
+
+export interface StreakDay {
+  date: string
+  completed: boolean
+  type: "homework" | "attendance" | "quiz" | "none"
+}
+export function studentStreak(_studentId: string): StreakDay[] {
+  const days: StreakDay[] = []
+  const today = new Date("2025-12-01")
+  for (let i = 20; i >= 0; i--) {
+    const d = new Date(today)
+    d.setDate(d.getDate() - i)
+    const dow = d.getDay()
+    if (dow === 0) { days.push({ date: d.toISOString().slice(0, 10), completed: false, type: "none" }); continue }
+    const r = (i * 7 + 3) % 10
+    const completed = r !== 0
+    const type = r === 1 ? "quiz" : r === 2 ? "attendance" : "homework"
+    days.push({ date: d.toISOString().slice(0, 10), completed, type: completed ? type : "none" })
+  }
+  return days
+}
+
+export interface LeaderboardEntry {
+  rank: number
+  name: string
+  className: string
+  xp: number
+  level: number
+  avatarColor: string
+  trend: "up" | "down" | "same"
+  badges: number
+}
+export const LEADERBOARD: LeaderboardEntry[] = [
+  { rank: 1, name: "Diya Patel", className: "Grade 10 A", xp: 4820, level: 12, avatarColor: "rose", trend: "same", badges: 11 },
+  { rank: 2, name: "Vivaan Gupta", className: "Grade 10 A", xp: 4610, level: 11, avatarColor: "emerald", trend: "up", badges: 10 },
+  { rank: 3, name: "Ananya Reddy", className: "Grade 10 A", xp: 4380, level: 11, avatarColor: "amber", trend: "up", badges: 9 },
+  { rank: 4, name: "Aarav Sharma", className: "Grade 10 A", xp: 4150, level: 10, avatarColor: "violet", trend: "same", badges: 8 },
+  { rank: 5, name: "Saanvi Iyer", className: "Grade 10 A", xp: 3990, level: 10, avatarColor: "teal", trend: "down", badges: 8 },
+  { rank: 6, name: "Aditya Nair", className: "Grade 10 A", xp: 3840, level: 9, avatarColor: "sky", trend: "up", badges: 7 },
+  { rank: 7, name: "Ishita Desai", className: "Grade 10 A", xp: 3720, level: 9, avatarColor: "pink", trend: "same", badges: 7 },
+  { rank: 8, name: "Reyansh Kulkarni", className: "Grade 10 A", xp: 3580, level: 9, avatarColor: "cyan", trend: "down", badges: 6 },
+  { rank: 9, name: "Myra Joshi", className: "Grade 10 A", xp: 3410, level: 8, avatarColor: "orange", trend: "up", badges: 6 },
+  { rank: 10, name: "Kabir Mehta", className: "Grade 10 A", xp: 3290, level: 8, avatarColor: "lime", trend: "same", badges: 5 },
+]
+
+export const XP_HISTORY = [
+  { week: "W1", xp: 280 }, { week: "W2", xp: 340 }, { week: "W3", xp: 410 },
+  { week: "W4", xp: 380 }, { week: "W5", xp: 460 }, { week: "W6", xp: 520 },
+  { week: "W7", xp: 490 }, { week: "W8", xp: 580 },
+]
+
+export const STUDENT_LEVELS = [
+  { level: 1, title: "Beginner", min: 0, icon: "🌱" },
+  { level: 5, title: "Learner", min: 1500, icon: "📖" },
+  { level: 8, title: "Scholar", min: 2800, icon: "🎓" },
+  { level: 10, title: "Achiever", min: 4000, icon: "⭐" },
+  { level: 12, title: "Champion", min: 5500, icon: "🏆" },
+  { level: 15, title: "Legend", min: 8000, icon: "👑" },
+]
+
+// ---------------------------------------------------------------------------
+// Parent portal data
+// ---------------------------------------------------------------------------
+export interface ParentMessage {
+  id: string
+  from: string
+  role: "Teacher" | "School" | "Parent"
+  subject: string
+  body: string
+  date: string
+  read: boolean
+  priority?: "high" | "medium" | "low"
+}
+export const PARENT_MESSAGES: ParentMessage[] = [
+  { id: "pm1", from: "Rajesh Kulkarni", role: "Teacher", subject: "Aarav's progress in Mathematics", body: "Aarav has shown remarkable improvement in quadratic equations. He scored 92 in the last unit test. Please encourage him to participate in the inter-school math olympiad.", date: "2025-12-01", read: false, priority: "high" },
+  { id: "pm2", from: "School Office", role: "School", subject: "PTM Reminder — 13th December", body: "This is a reminder for the Parent-Teacher Meeting scheduled for Saturday, 13th December, 9:00 AM. Please book your slot on the portal.", date: "2025-11-30", read: false, priority: "medium" },
+  { id: "pm3", from: "Meera Nair", role: "Teacher", subject: "English assignment feedback", body: "Aarav's poetry analysis was outstanding. He has a natural flair for literary interpretation. Keep it up!", date: "2025-11-28", read: true },
+  { id: "pm4", from: "School Office", role: "School", subject: "Fee receipt for November", body: "Your fee payment of ₹29,250 has been received. Receipt No. RCP-2025-1042 is attached.", date: "2025-11-25", read: true },
+  { id: "pm5", from: "Suresh Patil", role: "Teacher", subject: "Science exhibition participation", body: "Aarav has been selected to represent the school at the Regional Science Exhibition. Details will follow.", date: "2025-11-22", read: true, priority: "high" },
+]
+
+export interface ParentNotice {
+  id: string
+  title: string
+  body: string
+  date: string
+  type: "event" | "exam" | "holiday" | "meeting" | "circular"
+}
+export const PARENT_NOTICES: ParentNotice[] = [
+  { id: "pn1", title: "Annual Sports Day — 18th December", body: "You are cordially invited to the 31st Annual Sports Day. Field events begin at 9:00 AM.", date: "2025-12-01", type: "event" },
+  { id: "pn2", title: "Pre-Board Examinations — January", body: "Pre-board exams for Grade 10 begin 12th January 2026. Ensure your child revises thoroughly.", date: "2025-11-29", type: "exam" },
+  { id: "pn3", title: "Winter Break", body: "School closed 24th Dec – 1st Jan. Classes resume 2nd January.", date: "2025-11-28", type: "holiday" },
+  { id: "pn4", title: "Parent-Teacher Meeting", body: "PTM on 13th December, 9 AM – 12:30 PM. Slot booking open on portal.", date: "2025-11-26", type: "meeting" },
+]
+
+// ---------------------------------------------------------------------------
 // Demo accounts
 // ---------------------------------------------------------------------------
 export const DEMO_ACCOUNTS: {
@@ -543,5 +666,16 @@ export const DEMO_ACCOUNTS: {
     avatarColor: "violet",
     accent: "from-violet-500 to-fuchsia-600",
     desc: "Modern & youthful — timetable, results, homework, fees & announcements.",
+  },
+  {
+    role: "parent",
+    name: "Suresh Sharma",
+    title: "Parent of Aarav • Grade 10 A",
+    username: "parent",
+    password: "scholario",
+    email: "suresh.sharma@gmail.com",
+    avatarColor: "cyan",
+    accent: "from-cyan-500 to-teal-600",
+    desc: "Stay connected — track your child's progress, attendance, fees & messages.",
   },
 ]
