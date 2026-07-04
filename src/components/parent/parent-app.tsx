@@ -4,6 +4,7 @@ import { useAppStore } from "@/lib/store"
 import { AppShell } from "@/components/shared/app-shell"
 import { PARENT_NAV } from "./nav"
 import { ParentDashboard } from "./modules/dashboard"
+import { ChatModule } from "./modules/chat"
 import { ProgressModule } from "./modules/progress"
 import { AttendanceModule } from "./modules/attendance"
 import { ResultsModule } from "./modules/results"
@@ -20,6 +21,7 @@ export function ParentApp() {
   const render = () => {
     switch (activeModule) {
       case "dashboard": return <ParentDashboard />
+      case "chat": return <ChatModule />
       case "progress": return <ProgressModule />
       case "attendance": return <AttendanceModule />
       case "results": return <ResultsModule />

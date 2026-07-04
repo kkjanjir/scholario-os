@@ -12,6 +12,8 @@ import { StudentsModule } from "./modules/students"
 import { TimetableModule } from "./modules/timetable"
 import { CommunicationModule } from "./modules/communication"
 import { AnalyticsModule } from "./modules/analytics"
+import { LessonsModule } from "./modules/lessons"
+import { TeacherChatModule } from "./modules/chat"
 
 export function TeacherApp() {
   const activeModule = useAppStore((s) => s.teacherModule)
@@ -28,6 +30,8 @@ export function TeacherApp() {
       case "timetable": return <TimetableModule />
       case "communication": return <CommunicationModule />
       case "analytics": return <AnalyticsModule />
+      case "lessons": return <LessonsModule />
+      case "chat": return <TeacherChatModule />
       default: return <TeacherDashboard />
     }
   }

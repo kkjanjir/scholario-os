@@ -9,6 +9,7 @@ import { TeachersModule } from "./modules/teachers"
 import { ClassesModule } from "./modules/classes"
 import { AttendanceModule } from "./modules/attendance"
 import { FeesModule } from "./modules/fees"
+import { DefaultersModule } from "./modules/defaulters"
 import { SalaryModule } from "./modules/salary"
 import { ExaminationModule } from "./modules/examination"
 import { HomeworkModule } from "./modules/homework"
@@ -35,6 +36,7 @@ export function PrincipalApp() {
       case "classes": return <ClassesModule />
       case "attendance": return <AttendanceModule />
       case "fees": return <FeesModule />
+      case "defaulters": return <DefaultersModule />
       case "salary": return <SalaryModule />
       case "examination": return <ExaminationModule />
       case "homework": return <HomeworkModule />

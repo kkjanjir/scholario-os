@@ -32,6 +32,7 @@ export const PRINCIPAL_NAV: NavGroup[] = [
     group: "Finance",
     items: [
       { id: "fees", label: "Fee Management", icon: Wallet },
+      { id: "defaulters", label: "Fee Defaulters", icon: AlertTriangle, badge: 6 },
       { id: "salary", label: "Salary Management", icon: Banknote },
     ],
   },

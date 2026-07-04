@@ -746,8 +746,152 @@ export const PARENT_NOTICES: ParentNotice[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// Demo accounts
+// Parent-Teacher chat (mock real-time messaging)
 // ---------------------------------------------------------------------------
+export interface ChatMessage {
+  id: string
+  sender: "parent" | "teacher"
+  name: string
+  text: string
+  time: string
+  read: boolean
+}
+export const CHAT_THREADS: {
+  id: string
+  teacherName: string
+  teacherSubject: string
+  parentName: string
+  studentName: string
+  unread: number
+  lastMessage: string
+  lastTime: string
+  messages: ChatMessage[]
+}[] = [
+  {
+    id: "ct1",
+    teacherName: "Rajesh Kulkarni",
+    teacherSubject: "Mathematics",
+    parentName: "Suresh Sharma",
+    studentName: "Aarav Sharma",
+    unread: 1,
+    lastMessage: "Thank you sir, we'll ensure he practices more.",
+    lastTime: "10:42 AM",
+    messages: [
+      { id: "m1", sender: "teacher", name: "Rajesh Kulkarni", text: "Good morning Mr. Sharma. Aarav has been performing well in Mathematics, but I noticed he struggled with quadratic equations in the last test.", time: "10:15 AM", read: true },
+      { id: "m2", sender: "parent", name: "Suresh Sharma", text: "Good morning sir. Thank you for letting me know. We'll help him practice at home.", time: "10:22 AM", read: true },
+      { id: "m3", sender: "teacher", name: "Rajesh Kulkarni", text: "That would be great! I've assigned extra practice problems from Exercise 4.3. Please ensure he completes them by Friday.", time: "10:28 AM", read: true },
+      { id: "m4", sender: "parent", name: "Suresh Sharma", text: "Thank you sir, we'll ensure he practices more.", time: "10:42 AM", read: false },
+    ],
+  },
+  {
+    id: "ct2",
+    teacherName: "Meera Nair",
+    teacherSubject: "English",
+    parentName: "Suresh Sharma",
+    studentName: "Aarav Sharma",
+    unread: 0,
+    lastMessage: "Aarav's poetry analysis was outstanding!",
+    lastTime: "Yesterday",
+    messages: [
+      { id: "m1", sender: "teacher", name: "Meera Nair", text: "Aarav's poetry analysis was outstanding! He has a natural flair for literary interpretation.", time: "Yesterday 3:15 PM", read: true },
+      { id: "m2", sender: "parent", name: "Suresh Sharma", text: "Thank you so much ma'am! We're very happy to hear that.", time: "Yesterday 4:30 PM", read: true },
+    ],
+  },
+  {
+    id: "ct3",
+    teacherName: "Suresh Patil",
+    teacherSubject: "Science",
+    parentName: "Suresh Sharma",
+    studentName: "Aarav Sharma",
+    unread: 0,
+    lastMessage: "Aarav has been selected for the Regional Science Exhibition.",
+    lastTime: "2 days ago",
+    messages: [
+      { id: "m1", sender: "teacher", name: "Suresh Patil", text: "Aarav has been selected to represent the school at the Regional Science Exhibition. His project on renewable energy was excellent.", time: "2 days ago 11:00 AM", read: true },
+      { id: "m2", sender: "parent", name: "Suresh Sharma", text: "Wonderful news! We're very proud. Please let us know the dates.", time: "2 days ago 1:20 PM", read: true },
+    ],
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Teacher lesson planner
+// ---------------------------------------------------------------------------
+export interface LessonPlan {
+  id: string
+  subject: string
+  className: string
+  topic: string
+  date: string
+  period: number
+  objectives: string[]
+  resources: string[]
+  activities: string[]
+  homework: string
+  status: "planned" | "completed" | "in-progress"
+  duration: string
+}
+export const LESSON_PLANS: LessonPlan[] = [
+  {
+    id: "lp1", subject: "Mathematics", className: "Grade 10 A", topic: "Quadratic Equations — Factoring",
+    date: "2025-12-02", period: 1, duration: "45 min", status: "completed",
+    objectives: ["Understand standard form of quadratic equations", "Factor quadratic expressions using splitting middle term", "Solve real-world problems"],
+    resources: ["NCERT Textbook Ch 4", "Whiteboard", "Worksheet 4.1", "GeoGebra demo"],
+    activities: ["Recap of linear equations (5 min)", "Introduction to quadratics (10 min)", "Worked examples (15 min)", "Practice problems (10 min)", "Wrap-up & doubts (5 min)"],
+    homework: "Exercise 4.2 — Q1 to Q8",
+  },
+  {
+    id: "lp2", subject: "Mathematics", className: "Grade 10 A", topic: "Quadratic Formula & Discriminant",
+    date: "2025-12-03", period: 1, duration: "45 min", status: "in-progress",
+    objectives: ["Derive quadratic formula", "Calculate discriminant", "Determine nature of roots"],
+    resources: ["NCERT Textbook Ch 4", "Projector", "Discriminant chart"],
+    activities: ["Homework review (5 min)", "Derivation of formula (15 min)", "Discriminant cases (10 min)", "Practice (10 min)", "Summary (5 min)"],
+    homework: "Exercise 4.3 — Q1 to Q6",
+  },
+  {
+    id: "lp3", subject: "Mathematics", className: "Grade 9 A", topic: "Polynomials — Zeroes",
+    date: "2025-12-03", period: 3, duration: "45 min", status: "planned",
+    objectives: ["Define zeroes of polynomial", "Find zeroes graphically", "Relationship between zeroes & coefficients"],
+    resources: ["NCERT Textbook Ch 2", "Graph paper", "Desmos graphing tool"],
+    activities: ["Warm-up (5 min)", "Concept introduction (10 min)", "Graphical method demo (15 min)", "Pair activity (10 min)", "Recap (5 min)"],
+    homework: "Exercise 2.2 — Q1 to Q4",
+  },
+  {
+    id: "lp4", subject: "Mathematics", className: "Grade 10 A", topic: "Word Problems — Quadratics",
+    date: "2025-12-04", period: 1, duration: "45 min", status: "planned",
+    objectives: ["Translate word problems to equations", "Solve using appropriate method", "Verify solutions"],
+    resources: ["Worksheet 4.4", "Real-world examples"],
+    activities: ["Recap (5 min)", "Problem-solving strategies (10 min)", "4 worked examples (20 min)", "Independent practice (5 min)", "Exit ticket (5 min)"],
+    homework: "Worksheet 4.4 — complete all",
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Fee defaulters — for follow-up workflow
+// ---------------------------------------------------------------------------
+export interface FeeDefaulter {
+  id: string
+  studentName: string
+  admissionNo: string
+  className: string
+  guardianName: string
+  guardianPhone: string
+  amount: number
+  overdueDays: number
+  remindersSent: number
+  lastReminder: string
+  status: "critical" | "overdue" | "reminder"
+  avatarColor: string
+}
+export const FEE_DEFAULTERS: FeeDefaulter[] = [
+  { id: "fd1", studentName: "Kabir Mehta", admissionNo: "SVM20252438", className: "Grade 10 B", guardianName: "Rahul Mehta", guardianPhone: "+91 98220 44556", amount: 29250, overdueDays: 45, remindersSent: 3, lastReminder: "2025-11-25", status: "critical", avatarColor: "rose" },
+  { id: "fd2", studentName: "Ishita Desai", admissionNo: "SVM20252452", className: "Grade 9 B", guardianName: "Amit Desai", guardianPhone: "+91 98220 33445", amount: 19500, overdueDays: 32, remindersSent: 2, lastReminder: "2025-11-28", status: "critical", avatarColor: "amber" },
+  { id: "fd3", studentName: "Reyansh Kulkarni", admissionNo: "SVM20252467", className: "Grade 8 A", guardianName: "Deepak Kulkarni", guardianPhone: "+91 98220 22334", amount: 14250, overdueDays: 18, remindersSent: 2, lastReminder: "2025-11-30", status: "overdue", avatarColor: "orange" },
+  { id: "fd4", studentName: "Myra Joshi", admissionNo: "SVM20252471", className: "Grade 9 A", guardianName: "Sanjay Joshi", guardianPhone: "+91 98220 11223", amount: 9750, overdueDays: 12, remindersSent: 1, lastReminder: "2025-11-29", status: "overdue", avatarColor: "pink" },
+  { id: "fd5", studentName: "Vivaan Gupta", admissionNo: "SVM20252415", className: "Grade 10 A", guardianName: "Mohit Gupta", guardianPhone: "+91 98220 55667", amount: 5850, overdueDays: 5, remindersSent: 1, lastReminder: "2025-11-30", status: "reminder", avatarColor: "teal" },
+  { id: "fd6", studentName: "Saanvi Iyer", admissionNo: "SVM20252423", className: "Grade 8 B", guardianName: "Karthik Iyer", guardianPhone: "+91 98220 66778", amount: 3900, overdueDays: 3, remindersSent: 0, lastReminder: "—", status: "reminder", avatarColor: "cyan" },
+]
+
+
 export const DEMO_ACCOUNTS: {
   role: Role
   name: string

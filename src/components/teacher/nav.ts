@@ -1,7 +1,7 @@
 import type { NavGroup } from "@/components/shared/app-shell"
 import {
   LayoutDashboard, CalendarCheck, BookOpen, FileText, ClipboardList,
-  Users, CalendarClock, Megaphone, BarChart3,
+  Users, CalendarClock, Megaphone, BarChart3, NotebookPen, MessagesSquare,
 } from "lucide-react"
 
 export const TEACHER_NAV: NavGroup[] = [
@@ -20,12 +20,14 @@ export const TEACHER_NAV: NavGroup[] = [
       { id: "homework", label: "Homework", icon: BookOpen, badge: 6 },
       { id: "assignments", label: "Assignments", icon: FileText, badge: 4 },
       { id: "marks", label: "Marks Entry", icon: ClipboardList },
+      { id: "lessons", label: "Lesson Planner", icon: NotebookPen, badge: 3 },
     ],
   },
   {
     group: "People",
     items: [
       { id: "students", label: "My Students", icon: Users },
+      { id: "chat", label: "Parent Chat", icon: MessagesSquare, badge: 1 },
       { id: "communication", label: "Communication", icon: Megaphone },
     ],
   },
