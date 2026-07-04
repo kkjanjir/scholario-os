@@ -203,6 +203,32 @@ export function LoginPage() {
               <Shield className="h-4 w-4 text-primary" /> Role-based access
             </span>
           </motion.div>
+
+          {/* stats showcase */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.7 }}
+            className="mt-10 grid grid-cols-3 gap-4 border-t border-border/40 pt-6"
+          >
+            {[
+              { value: "1,004", label: "Students", icon: "👨‍🎓" },
+              { value: "68", label: "Teachers", icon: "👩‍🏫" },
+              { value: "50+", label: "Modules", icon: "⚙️" },
+            ].map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + i * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-2xl">{s.icon}</div>
+                <p className="mt-1 text-xl font-bold text-foreground">{s.value}</p>
+                <p className="text-[11px] text-muted-foreground">{s.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Right — login card */}

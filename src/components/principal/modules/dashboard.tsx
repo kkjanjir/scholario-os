@@ -6,12 +6,12 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { AnimatedCounter, StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, formatINR } from "@/components/shared/brand"
 import { RevenueAreaChart, AttendanceBarChart, DonutChart, RadialGauge } from "@/components/shared/charts"
-import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK } from "@/lib/mock/data"
+import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK, AT_RISK_STUDENTS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   Users, GraduationCap, CalendarCheck, Wallet, AlertCircle, Banknote,
   Cake, UserPlus, CalendarDays, Bus, BookOpen, Package, ClipboardList,
-  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles,
+  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles, AlertTriangle, ShieldAlert,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -252,8 +252,56 @@ export function PrincipalDashboard() {
         </StaggerItem>
       </div>
 
-      {/* transport quick view */}
+      {/* at-risk students widget */}
       <StaggerItem index={10}>
+        <SectionCard
+          title="At-Risk Students — Early Warning"
+          subtitle="AI-predicted students needing intervention"
+          action={<button onClick={() => setModule("principal", "atrisk")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">View all <ArrowUpRight className="h-3 w-3" /></button>}
+          bodyClassName="p-0"
+        >
+          <div className="grid gap-3 p-5 sm:grid-cols-3">
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-4">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-rose-500/15 p-2"><AlertTriangle className="h-4 w-4 text-rose-600" /></div>
+                <div>
+                  <p className="text-2xl font-bold text-rose-600">{AT_RISK_STUDENTS.filter((s) => s.riskLevel === "High").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">High Risk</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-amber-500/15 p-2"><ShieldAlert className="h-4 w-4 text-amber-600" /></div>
+                <div>
+                  <p className="text-2xl font-bold text-amber-600">{AT_RISK_STUDENTS.filter((s) => s.riskLevel === "Medium").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Medium Risk</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+              <div className="flex items-center gap-2">
+                <div className="rounded-lg bg-emerald-500/15 p-2"><TrendingUp className="h-4 w-4 text-emerald-600" /></div>
+                <div>
+                  <p className="text-2xl font-bold text-emerald-600">{AT_RISK_STUDENTS.filter((s) => s.riskLevel === "Low").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Low Risk</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-border/50 px-5 py-3">
+            <div className="flex items-center gap-2 text-xs">
+              <Sparkles className="h-3.5 w-3.5 text-violet-500" />
+              <p className="text-muted-foreground">
+                <b className="text-foreground">AI Insight:</b> {AT_RISK_STUDENTS[0].name} & {AT_RISK_STUDENTS[1].name} need immediate attention — declining attendance & marks trend.
+              </p>
+            </div>
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* transport quick view */}
+      <StaggerItem index={11}>
         <SectionCard title="Transport Fleet Status" subtitle="Live bus tracking overview" action={<button onClick={() => setModule("principal", "transport")} className="text-xs font-medium text-primary hover:underline">Track all <ArrowUpRight className="h-3 w-3" /></button>}>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {TRANSPORT_ROUTES.map((r) => {

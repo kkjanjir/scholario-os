@@ -23,14 +23,16 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 
-type CertType = "bonafide" | "tc" | "character" | "id" | "receipt"
+type CertType = "bonafide" | "tc" | "character" | "id" | "receipt" | "achievement" | "migration"
 
 const CERT_TYPES: { id: CertType; label: string; desc: string; icon: any; color: string }[] = [
   { id: "bonafide", label: "Bonafide Certificate", desc: "Proof of enrolment", icon: FileCheck, color: "emerald" },
   { id: "tc", label: "Transfer Certificate", desc: "School leaving record", icon: ScrollText, color: "rose" },
   { id: "character", label: "Character Certificate", desc: "Conduct & behaviour", icon: Shield, color: "violet" },
+  { id: "achievement", label: "Achievement Certificate", desc: "Academic excellence award", icon: GraduationCap, color: "amber" },
+  { id: "migration", label: "Migration Certificate", desc: "For board/college change", icon: FileText, color: "teal" },
   { id: "id", label: "ID Card", desc: "Identity card print", icon: IdCard, color: "sky" },
-  { id: "receipt", label: "Fee Receipt", desc: "Payment acknowledgement", icon: Receipt, color: "amber" },
+  { id: "receipt", label: "Fee Receipt", desc: "Payment acknowledgement", icon: Receipt, color: "orange" },
 ]
 
 export function CertificatesModule() {
@@ -280,6 +282,8 @@ function CertificatePreview({ type, student, generated }: { type: CertType; stud
     bonafide: "BONAFIDE CERTIFICATE",
     tc: "TRANSFER CERTIFICATE",
     character: "CHARACTER CERTIFICATE",
+    achievement: "ACHIEVEMENT CERTIFICATE",
+    migration: "MIGRATION CERTIFICATE",
     id: "",
     receipt: "",
   }
@@ -310,6 +314,34 @@ function CertificatePreview({ type, student, generated }: { type: CertType; stud
       <p className="text-sm leading-relaxed">
         This is to certify that <span className="font-bold">{student.name}</span>, Admission No. <span className="font-semibold">{student.admissionNo}</span>, was a student of <span className="font-semibold">{SCHOOL.name}</span> in <span className="font-semibold">{student.className} {student.section}</span>. To the best of our knowledge and observation, the student bears a good moral character, has been regular in attendance ({student.attendancePct}%), and has shown satisfactory conduct throughout the academic session {SCHOOL.session}.
       </p>
+    ),
+    achievement: (
+      <div className="space-y-3 text-sm leading-relaxed">
+        <p className="text-center text-base font-semibold text-amber-600 dark:text-amber-400">
+          🏆 This certificate is proudly presented to 🏆
+        </p>
+        <p className="text-center text-xl font-bold">{student.name}</p>
+        <p>
+          In recognition of outstanding academic performance and excellence in the academic session <span className="font-semibold">{SCHOOL.session}</span>. The student has demonstrated exceptional dedication, achieving an average of <span className="font-semibold">{student.avgMarks}%</span> with consistent attendance of <span className="font-semibold">{student.attendancePct}%</span>.
+        </p>
+        <p className="text-center italic text-muted-foreground">"Excellence is not a destination, it is a continuous journey."</p>
+      </div>
+    ),
+    migration: (
+      <div className="space-y-3 text-sm leading-relaxed">
+        <p>
+          This is to certify that <span className="font-bold">{student.name}</span>, Admission No. <span className="font-semibold">{student.admissionNo}</span>, was a bona fide student of this institution from <span className="font-semibold">{new Date(student.admissionDate).toLocaleDateString("en-IN")}</span> and has been studying in <span className="font-semibold">{student.className} {student.section}</span>.
+        </p>
+        <div className="grid grid-cols-2 gap-2 rounded-lg bg-muted/40 p-3 text-xs">
+          <Field label="Admission No" value={student.admissionNo} />
+          <Field label="Date of Birth" value={new Date(student.dob).toLocaleDateString("en-IN")} />
+          <Field label="Last Class Studied" value={`${student.className} ${student.section}`} />
+          <Field label="Subjects Offered" value="English, Hindi, Maths, Science, S.Sc, CS" />
+          <Field label="Fee Status" value={student.feeStatus} />
+          <Field label="Conduct" value="Satisfactory" />
+        </div>
+        <p>This certificate is issued for migration purposes to enable admission to another institution. The student's records have been verified and found correct.</p>
+      </div>
     ),
     id: null,
     receipt: null,

@@ -83,7 +83,9 @@ export function HomeworkModule() {
     setTimeout(() => {
       setSubmitting(false)
       setJustSubmitted(true)
-      toast.success(`Homework "${submitTarget?.title}" submitted successfully! 🎉`)
+      toast.success(`+50 XP earned! 🎉`, {
+        description: `Homework "${submitTarget?.title}" submitted successfully`,
+      })
     }, 1400)
   }
 

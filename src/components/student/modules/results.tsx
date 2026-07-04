@@ -6,7 +6,7 @@ import { PageHeader, StatPill } from "@/components/shared/module-common"
 import { SectionCard } from "@/components/shared/ui"
 import { StaggerItem, AnimatedCounter } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
-import { SimpleLine } from "@/components/shared/charts"
+import { SimpleLine, RadarChartWrap } from "@/components/shared/charts"
 import { STUDENTS, studentResult, EXAMS, SCHOOL } from "@/lib/mock/data"
 import { downloadReportCard } from "@/components/shared/skeleton"
 import { cn } from "@/lib/utils"
@@ -182,6 +182,24 @@ export function ResultsModule() {
               <StatPill label="Overall Grade" value={g.grade} color="amber" />
               <StatPill label="Class Rank" value={`#${rank} of 38`} color="emerald" />
             </div>
+          </SectionCard>
+        </StaggerItem>
+      </div>
+
+      {/* Subject proficiency radar + progress */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <StaggerItem index={4}>
+          <SectionCard title="Subject Proficiency Radar" subtitle="Visualize your strengths across subjects 📡">
+            <RadarChartWrap
+              data={subjects.map((s) => ({ subject: s.subject.length > 8 ? s.subject.slice(0, 7) + "…" : s.subject, marks: s.marks, fullMark: 100 }))}
+              color="oklch(0.6 0.21 300)"
+              height={300}
+            />
+          </SectionCard>
+        </StaggerItem>
+        <StaggerItem index={5}>
+          <SectionCard title="Term Progress" subtitle="Your average marks across assessments 📈">
+            <SimpleLine data={termProgress} dataKey="marks" color="oklch(0.6 0.21 300)" height={300} />
           </SectionCard>
         </StaggerItem>
       </div>

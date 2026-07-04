@@ -346,3 +346,61 @@ A gamified XP-earning system — `src/components/student/modules/challenges.tsx`
 5. **Attendance analytics deep-dive** — month-over-month heatmap comparison.
 6. **More certificate types** — add achievement certificate, migration certificate.
 7. **Mobile responsiveness audit** on new at-risk & challenges modules.
+
+---
+Task ID: R4 (Round 4 — Cron Review)
+Agent: Lead Architect (main)
+Task: QA all prior features via agent-browser, add radar chart to student results, at-risk widget to principal dashboard, more certificate types, XP reward on homework submit, login stats showcase
+
+## Current Project Status Assessment
+- SCHOLARIO-OS stable from Round 3 with 4 roles and 50 modules.
+- QA via agent-browser (server survived this round!): verified At-Risk module, Daily Challenges (claim XP), Analytics radar/treemap/funnel charts, all 4 login cards.
+- `bun run lint` clean, `tsc --noEmit` clean, HTTP 200.
+- No bugs found. Project is stable.
+
+## Completed Modifications This Round
+
+### 1. QA Verification (agent-browser)
+- Login: all 4 role cards render (Principal, Teacher, Student, Parent).
+- Principal: dashboard loads, At-Risk module renders with AI insight + student cards + risk scores.
+- Analytics: Performance tab radar chart, Fee tab treemap, Admission tab funnel — all render.
+- Student: Daily Challenges module — claim XP button works (changes to "Claimed").
+- No console/runtime errors across all tests.
+
+### 2. NEW: Radar Chart in Student Results
+- `src/components/student/modules/results.tsx`: Added "Subject Proficiency Radar" section with RadarChartWrap showing student's marks across all subjects as a polar visualization, plus a "Term Progress" line chart side-by-side. Inserted between top subjects and subject-wise table.
+
+### 3. NEW: At-Risk Widget on Principal Dashboard
+- `src/components/principal/modules/dashboard.tsx`: Added "At-Risk Students — Early Warning" widget before the transport fleet section. Contains 3 color-coded stat cards (High/Medium/Low risk counts) + AI insight footer naming the 2 students needing attention. Links to full At-Risk module.
+
+### 4. NEW: More Certificate Types
+- `src/components/principal/modules/certificates.tsx`: Added 2 new certificate types:
+  - **Achievement Certificate** — academic excellence award with 🏆 trophy styling, student avg marks + attendance, inspirational quote.
+  - **Migration Certificate** — for board/college transfer with detailed student particulars grid (admission no, DOB, last class, subjects, fee status, conduct).
+- Total certificate types now: 7 (bonafide, tc, character, achievement, migration, id, receipt).
+
+### 5. XP Reward on Homework Submit
+- `src/components/student/modules/homework.tsx`: Submit toast now shows "+50 XP earned! 🎉" with homework title as description — ties homework submission to the gamification system.
+
+### 6. Login Stats Showcase
+- `src/components/login/login-page.tsx`: Added animated stats bar on the left panel showing "1,004 Students | 68 Teachers | 50+ Modules" with emoji icons and staggered entrance animations. Makes the login page more impressive for investors/principals.
+
+## Verification Results
+- `bun run lint` → exit 0 (clean) ✅
+- `bunx tsc --noEmit` → 0 errors in project code ✅
+- agent-browser confirmed: At-Risk widget on dashboard ✅, Radar chart in student results ✅, new certificate types render ✅, login stats showcase present ✅
+- No console/runtime errors ✅
+- Dev server HTTP 200 throughout ✅
+
+## Unresolved Issues / Risks
+- agent-browser memory pressure is intermittent — sometimes works, sometimes kills server. This round it worked for full QA.
+- Dev server needs `setsid bash -c 'exec bun run dev > dev.log 2>&1' < /dev/null &` to start detached if it dies.
+
+## Priority Recommendations for Next Round
+1. **Parent-Teacher real-time chat** — mock websocket messaging between parent & teacher.
+2. **Attendance analytics deep-dive** — month-over-month heatmap comparison, predictive "at risk" from attendance.
+3. **Student gamification expansion** — season leaderboard, XP history graph, badge unlock notifications.
+4. **Principal fee defaulters follow-up** — automated reminder workflow with email/SMS preview.
+5. **Teacher lesson planner** — create lesson plans linked to timetable.
+6. **Mobile responsiveness audit** on all new modules.
+7. **Dark mode visual audit** on radar/treemap/funnel charts.
