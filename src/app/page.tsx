@@ -8,6 +8,7 @@ import { PrincipalApp } from "@/components/principal/principal-app"
 import { TeacherApp } from "@/components/teacher/teacher-app"
 import { StudentApp } from "@/components/student/student-app"
 import { ParentApp } from "@/components/parent/parent-app"
+import { SuperAdminApp } from "@/components/superadmin/superadmin-app"
 
 export default function Home() {
   const user = useAppStore((s) => s.user)
@@ -42,6 +43,7 @@ export default function Home() {
           {user.role === "teacher" && <TeacherApp />}
           {user.role === "student" && <StudentApp />}
           {user.role === "parent" && <ParentApp />}
+          {user.role === "superadmin" && <SuperAdminApp />}
         </motion.div>
       )}
     </AnimatePresence>

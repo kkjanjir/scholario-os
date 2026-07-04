@@ -13,7 +13,7 @@ import type { LucideIcon } from "lucide-react"
 import {
   Search, Bell, Menu, PanelLeftClose, PanelLeftOpen, Sun, Moon,
   ChevronDown, LogOut, Settings, User as UserIcon, Shield,
-  GraduationCap, BookOpen, Sparkles, X, Command, HeartHandshake,
+  GraduationCap, BookOpen, Sparkles, X, Command, HeartHandshake, Crown,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -33,6 +33,7 @@ const ROLE_ICON = {
   teacher: GraduationCap,
   student: BookOpen,
   parent: HeartHandshake,
+  superadmin: Crown,
 } as const
 
 const ROLE_LABEL = {
@@ -40,6 +41,7 @@ const ROLE_LABEL = {
   teacher: "Teacher",
   student: "Student",
   parent: "Parent",
+  superadmin: "Super Admin",
 } as const
 
 function Sidebar({

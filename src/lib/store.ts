@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-export type Role = "principal" | "teacher" | "student" | "parent"
+export type Role = "principal" | "teacher" | "student" | "parent" | "superadmin"
 
 export interface SessionUser {
   id: string
@@ -25,6 +25,7 @@ interface AppState {
   teacherModule: string
   studentModule: string
   parentModule: string
+  superadminModule: string
   // ui
   sidebarCollapsed: boolean
   sidebarMobileOpen: boolean
@@ -52,6 +53,7 @@ export const useAppStore = create<AppState>()(
       teacherModule: "dashboard",
       studentModule: "dashboard",
       parentModule: "dashboard",
+      superadminModule: "dashboard",
       sidebarCollapsed: false,
       sidebarMobileOpen: false,
       theme: "light",
@@ -65,6 +67,7 @@ export const useAppStore = create<AppState>()(
           teacherModule: "dashboard",
           studentModule: "dashboard",
           parentModule: "dashboard",
+          superadminModule: "dashboard",
         }),
       switchRole: (user) => set({ user }),
       setModule: (role, module) =>
@@ -75,7 +78,9 @@ export const useAppStore = create<AppState>()(
             ? { teacherModule: module }
             : role === "student"
             ? { studentModule: module }
-            : { parentModule: module }
+            : role === "parent"
+            ? { parentModule: module }
+            : { superadminModule: module }
         ),
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),

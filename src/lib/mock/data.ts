@@ -1005,4 +1005,15 @@ export const DEMO_ACCOUNTS: {
     accent: "from-cyan-500 to-teal-600",
     desc: "Stay connected — track your child's progress, attendance, fees & messages.",
   },
+  {
+    role: "superadmin",
+    name: "Arjun Mehta",
+    title: "Platform Super Admin",
+    username: "superadmin",
+    password: "scholario",
+    email: "arjun@scholario-os.com",
+    avatarColor: "slate",
+    accent: "from-slate-700 to-slate-900",
+    desc: "Complete platform control — schools, billing, monitoring, security & feature flags.",
+  },
 ]
