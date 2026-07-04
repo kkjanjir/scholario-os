@@ -7,10 +7,12 @@ import { SectionCard, StatusBadge } from "@/components/shared/ui"
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, formatINR } from "@/components/shared/brand"
 import { SCHOOLS, type School } from "@/lib/mock/superadmin-data"
+import { ProvisioningWizard } from "./provisioning-wizard"
+import { SchoolControlCenter } from "./school-control-center"
 import { cn } from "@/lib/utils"
 import {
   Building2, MoreVertical, Eye, UserCog, Archive, Trash2, Shield,
-  Download, Activity, FileText, LogIn, Power, PowerOff, Bell,
+  Download, Activity, FileText, LogIn, Power, PowerOff, Bell, Plus, Rocket,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -19,6 +21,8 @@ export function SchoolsModule() {
   const [filter, setFilter] = useState<"all" | "Active" | "Trial" | "Suspended" | "Expired">("all")
   const [selected, setSelected] = useState<School | null>(null)
   const [schools, setSchools] = useState(SCHOOLS)
+  const [wizardOpen, setWizardOpen] = useState(false)
+  const [controlCenter, setControlCenter] = useState<School | null>(null)
 
   const filtered = schools.filter((s) => {
     const matchFilter = filter === "all" || s.status === filter
@@ -35,7 +39,12 @@ export function SchoolsModule() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="School Management" description="Manage all schools (tenants) on the platform" action={<button onClick={() => toast.success("Export started — CSV will be emailed")} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Download className="h-4 w-4" /> Export CSV</button>} />
+      <PageHeader title="School Management" description="Provision, configure, deploy & monitor all schools on the platform" action={
+        <div className="flex gap-2">
+          <button onClick={() => toast.success("Export started — CSV will be emailed")} className="inline-flex items-center gap-2 rounded-xl border border-border/70 px-4 py-2 text-sm font-medium hover:bg-accent"><Download className="h-4 w-4" /> Export</button>
+          <button onClick={() => setWizardOpen(true)} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105"><Rocket className="h-4 w-4" /> Provision New School</button>
+        </div>
+      } />
 
       <StaggerItem index={0}>
         <SectionCard>
@@ -96,14 +105,28 @@ export function SchoolsModule() {
       {/* detail dialog */}
       <AnimatePresence>
         {selected && (
-          <SchoolDetailDialog school={selected} onClose={() => setSelected(null)} onToggle={() => toggleStatus(selected)} />
+          <SchoolDetailDialog school={selected} onClose={() => setSelected(null)} onToggle={() => toggleStatus(selected)} onManage={() => { setControlCenter(selected); setSelected(null) }} />
+        )}
+      </AnimatePresence>
+
+      {/* provisioning wizard */}
+      <AnimatePresence>
+        {wizardOpen && (
+          <ProvisioningWizard onClose={() => setWizardOpen(false)} onDeployed={(name) => { setWizardOpen(false); toast.success(`${name} provisioned & deployed!`) }} />
+        )}
+      </AnimatePresence>
+
+      {/* school control center */}
+      <AnimatePresence>
+        {controlCenter && (
+          <SchoolControlCenter school={controlCenter} onClose={() => setControlCenter(null)} />
         )}
       </AnimatePresence>
     </div>
   )
 }
 
-function SchoolDetailDialog({ school, onClose, onToggle }: { school: School; onClose: () => void; onToggle: () => void }) {
+function SchoolDetailDialog({ school, onClose, onToggle, onManage }: { school: School; onClose: () => void; onToggle: () => void; onManage: () => void }) {
   const c = colorOf(school.avatarColor)
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" onClick={onClose}>
@@ -174,6 +197,9 @@ function SchoolDetailDialog({ school, onClose, onToggle }: { school: School; onC
 
           {/* status controls */}
           <div className="flex flex-wrap gap-2 border-t border-border/60 pt-4">
+            <button onClick={onManage} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105">
+              <Building2 className="h-4 w-4" /> Open Control Center
+            </button>
             <button onClick={onToggle} className={cn("inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-105", school.status === "Active" ? "bg-rose-500" : "bg-emerald-500")}>
               {school.status === "Active" ? <><PowerOff className="h-4 w-4" /> Suspend</> : <><Power className="h-4 w-4" /> Activate</>}
             </button>

@@ -325,3 +325,112 @@ export const SUPPORT_TICKETS: SupportTicket[] = [
   { id: "TKT-005", subject: "Platform slow during morning peak hours", school: "Ryan International", user: "Principal", category: "Incident", priority: "High", status: "Open", assignedTo: "DevOps", created: "2025-11-30", lastUpdate: "2 hours ago" },
   { id: "TKT-006", subject: "WhatsApp integration not sending messages", school: "BSS Mumbai", user: "Admin", category: "Bug", priority: "Medium", status: "In Progress", assignedTo: "Priya (Eng)", created: "2025-11-28", lastUpdate: "5 hours ago" },
 ]
+
+// ---------------------------------------------------------------------------
+// School Provisioning — payment providers, templates, deployment, audit
+// ---------------------------------------------------------------------------
+export interface PaymentProvider {
+  id: string
+  name: string
+  logo: string
+  color: string
+  fields: { key: string; label: string; type: "text" | "password" | "select" }[]
+}
+export const PAYMENT_PROVIDERS: PaymentProvider[] = [
+  { id: "razorpay", name: "Razorpay", logo: "💳", color: "violet", fields: [
+    { key: "keyId", label: "API Key ID", type: "text" },
+    { key: "keySecret", label: "API Key Secret", type: "password" },
+    { key: "webhookSecret", label: "Webhook Secret", type: "password" },
+    { key: "merchantId", label: "Merchant ID", type: "text" },
+    { key: "accountId", label: "Account ID", type: "text" },
+  ]},
+  { id: "cashfree", name: "Cashfree", logo: "💸", color: "emerald", fields: [
+    { key: "appId", label: "App ID", type: "text" },
+    { key: "secretKey", label: "Secret Key", type: "password" },
+    { key: "webhookSecret", label: "Webhook Secret", type: "password" },
+  ]},
+  { id: "phonepe", name: "PhonePe", logo: "📱", color: "violet", fields: [
+    { key: "merchantId", label: "Merchant ID", type: "text" },
+    { key: "saltKey", label: "Salt Key", type: "password" },
+    { key: "saltIndex", label: "Salt Index", type: "text" },
+    { key: "upiId", label: "UPI ID", type: "text" },
+  ]},
+  { id: "payu", name: "PayU", logo: "💰", color: "amber", fields: [
+    { key: "merchantKey", label: "Merchant Key", type: "text" },
+    { key: "merchantSalt", label: "Merchant Salt", type: "password" },
+    { key: "webhookSecret", label: "Webhook Secret", type: "password" },
+  ]},
+]
+
+export const TEMPLATE_TYPES = [
+  { id: "certificate", name: "Certificate Template", icon: "📜", color: "emerald", versions: 3 },
+  { id: "reportcard", name: "Report Card Template", icon: "📊", color: "violet", versions: 2 },
+  { id: "marksheet", name: "Marksheet Template", icon: "📝", color: "amber", versions: 2 },
+  { id: "idcard", name: "ID Card Template", icon: "🪪", color: "sky", versions: 4 },
+  { id: "receipt", name: "Fee Receipt Template", icon: "🧾", color: "rose", versions: 2 },
+  { id: "invoice", name: "Invoice Template", icon: "📑", color: "cyan", versions: 1 },
+  { id: "tc", name: "Transfer Certificate", icon: "📄", color: "orange", versions: 1 },
+  { id: "character", name: "Character Certificate", icon: "✨", color: "teal", versions: 1 },
+]
+
+export const WEBSITE_SECTIONS = [
+  { id: "hero", name: "Hero / Banner", enabled: true },
+  { id: "gallery", name: "Photo Gallery", enabled: true },
+  { id: "facilities", name: "Facilities", enabled: true },
+  { id: "faculty", name: "Faculty", enabled: true },
+  { id: "admission", name: "Admission Section", enabled: true },
+  { id: "achievements", name: "Achievements", enabled: true },
+  { id: "news", name: "News & Events", enabled: true },
+  { id: "contact", name: "Contact + Map", enabled: true },
+]
+
+export const DEPLOYMENT_STEPS = [
+  { id: "d1", label: "Provisioning database schema", duration: 1200 },
+  { id: "d2", label: "Configuring subdomain & DNS", duration: 900 },
+  { id: "d3", label: "Issuing SSL certificate", duration: 1100 },
+  { id: "d4", label: "Deploying application instance", duration: 1400 },
+  { id: "d5", label: "Setting up storage buckets", duration: 800 },
+  { id: "d6", label: "Initializing feature flags", duration: 700 },
+  { id: "d7", label: "Creating admin account", duration: 600 },
+  { id: "d8", label: "Running smoke tests", duration: 1000 },
+  { id: "d9", label: "School is live!", duration: 400 },
+]
+
+export interface AuditEntry {
+  id: string
+  user: string
+  action: string
+  module: string
+  oldValue: string
+  newValue: string
+  time: string
+}
+export const AUDIT_LOG: AuditEntry[] = [
+  { id: "a1", user: "Arjun Mehta", action: "Updated subscription plan", module: "Billing", oldValue: "Professional", newValue: "Enterprise", time: "2 hours ago" },
+  { id: "a2", user: "Arjun Mehta", action: "Enabled AI Performance Insights", module: "Feature Flags", oldValue: "Disabled", newValue: "Enabled", time: "5 hours ago" },
+  { id: "a3", user: "System", action: "Auto-backup completed", module: "Storage", oldValue: "—", newValue: "2.4 GB backed up", time: "6 hours ago" },
+  { id: "a4", user: "Arjun Mehta", action: "Updated storage limit", module: "Storage", oldValue: "75 GB", newValue: "100 GB", time: "Yesterday" },
+  { id: "a5", user: "Arjun Mehta", action: "Suspended school", module: "School Management", oldValue: "Active", newValue: "Suspended", time: "2 days ago" },
+  { id: "a6", user: "Arjun Mehta", action: "Added custom domain", module: "Deployment", oldValue: "—", newValue: "portal.greenwood.edu.in", time: "3 days ago" },
+  { id: "a7", user: "System", action: "SSL certificate renewed", module: "Security", oldValue: "Expiring", newValue: "Valid (90 days)", time: "4 days ago" },
+  { id: "a8", user: "Arjun Mehta", action: "Updated payment provider", module: "Payments", oldValue: "Cashfree", newValue: "Razorpay", time: "5 days ago" },
+]
+
+export const SCHOOL_MONITORS = {
+  students: 1004, teachers: 68, staff: 42, parents: 980,
+  storageUsed: 42.5, storageLimit: 100, dbUsage: 28.3, bandwidth: 41.2,
+  mau: 2840, dau: 1240,
+  logins24h: 842, apiCalls24h: 28430, aiCreditsUsed: 1240, aiCreditsLimit: 5000,
+  smsSent: 420, emailsSent: 1820,
+  payments24h: 28, feeCollection: 2840000, attendanceAvg: 94.2,
+  responseTime: 142, errorCount: 3, warningCount: 8,
+  growthTrend: [820, 880, 910, 950, 980, 1004],
+  moduleUsage: [
+    { name: "Attendance", usage: 94 },
+    { name: "Fees", usage: 82 },
+    { name: "Homework", usage: 78 },
+    { name: "Exams", usage: 71 },
+    { name: "Library", usage: 45 },
+    { name: "Transport", usage: 38 },
+  ],
+}
