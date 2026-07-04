@@ -295,3 +295,65 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* pulse glow for live indicators */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 50%, transparent); }
+  50% { box-shadow: 0 0 0 8px color-mix(in oklch, var(--primary) 0%, transparent); }
+}
+.pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+/* gradient text shimmer */
+@keyframes gradient-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--primary), color-mix(in oklch, var(--primary) 50%, oklch(0.7 0.18 70)), var(--primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shimmer 3s linear infinite;
+}
+
+/* number count-up reveal */
+@keyframes count-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* floating animation for badges/icons */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.float { animation: gentle-float 3s ease-in-out infinite; }
+
+/* success ring expand */
+@keyframes ring-expand {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.ring-expand { animation: ring-expand 1s ease-out; }
+
+/* dark mode tweaks for premium feel */
+.dark .glass { background: color-mix(in oklch, var(--card) 60%, transparent); }
+.dark .glass-strong { background: color-mix(in oklch, var(--card) 45%, transparent); }
+
+/* selection color */
+::selection {
+  background: color-mix(in oklch, var(--primary) 25%, transparent);
+  color: var(--foreground);
+}
+
+/* smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

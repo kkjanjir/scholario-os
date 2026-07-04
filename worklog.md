@@ -264,3 +264,85 @@ Task: QA pass, fix nav indicator bug, add Parent Portal (4th role), add Student 
 5. **Certificate generator with real print**: wire printElement() to certificates module for actual printing.
 6. **Dark mode polish**: verify all new parent/gamification modules in dark mode.
 7. **Mobile responsiveness audit** on new parent & gamification modules.
+
+---
+Task ID: R3 (Round 3 — Cron Review)
+Agent: Lead Architect (main)
+Task: QA, add advanced chart types (radar/treemap/funnel/composed/horizontal), At-Risk Students predictive analytics, Student Daily Challenges, wire real print/download to certificates, styling polish
+
+## Current Project Status Assessment
+- SCHOLARIO-OS stable from Round 2 with 4 roles (principal/teacher/student/parent) and 45 modules.
+- QA: `bun run lint` clean (0 errors), `tsc --noEmit` clean (0 errors in project code), dev server HTTP 200, login renders all 4 role cards.
+- agent-browser still causes OOM when launched alongside Turbopack — verified via curl + lint + tsc.
+- No bugs found this round. Project is stable.
+
+## Completed Modifications This Round
+
+### 1. NEW: Advanced Chart Types (charts.tsx)
+Added 5 new recharts wrappers to `src/components/shared/charts.tsx`:
+- **RadarChartWrap** — multi-dimensional subject proficiency view (polar grid, angle axis, filled area)
+- **TreemapWrap** — hierarchical fee/category breakdown with custom colored cells + labels
+- **FunnelWrap** — admission pipeline conversion (applications → admitted)
+- **ComposedChartWrap** — bar + line combo (e.g., revenue vs target with gradient bars)
+- **HorizontalBar** — vertical-layout bar chart for rankings/comparisons
+
+### 2. NEW: Principal "At-Risk Students" Module (atrisk.tsx)
+A predictive analytics dashboard — `src/components/principal/modules/atrisk.tsx`:
+- AI insight banner highlighting students needing immediate attention.
+- 4 KPI cards (High/Medium/Low risk + total monitored) with animated counters.
+- Filter toolbar (All/High/Medium/Low) + search.
+- 6 at-risk student cards with: risk score bar, attendance/avg-marks/trend stats, risk-level color coding, click-to-detail.
+- Detail dialog: risk factors grid, 6-week performance trend line chart, AI recommended action, action buttons (Schedule Meeting / Message Parents / Call / Assign Mentor).
+- Added to principal nav with badge "6".
+- Mock data: AT_RISK_STUDENTS (6 students with factors, trends, recommendations).
+
+### 3. NEW: Student Daily Challenges Module (challenges.tsx)
+A gamified XP-earning system — `src/components/student/modules/challenges.tsx`:
+- XP earned banner with animated counter + 7-day streak indicator.
+- 6 daily challenges with progress bars, XP rewards, claim buttons (with +XP burst animation on claim).
+- Weekly quests (3 bigger quests with countdown days).
+- "How XP Works" info cards (submit homework +50, attendance +40, quiz +60, book +30).
+- Locked challenges show lock icon; completed challenges show claim button.
+- Added to student nav with badge "5".
+- Daily challenges widget added to student dashboard (3 active challenges with progress).
+- Mock data: DAILY_CHALLENGES (6), WEEKLY_QUESTS (3).
+
+### 4. Enhanced: Principal Analytics with New Charts
+- Performance tab: added **Radar Chart** (subject proficiency) + **Horizontal Bar** (class comparison).
+- Fee tab: added **Treemap** (fee breakdown by category) + **Composed Chart** (revenue vs target).
+- Admission tab: added **Funnel Chart** (admission pipeline with conversion %).
+- All using the new shared chart components, fully animated.
+
+### 5. Wired Real Print/Download to Certificates
+- `src/components/principal/modules/certificates.tsx`: Print button now calls `printElement("certificate-preview")` (triggers browser print with `.printable` CSS); Download button calls `downloadFile()` (actual file download with certificate text content).
+- Added `id="certificate-preview"` to the certificate preview wrapper.
+
+### 6. Styling Polish (globals.css)
+- `pulse-glow` animation for live indicators.
+- `shimmer-text` gradient text animation.
+- `gentle-float` animation for badges/icons.
+- `ring-expand` success ring animation.
+- Dark mode tweaks for `.glass` / `.glass-strong` (better opacity in dark).
+- `::selection` color theming.
+- `scroll-behavior: smooth` on html.
+- `prefers-reduced-motion` media query for accessibility.
+
+## Verification Results
+- `bun run lint` → exit 0 (clean) ✅
+- `bunx tsc --noEmit` → 0 errors in project code ✅
+- curl confirms login renders all 4 role cards (Dr. Anjali, Rajesh, Aarav, Suresh) ✅
+- Dev server returns HTTP 200 ✅
+- Total modules now: Principal 20 (added atrisk), Teacher 9, Student 12 (added challenges), Parent 9 = **50 modules** across 4 roles.
+
+## Unresolved Issues / Risks
+- **Memory constraint**: agent-browser + Turbopack OOM. Future rounds should use curl-based verification or run agent-browser tests in short bursts.
+- Dev server needs `setsid bash -c 'exec bun run dev > dev.log 2>&1' < /dev/null &` to start detached.
+
+## Priority Recommendations for Next Round
+1. **Radar chart in student results** — show subject proficiency radar for the student's own marks.
+2. **Parent-Teacher real-time chat** — mock websocket messaging between parent & teacher.
+3. **Principal dashboard "At-Risk" widget** — add a compact at-risk summary card to the main dashboard.
+4. **Student gamification expansion** — XP reward animation when submitting homework, season leaderboard.
+5. **Attendance analytics deep-dive** — month-over-month heatmap comparison.
+6. **More certificate types** — add achievement certificate, migration certificate.
+7. **Mobile responsiveness audit** on new at-risk & challenges modules.

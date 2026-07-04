@@ -14,6 +14,7 @@ import { ExaminationModule } from "./modules/examination"
 import { HomeworkModule } from "./modules/homework"
 import { AssignmentsModule } from "./modules/assignments"
 import { AnalyticsModule } from "./modules/analytics"
+import { AtRiskModule } from "./modules/atrisk"
 import { CommunicationModule } from "./modules/communication"
 import { CalendarModule } from "./modules/calendar"
 import { LibraryModule } from "./modules/library"
@@ -39,6 +40,7 @@ export function PrincipalApp() {
       case "homework": return <HomeworkModule />
       case "assignments": return <AssignmentsModule />
       case "analytics": return <AnalyticsModule />
+      case "atrisk": return <AtRiskModule />
       case "communication": return <CommunicationModule />
       case "calendar": return <CalendarModule />
       case "library": return <LibraryModule />

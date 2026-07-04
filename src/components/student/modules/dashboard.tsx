@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine, RadialGauge, DonutChart } from "@/components/shared/charts"
-import { studentResult, studentAttendanceHeatmap, TIMETABLE, HOMEWORK, ASSIGNMENTS, ANNOUNCEMENTS, CALENDAR_EVENTS, STUDENTS, ACHIEVEMENTS, LEADERBOARD } from "@/lib/mock/data"
+import { studentResult, studentAttendanceHeatmap, TIMETABLE, HOMEWORK, ASSIGNMENTS, ANNOUNCEMENTS, CALENDAR_EVENTS, STUDENTS, ACHIEVEMENTS, LEADERBOARD, DAILY_CHALLENGES } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   CalendarClock, CalendarCheck, BookOpen, FileText, Award,
-  TrendingUp, Sparkles, ArrowUpRight, Cake, Megaphone, Clock, Wallet, Trophy, Flame,
+  TrendingUp, Sparkles, ArrowUpRight, Cake, Megaphone, Clock, Wallet, Trophy, Flame, Target, Zap,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -154,6 +154,41 @@ export function StudentDashboard() {
             <motion.div initial={{ width: 0 }} animate={{ width: "75%" }} transition={{ duration: 1.2, delay: 0.4 }} className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-100" />
           </div>
         </div>
+      </StaggerItem>
+
+      {/* daily challenges widget */}
+      <StaggerItem index={6}>
+        <SectionCard
+          title="Today's Challenges"
+          subtitle="Complete & earn XP"
+          action={<button onClick={() => setModule("student", "challenges")} className="text-xs font-medium text-primary hover:underline">View all</button>}
+        >
+          <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {DAILY_CHALLENGES.filter((c) => c.status !== "locked").slice(0, 3).map((ch) => {
+              const pct = Math.round((ch.progress / ch.total) * 100)
+              const isDone = ch.status === "completed"
+              return (
+                <button
+                  key={ch.id}
+                  onClick={() => setModule("student", "challenges")}
+                  className={cn("flex items-center gap-3 rounded-xl border p-3 text-left transition-colors hover:bg-accent/30", isDone ? "border-emerald-500/30 bg-emerald-500/5" : "border-border/60 bg-card/40")}
+                >
+                  <span className="text-2xl">{ch.icon}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{ch.title}</p>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                        <div className={cn("h-full rounded-full", isDone ? "bg-emerald-500" : "bg-violet-500")} style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-amber-600"><Zap className="h-2.5 w-2.5" />{ch.xp}</span>
+                    </div>
+                  </div>
+                  {isDone && <Target className="h-4 w-4 shrink-0 text-emerald-500" />}
+                </button>
+              )
+            })}
+          </div>
+        </SectionCard>
       </StaggerItem>
 
       {/* homework + announcements */}

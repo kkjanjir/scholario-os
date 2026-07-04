@@ -15,8 +15,9 @@ import { colorOf, Avatar } from "@/components/shared/brand"
 import { cn } from "@/lib/utils"
 import {
   SimpleBar, SimpleLine, DonutChart, RadialGauge, RevenueAreaChart,
+  RadarChartWrap, TreemapWrap, FunnelWrap, ComposedChartWrap, HorizontalBar,
 } from "@/components/shared/charts"
-import { REVENUE_TREND, CLASSES_INFO, TEACHERS, NEW_ADMISSIONS } from "@/lib/mock/data"
+import { REVENUE_TREND, CLASSES_INFO, TEACHERS, NEW_ADMISSIONS, ADMISSION_FUNNEL, FEE_STRUCTURE } from "@/lib/mock/data"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -177,6 +178,30 @@ function FeeTab() {
           <SimpleBar data={pendingByClass} dataKey="pending" color={C.rose} height={220} />
         </SectionCard>
       </StaggerItem>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <StaggerItem index={3}>
+          <SectionCard title="Fee Breakdown by Category" subtitle="Revenue contribution by fee type (Treemap)">
+            <TreemapWrap
+              data={FEE_STRUCTURE.map((f, i) => ({
+                name: f.category,
+                size: f.amount * (i === 0 ? 1004 : i === 4 ? 200 : 800),
+                fill: [C.emerald, C.teal, C.amber, C.orange, C.violet, C.sky, C.rose, C.cyan, C.pink][i % 9],
+              }))}
+            />
+          </SectionCard>
+        </StaggerItem>
+        <StaggerItem index={4}>
+          <SectionCard title="Revenue vs Target" subtitle="Monthly collection vs target (Composed)">
+            <ComposedChartWrap
+              data={REVENUE_TREND.map((r) => ({ name: r.month, collected: r.collection, target: r.revenue }))}
+              barKey="collected"
+              lineKey="target"
+              barColor={C.emerald}
+              lineColor={C.amber}
+            />
+          </SectionCard>
+        </StaggerItem>
+      </div>
     </motion.div>
   )
 }
@@ -237,6 +262,28 @@ function PerformanceTab() {
           <SimpleBar data={topClasses} dataKey="score" color={C.emerald} height={220} />
         </SectionCard>
       </StaggerItem>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <StaggerItem index={3}>
+          <SectionCard title="Subject Proficiency Radar" subtitle="Multi-dimensional view of subject strength">
+            <RadarChartWrap
+              data={[
+                { subject: "Maths", marks: 78, fullMark: 100 },
+                { subject: "English", marks: 82, fullMark: 100 },
+                { subject: "Science", marks: 85, fullMark: 100 },
+                { subject: "S.Science", marks: 80, fullMark: 100 },
+                { subject: "Computers", marks: 91, fullMark: 100 },
+                { subject: "Hindi", marks: 88, fullMark: 100 },
+              ]}
+              color={C.violet}
+            />
+          </SectionCard>
+        </StaggerItem>
+        <StaggerItem index={4}>
+          <SectionCard title="Class Comparison" subtitle="Average marks by class (horizontal)">
+            <HorizontalBar data={topClasses} dataKey="score" color={C.emerald} height={280} />
+          </SectionCard>
+        </StaggerItem>
+      </div>
     </motion.div>
   )
 }
@@ -387,6 +434,23 @@ function AdmissionTab() {
                 </span>
               </div>
             ))}
+          </div>
+        </SectionCard>
+      </StaggerItem>
+      <StaggerItem index={3}>
+        <SectionCard title="Admission Funnel" subtitle="From application to enrolment — conversion pipeline">
+          <FunnelWrap data={ADMISSION_FUNNEL} height={320} />
+          <div className="mt-3 grid grid-cols-5 gap-2 text-center">
+            {ADMISSION_FUNNEL.map((f, i) => {
+              const pct = i === 0 ? 100 : Math.round((f.value / ADMISSION_FUNNEL[0].value) * 100)
+              return (
+                <div key={f.name}>
+                  <p className="text-[10px] text-muted-foreground">{f.name}</p>
+                  <p className="text-sm font-bold">{f.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{pct}%</p>
+                </div>
+              )
+            })}
           </div>
         </SectionCard>
       </StaggerItem>

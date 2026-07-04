@@ -3,6 +3,7 @@ import {
   LayoutDashboard, UserPlus, Users, School, CalendarCheck, Wallet,
   Banknote, ClipboardList, BookOpen, FileText, BarChart3, Megaphone,
   CalendarDays, Library, Bus, Package, Award, Settings, GraduationCap,
+  AlertTriangle,
 } from "lucide-react"
 
 export const PRINCIPAL_NAV: NavGroup[] = [
@@ -11,6 +12,7 @@ export const PRINCIPAL_NAV: NavGroup[] = [
     items: [
       { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
       { id: "analytics", label: "Analytics", icon: BarChart3 },
+      { id: "atrisk", label: "At-Risk Students", icon: AlertTriangle, badge: 6 },
       { id: "calendar", label: "Calendar", icon: CalendarDays },
     ],
   },

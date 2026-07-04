@@ -10,6 +10,7 @@ import {
 
 import { PageHeader } from "@/components/shared/module-common"
 import { SectionCard } from "@/components/shared/ui"
+import { printElement, downloadFile } from "@/components/shared/skeleton"
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, Logo } from "@/components/shared/brand"
 import { cn } from "@/lib/utils"
@@ -140,6 +141,7 @@ export function CertificatesModule() {
           >
             <AnimatePresence mode="wait">
               <motion.div
+                id="certificate-preview"
                 key={`${selectedType}-${studentId}`}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -156,13 +158,16 @@ export function CertificatesModule() {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex flex-wrap gap-2"
               >
-                <Button variant="outline" size="sm" onClick={() => toast.success("Downloaded as PDF", { description: `${certConfig.label}_${student.admissionNo}.pdf` })}>
+                <Button variant="outline" size="sm" onClick={() => {
+                  downloadFile(`${certConfig.label}_${student.admissionNo}.txt`, `SCHOLARIO-OS — ${SCHOOL.name}\n${certConfig.label}\n\nStudent: ${student.name}\nClass: ${student.className} ${student.section}\nAdmission No: ${student.admissionNo}\nDate: ${new Date().toLocaleDateString("en-IN")}\n\nThis is to certify that the above student is a bonafide student of this institution.\n\nPrincipal: ${SCHOOL.principal}`)
+                  toast.success("Certificate downloaded!", { description: `${certConfig.label}_${student.admissionNo}.txt` })
+                }}>
                   <Download className="h-4 w-4" /> Download PDF
                 </Button>
                 <Button variant="outline" size="sm" onClick={() => toast.success("Sent to registered email", { description: student.fatherName ? `Guardian of ${student.name}` : "" })}>
                   <FileText className="h-4 w-4" /> Email
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => toast.success("Print dialog opened")}>
+                <Button variant="outline" size="sm" onClick={() => { printElement("certificate-preview"); toast.success("Print dialog opened") }}>
                   <Receipt className="h-4 w-4" /> Print
                 </Button>
               </motion.div>

@@ -3,7 +3,8 @@
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   RadialBarChart, RadialBar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Legend,
+  ResponsiveContainer, Legend, RadarChart, Radar, PolarGrid, PolarAngleAxis,
+  PolarRadiusAxis, Treemap, FunnelChart, Funnel, LabelList, ComposedChart,
 } from "recharts"
 import { colorOf } from "./brand"
 
@@ -130,6 +131,178 @@ export function SimpleBar({ data, dataKey, color = "var(--chart-1)", height = 22
         <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
         <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
         <Bar dataKey={dataKey} fill={color} radius={[6, 6, 0, 0]} />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+
+// ===== Radar Chart — for subject proficiency / multi-dimensional comparison =====
+export function RadarChartWrap({
+  data,
+  height = 280,
+  color = "var(--chart-1)",
+}: {
+  data: { subject: string; marks: number; fullMark?: number }[]
+  height?: number
+  color?: string
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <RadarChart data={data} outerRadius="72%">
+        <PolarGrid stroke="hsl(var(--border))" />
+        <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} />
+        <Radar name="Marks" dataKey="marks" stroke={color} fill={color} fillOpacity={0.35} strokeWidth={2} />
+        <Tooltip content={<ChartTooltip />} />
+      </RadarChart>
+    </ResponsiveContainer>
+  )
+}
+
+// ===== Treemap — for fee breakdown / category distribution =====
+export function TreemapWrap({
+  data,
+  height = 280,
+}: {
+  data: { name: string; size: number; fill?: string }[]
+  height?: number
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <Treemap
+        data={data}
+        dataKey="size"
+        stroke="hsl(var(--background))"
+        content={<TreemapContent />}
+      >
+        <Tooltip content={<ChartTooltip />} />
+      </Treemap>
+    </ResponsiveContainer>
+  )
+}
+
+function TreemapContent(props: any) {
+  const { root, depth, x, y, width, height, index, payload, ...rest } = props
+  const colors = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)"]
+  const fill = payload?.fill || colors[(index || 0) % colors.length]
+  return (
+    <g>
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        style={{
+          fill,
+          stroke: "hsl(var(--background))",
+          strokeWidth: 2,
+          strokeOpacity: 1,
+        }}
+      />
+      {width > 50 && height > 30 && (
+        <>
+          <text
+            x={x + width / 2}
+            y={y + height / 2 - 6}
+            textAnchor="middle"
+            fill="#fff"
+            fontSize={12}
+            fontWeight={600}
+          >
+            {rest.name}
+          </text>
+          <text
+            x={x + width / 2}
+            y={y + height / 2 + 10}
+            textAnchor="middle"
+            fill="#fff"
+            fontSize={10}
+            opacity={0.85}
+          >
+            ₹{(rest.size / 1000).toFixed(0)}K
+          </text>
+        </>
+      )}
+    </g>
+  )
+}
+
+// ===== Funnel Chart — for admission pipeline =====
+export function FunnelWrap({
+  data,
+  height = 300,
+}: {
+  data: { name: string; value: number; fill?: string }[]
+  height?: number
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <FunnelChart>
+        <Tooltip content={<ChartTooltip />} />
+        <Funnel dataKey="value" data={data} isAnimationActive>
+          <LabelList position="right" fill="hsl(var(--foreground))" stroke="none" fontSize={12} />
+        </Funnel>
+      </FunnelChart>
+    </ResponsiveContainer>
+  )
+}
+
+// ===== Composed Chart — bar + line combo (e.g., revenue vs target) =====
+export function ComposedChartWrap({
+  data,
+  barKey,
+  lineKey,
+  height = 260,
+  barColor = "var(--chart-1)",
+  lineColor = "var(--chart-2)",
+}: {
+  data: any[]
+  barKey: string
+  lineKey: string
+  height?: number
+  barColor?: string
+  lineColor?: string
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <ComposedChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
+        <defs>
+          <linearGradient id="gComposedBar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={barColor} stopOpacity={0.9} />
+            <stop offset="95%" stopColor={barColor} stopOpacity={0.5} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.5} />
+        <XAxis dataKey="name" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+        <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+        <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
+        <Bar dataKey={barKey} fill="url(#gComposedBar)" radius={[6, 6, 0, 0]} barSize={28} />
+        <Line type="monotone" dataKey={lineKey} stroke={lineColor} strokeWidth={2.5} dot={{ r: 3, fill: lineColor }} activeDot={{ r: 5 }} />
+      </ComposedChart>
+    </ResponsiveContainer>
+  )
+}
+
+// ===== Horizontal Bar — for rankings/comparisons =====
+export function HorizontalBar({
+  data,
+  dataKey,
+  height = 280,
+  color = "var(--chart-1)",
+}: {
+  data: any[]
+  dataKey: string
+  height?: number
+  color?: string
+}) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart data={data} layout="vertical" margin={{ top: 4, right: 16, left: 20, bottom: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} opacity={0.5} />
+        <XAxis type="number" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+        <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} width={80} />
+        <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }} />
+        <Bar dataKey={dataKey} fill={color} radius={[0, 6, 6, 0]} barSize={18} />
       </BarChart>
     </ResponsiveContainer>
   )

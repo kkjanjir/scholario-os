@@ -586,6 +586,131 @@ export const STUDENT_LEVELS = [
 ]
 
 // ---------------------------------------------------------------------------
+// Daily challenges for student gamification
+// ---------------------------------------------------------------------------
+export interface DailyChallenge {
+  id: string
+  title: string
+  desc: string
+  icon: string
+  xp: number
+  type: "homework" | "quiz" | "attendance" | "reading" | "practice"
+  status: "completed" | "active" | "locked"
+  progress: number
+  total: number
+  expires: string
+}
+export const DAILY_CHALLENGES: DailyChallenge[] = [
+  { id: "dc1", title: "Math Master", desc: "Solve 10 quadratic equation problems", icon: "🧮", xp: 50, type: "practice", status: "active", progress: 7, total: 10, expires: "Today 11:59 PM" },
+  { id: "dc2", title: "Word Wizard", desc: "Learn 15 new vocabulary words", icon: "📖", xp: 30, type: "reading", status: "active", progress: 15, total: 15, expires: "Today 11:59 PM" },
+  { id: "dc3", title: "Perfect Attendance", desc: "Attend all classes on time", icon: "✅", xp: 40, type: "attendance", status: "completed", progress: 8, total: 8, expires: "Completed" },
+  { id: "dc4", title: "Science Quiz", desc: "Complete the Physics quiz with 80%+", icon: "🔬", xp: 60, type: "quiz", status: "active", progress: 0, total: 10, expires: "Today 11:59 PM" },
+  { id: "dc5", title: "Book Club", desc: "Read 20 pages of your library book", icon: "📚", xp: 35, type: "reading", status: "active", progress: 12, total: 20, expires: "Today 11:59 PM" },
+  { id: "dc6", title: "Homework Hero", desc: "Submit all pending homework", icon: "✏️", xp: 45, type: "homework", status: "locked", progress: 0, total: 3, expires: "Unlocks at Level 11" },
+]
+
+export const WEEKLY_QUESTS = [
+  { id: "wq1", title: "Week Scholar", desc: "Score 80%+ in 3 quizzes this week", icon: "🎯", xp: 200, progress: 2, total: 3, daysLeft: 3 },
+  { id: "wq2", title: "Streak Keeper", desc: "Maintain a 5-day activity streak", icon: "🔥", xp: 150, progress: 4, total: 5, daysLeft: 3 },
+  { id: "wq3", title: "Helping Hand", desc: "Help 5 classmates with doubts", icon: "🤝", xp: 120, progress: 3, total: 5, daysLeft: 3 },
+]
+
+// ---------------------------------------------------------------------------
+// At-risk students (predictive analytics)
+// ---------------------------------------------------------------------------
+export interface AtRiskStudent {
+  id: string
+  name: string
+  className: string
+  rollNo: number
+  riskScore: number
+  riskLevel: "High" | "Medium" | "Low"
+  factors: { label: string; value: string; severity: "high" | "medium" | "low" }[]
+  attendancePct: number
+  avgMarks: number
+  trend: number[]
+  avatarColor: string
+  lastAbsent: string
+  recommendedAction: string
+}
+export const AT_RISK_STUDENTS: AtRiskStudent[] = [
+  {
+    id: "ar1", name: "Kabir Mehta", className: "Grade 10 B", rollNo: 14, riskScore: 82, riskLevel: "High",
+    factors: [
+      { label: "Attendance", value: "64%", severity: "high" },
+      { label: "Avg Marks", value: "48%", severity: "high" },
+      { label: "Homework", value: "30% submitted", severity: "high" },
+      { label: "Participation", value: "Low", severity: "medium" },
+    ],
+    attendancePct: 64, avgMarks: 48, trend: [62, 58, 55, 52, 49, 48], avatarColor: "rose",
+    lastAbsent: "2025-11-29", recommendedAction: "Schedule parent meeting & assign mentor",
+  },
+  {
+    id: "ar2", name: "Ishita Desai", className: "Grade 9 B", rollNo: 22, riskScore: 71, riskLevel: "High",
+    factors: [
+      { label: "Attendance", value: "71%", severity: "medium" },
+      { label: "Avg Marks", value: "52%", severity: "high" },
+      { label: "Homework", value: "45% submitted", severity: "medium" },
+      { label: "Behavior", value: "Concerns noted", severity: "medium" },
+    ],
+    attendancePct: 71, avgMarks: 52, trend: [65, 62, 58, 55, 53, 52], avatarColor: "amber",
+    lastAbsent: "2025-11-28", recommendedAction: "Counselor session & learning support",
+  },
+  {
+    id: "ar3", name: "Reyansh Kulkarni", className: "Grade 8 A", rollNo: 31, riskScore: 58, riskLevel: "Medium",
+    factors: [
+      { label: "Attendance", value: "78%", severity: "medium" },
+      { label: "Avg Marks", value: "58%", severity: "medium" },
+      { label: "Homework", value: "60% submitted", severity: "low" },
+      { label: "Participation", value: "Average", severity: "low" },
+    ],
+    attendancePct: 78, avgMarks: 58, trend: [70, 66, 63, 61, 59, 58], avatarColor: "orange",
+    lastAbsent: "2025-11-25", recommendedAction: "Extra tutoring in Mathematics",
+  },
+  {
+    id: "ar4", name: "Myra Joshi", className: "Grade 9 A", rollNo: 18, riskScore: 52, riskLevel: "Medium",
+    factors: [
+      { label: "Attendance", value: "82%", severity: "low" },
+      { label: "Avg Marks", value: "61%", severity: "medium" },
+      { label: "Homework", value: "70% submitted", severity: "low" },
+      { label: "Recent Drop", value: "-8% this month", severity: "medium" },
+    ],
+    attendancePct: 82, avgMarks: 61, trend: [72, 70, 68, 64, 62, 61], avatarColor: "pink",
+    lastAbsent: "2025-11-24", recommendedAction: "Monitor closely, check home situation",
+  },
+  {
+    id: "ar5", name: "Vivaan Gupta", className: "Grade 10 A", rollNo: 27, riskScore: 38, riskLevel: "Low",
+    factors: [
+      { label: "Attendance", value: "88%", severity: "low" },
+      { label: "Avg Marks", value: "68%", severity: "low" },
+      { label: "Homework", value: "85% submitted", severity: "low" },
+      { label: "Trend", value: "Improving", severity: "low" },
+    ],
+    attendancePct: 88, avgMarks: 68, trend: [60, 63, 65, 66, 67, 68], avatarColor: "teal",
+    lastAbsent: "2025-11-20", recommendedAction: "Continue current trajectory, praise improvement",
+  },
+  {
+    id: "ar6", name: "Saanvi Iyer", className: "Grade 8 B", rollNo: 9, riskScore: 29, riskLevel: "Low",
+    factors: [
+      { label: "Attendance", value: "91%", severity: "low" },
+      { label: "Avg Marks", value: "72%", severity: "low" },
+      { label: "Homework", value: "90% submitted", severity: "low" },
+      { label: "Trend", value: "Stable", severity: "low" },
+    ],
+    attendancePct: 91, avgMarks: 72, trend: [74, 73, 72, 73, 72, 72], avatarColor: "cyan",
+    lastAbsent: "2025-11-18", recommendedAction: "No action needed, performing well",
+  },
+]
+
+export const ADMISSION_FUNNEL = [
+  { name: "Applications", value: 186, fill: "var(--chart-1)" },
+  { name: "Documents Verified", value: 142, fill: "var(--chart-2)" },
+  { name: "Assessment", value: 118, fill: "var(--chart-3)" },
+  { name: "Interview", value: 96, fill: "var(--chart-4)" },
+  { name: "Admitted", value: 78, fill: "var(--chart-5)" },
+]
+
+// ---------------------------------------------------------------------------
 // Parent portal data
 // ---------------------------------------------------------------------------
 export interface ParentMessage {
