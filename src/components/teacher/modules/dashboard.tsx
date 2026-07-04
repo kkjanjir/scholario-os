@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { DonutChart, SimpleBar, RadialGauge } from "@/components/shared/charts"
-import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS, LESSON_PLANS } from "@/lib/mock/data"
+import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS, LESSON_PLANS, CHAT_THREADS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   CalendarClock, CalendarCheck, BookOpen, FileText, ClipboardList,
-  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell, NotebookPen,
+  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell, NotebookPen, MessagesSquare,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -224,8 +224,37 @@ export function TeacherDashboard() {
         </SectionCard>
       </StaggerItem>
 
-      {/* quick actions */}
+      {/* parent chat widget */}
       <StaggerItem index={8}>
+        <SectionCard
+          title="Parent Messages"
+          subtitle="Unread conversations from parents"
+          action={<button onClick={() => setModule("teacher", "chat")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">Open chat <ArrowUpRight className="h-3 w-3" /></button>}
+          bodyClassName="p-0"
+        >
+          <div className="divide-y divide-border/50">
+            {CHAT_THREADS.map((t) => (
+              <button key={t.id} onClick={() => setModule("teacher", "chat")} className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-accent/40">
+                <div className="relative">
+                  <Avatar name={t.parentName} color="cyan" size="sm" />
+                  {t.unread > 0 && <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white ring-2 ring-card">{t.unread}</span>}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{t.parentName}</p>
+                  <p className="truncate text-xs text-muted-foreground">{t.lastMessage}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-muted-foreground">{t.lastTime}</p>
+                  <p className="text-[10px] font-medium text-primary">{t.studentName.split(" ")[0]}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* quick actions */}
+      <StaggerItem index={9}>
         <SectionCard title="Quick Actions" subtitle="Jump straight into your daily tasks">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[

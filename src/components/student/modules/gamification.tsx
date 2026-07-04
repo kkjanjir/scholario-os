@@ -8,6 +8,7 @@ import { StaggerItem, AnimatedCounter } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleBar, SimpleLine } from "@/components/shared/charts"
 import { ACHIEVEMENTS, LEADERBOARD, XP_HISTORY, STUDENT_LEVELS, STUDENTS, studentStreak } from "@/lib/mock/data"
+import { triggerReward } from "@/components/shared/reward-notification"
 import { cn } from "@/lib/utils"
 import { Trophy, Flame, Star, TrendingUp, TrendingDown, Minus, Zap, Lock, Sparkles, Crown, Medal } from "lucide-react"
 import { toast } from "sonner"
@@ -136,7 +137,19 @@ export function GamificationModule() {
               return (
                 <motion.button
                   key={a.id}
-                  onClick={() => { setSelected(a); if (a.unlocked) toast.success(`Badge: ${a.title}!`) }}
+                  onClick={() => {
+                    setSelected(a)
+                    if (a.unlocked) {
+                      toast.success(`Badge: ${a.title}!`)
+                      triggerReward({
+                        type: "badge",
+                        title: a.title,
+                        desc: a.desc,
+                        icon: a.icon,
+                        color: a.color,
+                      })
+                    }
+                  }}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}

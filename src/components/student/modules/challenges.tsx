@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/shared/module-common"
 import { SectionCard } from "@/components/shared/ui"
 import { StaggerItem, AnimatedCounter } from "@/components/shared/motion"
 import { DAILY_CHALLENGES, WEEKLY_QUESTS, type DailyChallenge } from "@/lib/mock/data"
+import { triggerReward } from "@/components/shared/reward-notification"
 import { cn } from "@/lib/utils"
 import { Flame, Zap, Lock, CheckCircle2, Clock, Trophy, Star, Sparkles, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
@@ -27,6 +28,14 @@ export function ChallengesModule() {
     setBurst(ch.id)
     setTimeout(() => setBurst(null), 1200)
     toast.success(`+${ch.xp} XP earned! 🎉`, { description: ch.title })
+    // Trigger premium reward notification
+    triggerReward({
+      type: "xp",
+      title: `+${ch.xp} XP Earned!`,
+      desc: ch.title,
+      icon: ch.icon,
+      color: TYPE_COLOR[ch.type] || "violet",
+    })
   }
 
   function startChallenge(ch: DailyChallenge) {

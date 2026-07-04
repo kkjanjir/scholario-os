@@ -7,6 +7,7 @@ import type { Role } from "@/lib/store"
 import { SCHOOL } from "@/lib/mock/data"
 import { Logo, Avatar, colorOf } from "@/components/shared/brand"
 import { PageTransition } from "@/components/shared/motion"
+import { RewardNotificationHost, triggerReward } from "@/components/shared/reward-notification"
 import { cn } from "@/lib/utils"
 import type { LucideIcon } from "lucide-react"
 import {
@@ -478,6 +479,9 @@ export function AppShell({
           />
         )}
       </AnimatePresence>
+
+      {/* reward notification host */}
+      <RewardNotificationHost />
     </div>
   )
 }
