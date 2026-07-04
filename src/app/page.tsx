@@ -13,6 +13,8 @@ import { SuperAdminApp } from "@/components/superadmin/superadmin-app"
 export default function Home() {
   const user = useAppStore((s) => s.user)
   const theme = useAppStore((s) => s.theme)
+  const impersonating = useAppStore((s) => s.impersonating)
+  const controlPlaneSchoolId = useAppStore((s) => s.controlPlaneSchoolId)
 
   // apply theme + role attribute to <html>
   useEffect(() => {
@@ -34,16 +36,17 @@ export default function Home() {
         </motion.div>
       ) : (
         <motion.div
-          key={user.role}
+          key={impersonating ? "impersonating" : user.role}
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {user.role === "principal" && <PrincipalApp />}
-          {user.role === "teacher" && <TeacherApp />}
-          {user.role === "student" && <StudentApp />}
-          {user.role === "parent" && <ParentApp />}
-          {user.role === "superadmin" && <SuperAdminApp />}
+          {/* If impersonating or in control plane, always route through SuperAdminApp */}
+          {(impersonating || controlPlaneSchoolId || user.role === "superadmin") && <SuperAdminApp />}
+          {!impersonating && !controlPlaneSchoolId && user.role === "principal" && <PrincipalApp />}
+          {!impersonating && !controlPlaneSchoolId && user.role === "teacher" && <TeacherApp />}
+          {!impersonating && !controlPlaneSchoolId && user.role === "student" && <StudentApp />}
+          {!impersonating && !controlPlaneSchoolId && user.role === "parent" && <ParentApp />}
         </motion.div>
       )}
     </AnimatePresence>

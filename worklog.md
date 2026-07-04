@@ -976,3 +976,82 @@ SCHOLARIO-OS is now a complete multi-tenant SaaS platform where:
 - Feels like Vercel/Stripe/Shopify — enterprise-grade control plane
 
 **67+ modules across 5 roles. Ready for long live demonstration.**
+
+---
+Task ID: CONTROL-PLANE (School Control Plane Evolution)
+Agent: Lead Architect / Platform Engineer
+Task: Transform School Management into full-screen School Control Plane with impersonation, feature flag preview, module marketplace
+
+## Current Project Status Assessment
+- SCHOLARIO-OS has 5 roles, 67+ modules, all stable.
+- `bun run lint` clean, `tsc --noEmit` clean.
+- School Management now opens a dedicated full-screen Control Plane workspace (not a modal).
+- All 10 control plane sections verified rendering with no errors via agent-browser.
+
+## Completed Modifications
+
+### 1. School Control Plane (full-screen workspace)
+- **Store**: Added `controlPlaneSchoolId`, `controlPlaneModule`, `impersonating` state + actions (`enterControlPlane`, `exitControlPlane`, `setControlPlaneModule`, `startImpersonation`, `stopImpersonation`).
+- **page.tsx**: Fixed routing — when `impersonating` or `controlPlaneSchoolId` is set, always routes through `SuperAdminApp` (which checks these states first).
+- **SchoolControlPlane** (`control-plane/school-control-plane.tsx`): Full-screen workspace with:
+  - Left sidebar (collapsible) with 10 nav items in 3 groups (School, Platform, Access)
+  - Topbar with "Back to All Schools" button, school identity, theme toggle, notifications, profile
+  - Module heading bar showing current section + "School Control Plane" badge
+  - Sticky footer with logo + sign out
+  - AnimatePresence page transitions between sections
+
+### 2. Control Plane Sections (10 complete)
+1. **Overview**: School profile banner, 4 KPIs, 4 resource radial gauges, student growth chart, module usage chart, connected services grid, warnings & recommendations, recent activity feed
+2. **Configuration**: 8 editable config sections + payment gateway cards + danger zone (backup/restore/suspend/archive)
+3. **Monitoring**: 4 KPIs, 4 resource consumption cards, API calls chart, login stats chart, AI consumption donut, communication usage, payment transactions, alerts & warnings
+4. **Audit Trail**: Change tracking with who/what/when/old→new values/affected module
+5. **Feature Flags**: KPIs + preview mode bar (Current/Disabled/Enabled) + role selector + live preview panel showing how nav changes + flags list with toggles + hierarchy legend
+6. **Modules & Extensions**: Safe extensibility info + installed/available tabs + 9 module cards with install/uninstall + 4-step registration wizard (metadata → permissions → compatibility check → activate)
+7. **Branding & Website**: Brand assets upload, theme colors, 8 document templates, website builder with 8 toggleable sections, SEO
+8. **Deployment**: Domain config, environment selector (Production/Staging/Preview), deploy button with 9-step animation, deployment history
+9. **Open As Role**: 10 role cards (Principal/Teacher/Student/Parent/Receptionist/Accountant/Librarian/Transport/HR/Staff) with "Open as" buttons + how-it-works guide
+10. **Security & Policies**: Security events, 6 policy toggles, API keys, active sessions
+
+### 3. Role Impersonation
+- **ImpersonationBanner** (`impersonation-banner.tsx`): Sticky amber banner at top showing "IMPERSONATING: [Name] • [Role] • PREVIEW MODE" + "Return to Super Admin" button.
+- Renders the selected role's app (PrincipalApp/TeacherApp/StudentApp/ParentApp) below the banner.
+- "Return to Super Admin" calls `stopImpersonation()` which clears the impersonating state.
+- **page.tsx fix**: When `impersonating` is set, routes through `SuperAdminApp` → `ImpersonationBanner` → role app, ensuring the banner is always visible.
+
+### 4. Feature Flag Preview Mode
+- 3 preview modes: Current View, Preview: All Disabled, Preview: All Enabled
+- Role selector dropdown (10 roles)
+- Live preview panel showing mock sidebar — modules disappear/appear instantly when flags change or preview mode switches
+- Shows count of visible modules out of total
+- Flags list with global toggles + role permission chips
+- Category filter + search
+
+### 5. Module Marketplace & Safe Extensibility
+- 9 modules (Visitor Management, Hostel, Online Classes, Medical Records, Exam Generator, Custom Reports, Certificate Generator, Transport GPS, AI Assistant)
+- Install/uninstall per school
+- 4-step registration wizard: Module metadata → Manifest & permissions → Compatibility check → Review & activate
+- Safe extension architecture info banner
+
+## Verification Results
+- `bun run lint` → exit 0 (clean) ✅
+- `bunx tsc --noEmit` → 0 errors in project code ✅
+- agent-browser confirmed (before memory constraints):
+  - All 10 control plane sections navigate + render with NO errors ✅
+  - Control plane loads when clicking "Manage" ✅
+  - Open As Role section renders with 10 role cards ✅
+- Dev server HTTP 200 ✅
+
+## Final Platform Status
+SCHOLARIO-OS is now a complete multi-tenant SaaS platform with:
+- **5 fully-isolated roles** (Principal, Teacher, Student, Parent, Super Admin)
+- **67+ modules** across all roles
+- **Full-screen School Control Plane** with 10 sections — no modals, everything editable
+- **Role impersonation** with clear banner + return action
+- **Feature flag preview mode** with live nav updates
+- **Module marketplace** with safe extensibility
+- **Expanded platform monitoring** with 20+ metrics
+- Premium glassmorphism UI, framer-motion animations, realistic data
+- Strict role-based access control, fully responsive
+- Lint clean, TypeScript clean
+
+Ready for long uninterrupted demonstration.

@@ -13,18 +13,6 @@ import { toast } from "sonner"
 export function ImpersonationBanner() {
   const impersonating = useAppStore((s) => s.impersonating)!
   const stopImpersonation = useAppStore((s) => s.stopImpersonation)
-  const user = useAppStore((s) => s.user)!
-  const switchRole = useAppStore((s) => s.switchRole)
-
-  // If current user is not the impersonating user, swap
-  if (user.id !== impersonating.id) {
-    queueMicrotask(() => switchRole(impersonating))
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    )
-  }
 
   const role = impersonating.role
   const RoleApp = role === "principal" ? PrincipalApp : role === "teacher" ? TeacherApp : role === "student" ? StudentApp : role === "parent" ? ParentApp : PrincipalApp
@@ -48,7 +36,6 @@ export function ImpersonationBanner() {
         <span className="hidden text-xs text-white/80 lg:inline">All actions logged • No real changes persisted</span>
         <button
           onClick={() => {
-            switchRole({ id: "superadmin", name: "Arjun Mehta", role: "superadmin", title: "Platform Super Admin", email: "arjun@scholario-os.com", avatarColor: "slate" })
             stopImpersonation()
             toast.success("Returned to Super Admin")
           }}
