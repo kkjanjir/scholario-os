@@ -6,10 +6,10 @@ import { PageHeader } from "@/components/shared/module-common"
 import { SectionCard } from "@/components/shared/ui"
 import { StaggerItem, AnimatedCounter } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
-import { SimpleBar } from "@/components/shared/charts"
+import { SimpleBar, SimpleLine } from "@/components/shared/charts"
 import { ACHIEVEMENTS, LEADERBOARD, XP_HISTORY, STUDENT_LEVELS, STUDENTS, studentStreak } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
-import { Trophy, Flame, Star, TrendingUp, TrendingDown, Minus, Zap, Lock, Sparkles } from "lucide-react"
+import { Trophy, Flame, Star, TrendingUp, TrendingDown, Minus, Zap, Lock, Sparkles, Crown, Medal } from "lucide-react"
 import { toast } from "sonner"
 
 export function GamificationModule() {
@@ -232,6 +232,68 @@ export function GamificationModule() {
           </div>
         </SectionCard>
       </StaggerItem>
+
+      {/* XP history + season leaderboard */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <StaggerItem index={5}>
+          <SectionCard title="XP History" subtitle="Your XP growth over the term 📈">
+            <SimpleLine data={XP_HISTORY.map((x, i) => ({ name: x.week, xp: x.xp, cumulative: XP_HISTORY.slice(0, i + 1).reduce((a, b) => a + b.xp, 0) }))} dataKey="cumulative" color="oklch(0.6 0.21 300)" height={260} />
+            <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-lg bg-muted/40 p-2">
+                <p className="text-[10px] text-muted-foreground">Total XP</p>
+                <p className="text-sm font-bold text-violet-600">{XP_HISTORY.reduce((a, b) => a + b.xp, 0).toLocaleString("en-IN")}</p>
+              </div>
+              <div className="rounded-lg bg-muted/40 p-2">
+                <p className="text-[10px] text-muted-foreground">Weekly Avg</p>
+                <p className="text-sm font-bold text-amber-600">{Math.round(XP_HISTORY.reduce((a, b) => a + b.xp, 0) / XP_HISTORY.length)}</p>
+              </div>
+              <div className="rounded-lg bg-muted/40 p-2">
+                <p className="text-[10px] text-muted-foreground">Best Week</p>
+                <p className="text-sm font-bold text-emerald-600">{Math.max(...XP_HISTORY.map((x) => x.xp))}</p>
+              </div>
+            </div>
+          </SectionCard>
+        </StaggerItem>
+        <StaggerItem index={6}>
+          <SectionCard title="Season Leaderboard" subtitle="Top 3 this season 🏆" action={<button onClick={() => toast.info("Season ends in 12 days")} className="text-xs font-medium text-primary hover:underline">Season info</button>}>
+            <div className="space-y-3">
+              {/* Top 3 podium */}
+              <div className="grid grid-cols-3 gap-2">
+                {LEADERBOARD.slice(0, 3).map((e, i) => {
+                  const podiumColors = ["from-amber-400 to-amber-600", "from-slate-300 to-slate-500", "from-orange-400 to-orange-600"]
+                  const medals = ["🥇", "🥈", "🥉"]
+                  const isMe = e.name === me.name
+                  return (
+                    <motion.div
+                      key={e.rank}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1, type: "spring" }}
+                      className={cn("flex flex-col items-center rounded-2xl border p-4 text-center", i === 0 ? "border-amber-500/40 bg-amber-500/5 order-1 pt-6" : i === 1 ? "border-slate-400/40 bg-slate-400/5 order-0" : "border-orange-500/40 bg-orange-500/5 order-2 pt-4")}
+                    >
+                      <span className="text-3xl">{medals[i]}</span>
+                      <Avatar name={e.name} color={e.avatarColor} size="sm" className={cn("mt-2", isMe && "ring-2 ring-primary")} />
+                      <p className={cn("mt-1.5 truncate text-xs font-bold", isMe && "text-primary")}>{e.name.split(" ")[0]}{isMe && " (You)"}</p>
+                      <p className="text-[10px] text-muted-foreground">Lvl {e.level}</p>
+                      <p className="mt-1 text-sm font-bold">{e.xp.toLocaleString("en-IN")}</p>
+                      <p className="text-[9px] text-muted-foreground">XP</p>
+                    </motion.div>
+                  )
+                })}
+              </div>
+              {/* My rank highlight */}
+              <div className="rounded-xl border border-primary/30 bg-primary/5 p-3">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-4 w-4 text-amber-500" />
+                  <p className="text-xs font-semibold">Your Season Rank</p>
+                  <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">#{myEntry.rank}</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">You're {LEADERBOARD[myEntry.rank - 2].xp - myEntry.xp} XP away from #{myEntry.rank - 1}! Keep going 💪</p>
+              </div>
+            </div>
+          </SectionCard>
+        </StaggerItem>
+      </div>
 
       {/* achievement detail dialog */}
       <AnimatePresence>

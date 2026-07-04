@@ -6,12 +6,12 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { AnimatedCounter, StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, formatINR } from "@/components/shared/brand"
 import { RevenueAreaChart, AttendanceBarChart, DonutChart, RadialGauge } from "@/components/shared/charts"
-import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK, AT_RISK_STUDENTS } from "@/lib/mock/data"
+import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK, AT_RISK_STUDENTS, FEE_DEFAULTERS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   Users, GraduationCap, CalendarCheck, Wallet, AlertCircle, Banknote,
   Cake, UserPlus, CalendarDays, Bus, BookOpen, Package, ClipboardList,
-  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles, AlertTriangle, ShieldAlert,
+  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles, AlertTriangle, ShieldAlert, Send,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -300,8 +300,59 @@ export function PrincipalDashboard() {
         </SectionCard>
       </StaggerItem>
 
-      {/* transport quick view */}
+      {/* fee defaulters widget */}
       <StaggerItem index={11}>
+        <SectionCard
+          title="Fee Defaulters — Follow-up Required"
+          subtitle="Overdue accounts needing immediate action"
+          action={<button onClick={() => setModule("principal", "defaulters")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">View all <ArrowUpRight className="h-3 w-3" /></button>}
+          bodyClassName="p-0"
+        >
+          <div className="grid gap-3 p-5 sm:grid-cols-3">
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-rose-600">{FEE_DEFAULTERS.filter((d) => d.status === "critical").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Critical</p>
+                </div>
+                <AlertTriangle className="h-5 w-5 text-rose-600" />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-amber-600">{FEE_DEFAULTERS.filter((d) => d.status === "overdue").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Overdue</p>
+                </div>
+                <ShieldAlert className="h-5 w-5 text-amber-600" />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-sky-500/30 bg-sky-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-sky-600">{FEE_DEFAULTERS.filter((d) => d.status === "reminder").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Reminder</p>
+                </div>
+                <Wallet className="h-5 w-5 text-sky-600" />
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-border/50">
+            <div className="flex items-center justify-between px-5 py-3">
+              <div>
+                <p className="text-xs text-muted-foreground">Total Overdue Amount</p>
+                <p className="text-lg font-bold text-rose-600">{formatINR(FEE_DEFAULTERS.reduce((a, d) => a + d.amount, 0))}</p>
+              </div>
+              <button onClick={() => { setModule("principal", "defaulters"); toast.success("Bulk reminders sent to 6 parents!") }} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-105">
+                <Send className="h-3.5 w-3.5" /> Send Bulk Reminders
+              </button>
+            </div>
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* transport quick view */}
+      <StaggerItem index={12}>
         <SectionCard title="Transport Fleet Status" subtitle="Live bus tracking overview" action={<button onClick={() => setModule("principal", "transport")} className="text-xs font-medium text-primary hover:underline">Track all <ArrowUpRight className="h-3 w-3" /></button>}>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {TRANSPORT_ROUTES.map((r) => {

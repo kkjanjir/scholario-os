@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { DonutChart, SimpleBar, RadialGauge } from "@/components/shared/charts"
-import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS } from "@/lib/mock/data"
+import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS, LESSON_PLANS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   CalendarClock, CalendarCheck, BookOpen, FileText, ClipboardList,
-  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell,
+  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell, NotebookPen,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -193,8 +193,39 @@ export function TeacherDashboard() {
         </StaggerItem>
       </div>
 
-      {/* quick actions */}
+      {/* lesson plans widget */}
       <StaggerItem index={7}>
+        <SectionCard
+          title="Upcoming Lesson Plans"
+          subtitle="Your planned & in-progress lessons"
+          action={<button onClick={() => setModule("teacher", "lessons")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">View all <ArrowUpRight className="h-3 w-3" /></button>}
+          bodyClassName="p-0"
+        >
+          <div className="divide-y divide-border/50">
+            {LESSON_PLANS.filter((p) => p.status !== "completed").map((p) => {
+              const cfg = p.status === "in-progress" ? "amber" : "sky"
+              const c = colorOf(cfg)
+              return (
+                <div key={p.id} className="flex items-center gap-3 px-5 py-3">
+                  <div className={cn("rounded-lg p-2", c.soft)}>
+                    <NotebookPen className={cn("h-4 w-4", c.text)} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{p.topic}</p>
+                    <p className="text-xs text-muted-foreground">{p.className} • {p.date} • Period {p.period}</p>
+                  </div>
+                  <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium capitalize", c.soft, c.text)}>
+                    {p.status === "in-progress" ? "In Progress" : "Planned"}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* quick actions */}
+      <StaggerItem index={8}>
         <SectionCard title="Quick Actions" subtitle="Jump straight into your daily tasks">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[

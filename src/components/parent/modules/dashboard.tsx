@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine, RadialGauge, DonutChart } from "@/components/shared/charts"
-import { STUDENTS, studentResult, studentAttendanceHeatmap, PARENT_MESSAGES, PARENT_NOTICES, HOMEWORK, TIMETABLE, CALENDAR_EVENTS } from "@/lib/mock/data"
+import { STUDENTS, studentResult, studentAttendanceHeatmap, PARENT_MESSAGES, PARENT_NOTICES, HOMEWORK, TIMETABLE, CALENDAR_EVENTS, CHAT_THREADS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   TrendingUp, CalendarCheck, Award, BookOpen, MessageSquare,
-  Sparkles, ArrowUpRight, Wallet, Clock, Megaphone, Heart,
+  Sparkles, ArrowUpRight, Wallet, Clock, Megaphone, Heart, MessagesSquare,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -194,8 +194,44 @@ export function ParentDashboard() {
         </StaggerItem>
       </div>
 
-      {/* upcoming events */}
+      {/* unread chat widget */}
       <StaggerItem index={7}>
+        <SectionCard
+          title="Teacher Conversations"
+          subtitle="Recent chats with your child's teachers"
+          action={<button onClick={() => setModule("parent", "chat")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">Open chat <ArrowUpRight className="h-3 w-3" /></button>}
+          bodyClassName="p-0"
+        >
+          <div className="divide-y divide-border/50">
+            {CHAT_THREADS.map((t) => {
+              const ac = t.teacherName.includes("Rajesh") ? "amber" : t.teacherName.includes("Meera") ? "rose" : "teal"
+              const c = colorOf(ac)
+              return (
+                <button key={t.id} onClick={() => setModule("parent", "chat")} className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-accent/40">
+                  <div className="relative">
+                    <Avatar name={t.teacherName} color={ac} size="sm" />
+                    <span className={cn("absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2 ring-card", c.bg)} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="truncate text-sm font-medium">{t.teacherName}</p>
+                      {t.unread > 0 && <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">{t.unread}</span>}
+                    </div>
+                    <p className="truncate text-xs text-muted-foreground">{t.lastMessage}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-muted-foreground">{t.lastTime}</p>
+                    <p className="text-[10px] font-medium" style={{ color: `var(--primary)` }}>{t.teacherSubject}</p>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* upcoming events */}
+      <StaggerItem index={8}>
         <SectionCard title="Upcoming Events" subtitle="For your child & family">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CALENDAR_EVENTS.slice(0, 6).map((e) => (
