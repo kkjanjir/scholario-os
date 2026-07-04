@@ -26,6 +26,11 @@ interface AppState {
   studentModule: string
   parentModule: string
   superadminModule: string
+  // school control plane — when set, super admin is inside a school workspace
+  controlPlaneSchoolId: string | null
+  controlPlaneModule: string
+  // impersonation — when set, super admin is previewing another role
+  impersonating: SessionUser | null
   // ui
   sidebarCollapsed: boolean
   sidebarMobileOpen: boolean
@@ -42,6 +47,13 @@ interface AppState {
   setSidebarMobileOpen: (v: boolean) => void
   toggleTheme: () => void
   setTheme: (t: "light" | "dark") => void
+  // control plane
+  enterControlPlane: (schoolId: string) => void
+  exitControlPlane: () => void
+  setControlPlaneModule: (m: string) => void
+  // impersonation
+  startImpersonation: (user: SessionUser) => void
+  stopImpersonation: () => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -54,6 +66,9 @@ export const useAppStore = create<AppState>()(
       studentModule: "dashboard",
       parentModule: "dashboard",
       superadminModule: "dashboard",
+      controlPlaneSchoolId: null,
+      controlPlaneModule: "overview",
+      impersonating: null,
       sidebarCollapsed: false,
       sidebarMobileOpen: false,
       theme: "light",
@@ -88,6 +103,13 @@ export const useAppStore = create<AppState>()(
       toggleTheme: () =>
         set((s) => ({ theme: s.theme === "light" ? "dark" : "light" })),
       setTheme: (t) => set({ theme: t }),
+      // control plane
+      enterControlPlane: (schoolId) => set({ controlPlaneSchoolId: schoolId, controlPlaneModule: "overview" }),
+      exitControlPlane: () => set({ controlPlaneSchoolId: null, controlPlaneModule: "overview" }),
+      setControlPlaneModule: (m) => set({ controlPlaneModule: m }),
+      // impersonation
+      startImpersonation: (user) => set({ impersonating: user }),
+      stopImpersonation: () => set({ impersonating: null }),
     }),
     {
       name: "scholario-os",

@@ -13,10 +13,24 @@ import { CommunicationModule } from "./modules/communication"
 import { WhiteLabelModule } from "./modules/whitelabel"
 import { SupportModule } from "./modules/support"
 import { DeveloperModule } from "./modules/developer"
+import { SchoolControlPlane } from "./control-plane/school-control-plane"
+import { ImpersonationBanner } from "./impersonation-banner"
 
 export function SuperAdminApp() {
   const activeModule = useAppStore((s) => s.superadminModule)
   const setModule = useAppStore((s) => s.setModule)
+  const controlPlaneSchoolId = useAppStore((s) => s.controlPlaneSchoolId)
+  const impersonating = useAppStore((s) => s.impersonating)
+
+  // If impersonating, render the impersonated role app with banner
+  if (impersonating) {
+    return <ImpersonationBanner />
+  }
+
+  // If inside a school control plane, render the full-screen control plane
+  if (controlPlaneSchoolId) {
+    return <SchoolControlPlane />
+  }
 
   const render = () => {
     switch (activeModule) {

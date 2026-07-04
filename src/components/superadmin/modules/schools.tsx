@@ -8,7 +8,7 @@ import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, formatINR } from "@/components/shared/brand"
 import { SCHOOLS, type School } from "@/lib/mock/superadmin-data"
 import { ProvisioningWizard } from "./provisioning-wizard"
-import { SchoolControlCenter } from "./school-control-center"
+import { useAppStore } from "@/lib/store"
 import { cn } from "@/lib/utils"
 import {
   Building2, MoreVertical, Eye, UserCog, Archive, Trash2, Shield,
@@ -22,7 +22,7 @@ export function SchoolsModule() {
   const [selected, setSelected] = useState<School | null>(null)
   const [schools, setSchools] = useState(SCHOOLS)
   const [wizardOpen, setWizardOpen] = useState(false)
-  const [controlCenter, setControlCenter] = useState<School | null>(null)
+  const enterControlPlane = useAppStore((s) => s.enterControlPlane)
 
   const filtered = schools.filter((s) => {
     const matchFilter = filter === "all" || s.status === filter
@@ -93,7 +93,7 @@ export function SchoolsModule() {
                     </td>
                     <td className="px-4 py-3"><span className={cn("font-medium", s.health >= 90 ? "text-emerald-600" : s.health >= 75 ? "text-amber-600" : "text-rose-600")}>{s.health}%</span></td>
                     <td className="px-4 py-3"><StatusBadge status={s.status} /></td>
-                    <td className="px-4 py-3"><button onClick={() => setSelected(s)} className="text-xs font-medium text-primary hover:underline">Manage</button></td>
+                    <td className="px-4 py-3"><button onClick={() => enterControlPlane(s.id)} className="text-xs font-medium text-primary hover:underline">Manage</button></td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -105,7 +105,7 @@ export function SchoolsModule() {
       {/* detail dialog */}
       <AnimatePresence>
         {selected && (
-          <SchoolDetailDialog school={selected} onClose={() => setSelected(null)} onToggle={() => toggleStatus(selected)} onManage={() => { setControlCenter(selected); setSelected(null) }} />
+          <SchoolDetailDialog school={selected} onClose={() => setSelected(null)} onToggle={() => toggleStatus(selected)} onManage={() => { enterControlPlane(selected.id); setSelected(null) }} />
         )}
       </AnimatePresence>
 
@@ -113,13 +113,6 @@ export function SchoolsModule() {
       <AnimatePresence>
         {wizardOpen && (
           <ProvisioningWizard onClose={() => setWizardOpen(false)} onDeployed={(name) => { setWizardOpen(false); toast.success(`${name} provisioned & deployed!`) }} />
-        )}
-      </AnimatePresence>
-
-      {/* school control center */}
-      <AnimatePresence>
-        {controlCenter && (
-          <SchoolControlCenter school={controlCenter} onClose={() => setControlCenter(null)} />
         )}
       </AnimatePresence>
     </div>
