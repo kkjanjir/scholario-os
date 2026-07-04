@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, lazy, Suspense } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useAppStore } from "@/lib/store"
 import { SCHOOLS } from "@/lib/mock/superadmin-data"
@@ -13,16 +13,18 @@ import {
   PanelLeftOpen, Sun, Moon, LogOut, Building2,
 } from "lucide-react"
 import { toast } from "sonner"
-import { OverviewSection } from "./sections/overview"
-import { ConfigSection } from "./sections/config"
-import { MonitoringSection } from "./sections/monitoring"
-import { AuditSection } from "./sections/audit"
-import { FeatureFlagsSection } from "./sections/feature-flags"
-import { ModulesSection } from "./sections/modules"
-import { BrandingSection } from "./sections/branding"
-import { DeploymentSection } from "./sections/deployment"
-import { ImpersonateSection } from "./sections/impersonate"
-import { SecuritySection } from "./sections/security"
+
+// Lazy load all sections to reduce memory
+const OverviewSection = lazy(() => import("./sections/overview").then(m => ({ default: m.OverviewSection })))
+const ConfigSection = lazy(() => import("./sections/config").then(m => ({ default: m.ConfigSection })))
+const MonitoringSection = lazy(() => import("./sections/monitoring").then(m => ({ default: m.MonitoringSection })))
+const AuditSection = lazy(() => import("./sections/audit").then(m => ({ default: m.AuditSection })))
+const FeatureFlagsSection = lazy(() => import("./sections/feature-flags").then(m => ({ default: m.FeatureFlagsSection })))
+const ModulesSection = lazy(() => import("./sections/modules").then(m => ({ default: m.ModulesSection })))
+const BrandingSection = lazy(() => import("./sections/branding").then(m => ({ default: m.BrandingSection })))
+const DeploymentSection = lazy(() => import("./sections/deployment").then(m => ({ default: m.DeploymentSection })))
+const ImpersonateSection = lazy(() => import("./sections/impersonate").then(m => ({ default: m.ImpersonateSection })))
+const SecuritySection = lazy(() => import("./sections/security").then(m => ({ default: m.SecuritySection })))
 
 export function SchoolControlPlane() {
   const schoolId = useAppStore((s) => s.controlPlaneSchoolId)
@@ -134,7 +136,9 @@ export function SchoolControlPlane() {
         <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8">
           <AnimatePresence mode="wait">
             <motion.div key={activeModule} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}>
-              {renderSection()}
+              <Suspense fallback={<div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>}>
+                {renderSection()}
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </main>

@@ -1,14 +1,17 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { lazy, Suspense } from "react"
 import { useAppStore } from "@/lib/store"
-import { Avatar, colorOf } from "@/components/shared/brand"
-import { PrincipalApp } from "@/components/principal/principal-app"
-import { TeacherApp } from "@/components/teacher/teacher-app"
-import { StudentApp } from "@/components/student/student-app"
-import { ParentApp } from "@/components/parent/parent-app"
+import { Avatar } from "@/components/shared/brand"
 import { ArrowLeft, Eye } from "lucide-react"
 import { toast } from "sonner"
+
+// Lazy load to reduce memory
+const PrincipalApp = lazy(() => import("@/components/principal/principal-app").then(m => ({ default: m.PrincipalApp })))
+const TeacherApp = lazy(() => import("@/components/teacher/teacher-app").then(m => ({ default: m.TeacherApp })))
+const StudentApp = lazy(() => import("@/components/student/student-app").then(m => ({ default: m.StudentApp })))
+const ParentApp = lazy(() => import("@/components/parent/parent-app").then(m => ({ default: m.ParentApp })))
 
 export function ImpersonationBanner() {
   const impersonating = useAppStore((s) => s.impersonating)!
@@ -19,7 +22,6 @@ export function ImpersonationBanner() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Impersonation banner */}
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -35,18 +37,15 @@ export function ImpersonationBanner() {
         </div>
         <span className="hidden text-xs text-white/80 lg:inline">All actions logged • No real changes persisted</span>
         <button
-          onClick={() => {
-            stopImpersonation()
-            toast.success("Returned to Super Admin")
-          }}
+          onClick={() => { stopImpersonation(); toast.success("Returned to Super Admin") }}
           className="inline-flex items-center gap-2 rounded-lg bg-white/20 px-4 py-1.5 text-sm font-bold backdrop-blur-sm transition-colors hover:bg-white/30"
         >
           <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Return to Super Admin</span><span className="sm:hidden">Exit</span>
         </button>
       </motion.div>
-
-      {/* Render the impersonated role's app */}
-      <RoleApp />
+      <Suspense fallback={<div className="flex h-screen items-center justify-center"><div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>}>
+        <RoleApp />
+      </Suspense>
     </div>
   )
 }

@@ -3,18 +3,25 @@
 import { useAppStore } from "@/lib/store"
 import { AppShell } from "@/components/shared/app-shell"
 import { SUPERADMIN_NAV } from "./nav"
-import { SuperAdminDashboard } from "./modules/dashboard"
-import { SchoolsModule } from "./modules/schools"
-import { FeatureFlagsModule } from "./modules/feature-flags"
-import { BillingModule } from "./modules/billing"
-import { MonitoringModule } from "./modules/monitoring"
-import { SecurityModule } from "./modules/security"
-import { CommunicationModule } from "./modules/communication"
-import { WhiteLabelModule } from "./modules/whitelabel"
-import { SupportModule } from "./modules/support"
-import { DeveloperModule } from "./modules/developer"
-import { SchoolControlPlane } from "./control-plane/school-control-plane"
-import { ImpersonationBanner } from "./impersonation-banner"
+import { lazy, Suspense } from "react"
+
+// Lazy load ALL modules to reduce Turbopack memory
+const SuperAdminDashboard = lazy(() => import("./modules/dashboard").then(m => ({ default: m.SuperAdminDashboard })))
+const SchoolsModule = lazy(() => import("./modules/schools").then(m => ({ default: m.SchoolsModule })))
+const FeatureFlagsModule = lazy(() => import("./modules/feature-flags").then(m => ({ default: m.FeatureFlagsModule })))
+const BillingModule = lazy(() => import("./modules/billing").then(m => ({ default: m.BillingModule })))
+const MonitoringModule = lazy(() => import("./modules/monitoring").then(m => ({ default: m.MonitoringModule })))
+const SecurityModule = lazy(() => import("./modules/security").then(m => ({ default: m.SecurityModule })))
+const CommunicationModule = lazy(() => import("./modules/communication").then(m => ({ default: m.CommunicationModule })))
+const WhiteLabelModule = lazy(() => import("./modules/whitelabel").then(m => ({ default: m.WhiteLabelModule })))
+const SupportModule = lazy(() => import("./modules/support").then(m => ({ default: m.SupportModule })))
+const DeveloperModule = lazy(() => import("./modules/developer").then(m => ({ default: m.DeveloperModule })))
+const SchoolControlPlane = lazy(() => import("./control-plane/school-control-plane").then(m => ({ default: m.SchoolControlPlane })))
+const ImpersonationBanner = lazy(() => import("./impersonation-banner").then(m => ({ default: m.ImpersonationBanner })))
+
+function Loading() {
+  return <div className="flex h-screen items-center justify-center"><div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>
+}
 
 export function SuperAdminApp() {
   const activeModule = useAppStore((s) => s.superadminModule)
@@ -22,31 +29,28 @@ export function SuperAdminApp() {
   const controlPlaneSchoolId = useAppStore((s) => s.controlPlaneSchoolId)
   const impersonating = useAppStore((s) => s.impersonating)
 
-  // If impersonating, render the impersonated role app with banner
   if (impersonating) {
-    return <ImpersonationBanner />
+    return <Suspense fallback={<Loading />}><ImpersonationBanner /></Suspense>
   }
 
-  // If inside a school control plane, render the full-screen control plane
   if (controlPlaneSchoolId) {
-    return <SchoolControlPlane />
+    return <Suspense fallback={<Loading />}><SchoolControlPlane /></Suspense>
   }
 
-  const render = () => {
-    switch (activeModule) {
-      case "dashboard": return <SuperAdminDashboard />
-      case "schools": return <SchoolsModule />
-      case "feature-flags": return <FeatureFlagsModule />
-      case "billing": return <BillingModule />
-      case "monitoring": return <MonitoringModule />
-      case "security": return <SecurityModule />
-      case "communication": return <CommunicationModule />
-      case "whitelabel": return <WhiteLabelModule />
-      case "support": return <SupportModule />
-      case "developer": return <DeveloperModule />
-      default: return <SuperAdminDashboard />
-    }
+  const modules: Record<string, React.ComponentType> = {
+    dashboard: SuperAdminDashboard,
+    schools: SchoolsModule,
+    "feature-flags": FeatureFlagsModule,
+    billing: BillingModule,
+    monitoring: MonitoringModule,
+    security: SecurityModule,
+    communication: CommunicationModule,
+    whitelabel: WhiteLabelModule,
+    support: SupportModule,
+    developer: DeveloperModule,
   }
+
+  const ActiveModule = modules[activeModule] || SuperAdminDashboard
 
   return (
     <AppShell
@@ -56,7 +60,9 @@ export function SuperAdminApp() {
       moduleKey={activeModule}
       onSelect={(id) => setModule("superadmin", id)}
     >
-      {render()}
+      <Suspense fallback={<Loading />}>
+        <ActiveModule />
+      </Suspense>
     </AppShell>
   )
 }
