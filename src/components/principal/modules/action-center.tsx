@@ -21,6 +21,7 @@ type Tab = "all" | "at-risk" | "defaulters" | "lessons" | "homework"
 export function ActionCenterModule() {
   const setModule = useAppStore((s) => s.setModule)
   const [tab, setTab] = useState<Tab>("all")
+  const [resolved, setResolved] = useState<Set<string>>(new Set())
 
   // Build unified action items
   const actions: ActionItem[] = [
@@ -61,19 +62,20 @@ export function ActionCenterModule() {
     })),
   ]
 
-  const filtered = tab === "all" ? actions : actions.filter((a) => {
+  const filtered = (tab === "all" ? actions : actions.filter((a) => {
     if (tab === "at-risk") return a.type === "at-risk"
     if (tab === "defaulters") return a.type === "defaulter"
     if (tab === "lessons") return a.type === "lesson"
     if (tab === "homework") return a.type === "homework"
     return true
-  })
+  })).filter((a) => !resolved.has(a.id))
 
   const counts = {
-    critical: actions.filter((a) => a.priority === "critical").length,
-    high: actions.filter((a) => a.priority === "high").length,
-    medium: actions.filter((a) => a.priority === "medium").length,
+    critical: actions.filter((a) => a.priority === "critical" && !resolved.has(a.id)).length,
+    high: actions.filter((a) => a.priority === "high" && !resolved.has(a.id)).length,
+    medium: actions.filter((a) => a.priority === "medium" && !resolved.has(a.id)).length,
   }
+  const resolvedCount = resolved.size
 
   function handleAction(a: ActionItem) {
     const msgs: Record<string, string> = {
@@ -111,7 +113,7 @@ export function ActionCenterModule() {
             <div className="flex-1">
               <p className="text-sm font-semibold">AI Executive Summary</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                You have <b className="text-rose-600 dark:text-rose-400">{counts.critical} critical actions</b> requiring immediate attention — {AT_RISK_STUDENTS.filter((s) => s.riskLevel === "High").length} high-risk students and {FEE_DEFAULTERS.filter((d) => d.status === "critical").length} critical fee defaulters. Total overdue fees: <b className="text-rose-600 dark:text-rose-400">{formatINR(FEE_DEFAULTERS.reduce((a, d) => a + d.amount, 0))}</b>.
+                You have <b className="text-rose-600 dark:text-rose-400">{counts.critical} critical actions</b> requiring immediate attention — {AT_RISK_STUDENTS.filter((s) => s.riskLevel === "High").length} high-risk students and {FEE_DEFAULTERS.filter((d) => d.status === "critical").length} critical fee defaulters. Total overdue fees: <b className="text-rose-600 dark:text-rose-400">{formatINR(FEE_DEFAULTERS.reduce((a, d) => a + d.amount, 0))}</b>. {resolvedCount > 0 && <span className="text-emerald-600 dark:text-emerald-400 font-medium">{resolvedCount} action{resolvedCount > 1 ? "s" : ""} resolved ✓</span>}
               </p>
             </div>
           </div>
@@ -189,12 +191,20 @@ export function ActionCenterModule() {
                   <p className="mt-0.5 truncate text-xs text-muted-foreground">{a.desc}</p>
                   <p className="mt-0.5 text-[10px] text-muted-foreground/70">{a.meta}</p>
                 </div>
-                <button
-                  onClick={() => handleAction(a)}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-105"
-                >
-                  {a.action} <ArrowUpRight className="h-3 w-3" />
-                </button>
+                <div className="flex shrink-0 flex-col gap-1.5">
+                  <button
+                    onClick={() => handleAction(a)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-105"
+                  >
+                    {a.action} <ArrowUpRight className="h-3 w-3" />
+                  </button>
+                  <button
+                    onClick={() => { setResolved((prev) => new Set(prev).add(a.id)); toast.success("Action marked as resolved ✓") }}
+                    className="inline-flex items-center justify-center gap-1 rounded-xl border border-border/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  >
+                    <CheckCircle2 className="h-3 w-3" /> Resolve
+                  </button>
+                </div>
               </motion.div>
             </StaggerItem>
           )

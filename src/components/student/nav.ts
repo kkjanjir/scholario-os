@@ -1,7 +1,7 @@
 import type { NavGroup } from "@/components/shared/app-shell"
 import {
   LayoutDashboard, User, CalendarCheck, BookOpen, FileText,
-  Award, Wallet, CalendarClock, CalendarDays, Megaphone, Trophy, Target,
+  Award, Wallet, CalendarClock, CalendarDays, Megaphone, Trophy, Target, Users,
 } from "lucide-react"
 
 export const STUDENT_NAV: NavGroup[] = [
@@ -12,6 +12,7 @@ export const STUDENT_NAV: NavGroup[] = [
       { id: "profile", label: "My Profile", icon: User },
       { id: "gamification", label: "Achievements", icon: Trophy, badge: "L10" },
       { id: "challenges", label: "Daily Challenges", icon: Target, badge: 5 },
+      { id: "friends", label: "Friends", icon: Users, badge: 2 },
       { id: "timetable", label: "Timetable", icon: CalendarClock },
       { id: "calendar", label: "Calendar", icon: CalendarDays },
     ],

@@ -892,6 +892,64 @@ export const FEE_DEFAULTERS: FeeDefaulter[] = [
 ]
 
 
+// ---------------------------------------------------------------------------
+// Student friend system
+// ---------------------------------------------------------------------------
+export interface StudentFriend {
+  id: string
+  name: string
+  avatarColor: string
+  level: number
+  xp: number
+  status: "online" | "offline" | "in-class"
+  streak: number
+  badges: number
+  trend: "up" | "down" | "same"
+  lastActive: string
+  classRank: number
+}
+export const STUDENT_FRIENDS: StudentFriend[] = [
+  { id: "f1", name: "Diya Patel", avatarColor: "rose", level: 12, xp: 4820, status: "online", streak: 12, badges: 11, trend: "same", lastActive: "Online now", classRank: 1 },
+  { id: "f2", name: "Vivaan Gupta", avatarColor: "emerald", level: 11, xp: 4610, status: "online", streak: 8, badges: 10, trend: "up", lastActive: "Online now", classRank: 2 },
+  { id: "f3", name: "Ananya Reddy", avatarColor: "amber", level: 11, xp: 4380, status: "in-class", streak: 5, badges: 9, trend: "up", lastActive: "In Mathematics class", classRank: 3 },
+  { id: "f4", name: "Saanvi Iyer", avatarColor: "teal", level: 10, xp: 3990, status: "online", streak: 3, badges: 8, trend: "down", lastActive: "5 min ago", classRank: 5 },
+  { id: "f5", name: "Aditya Nair", avatarColor: "sky", level: 9, xp: 3840, status: "offline", streak: 0, badges: 7, trend: "up", lastActive: "2 hours ago", classRank: 6 },
+  { id: "f6", name: "Ishita Desai", avatarColor: "pink", level: 9, xp: 3720, status: "offline", streak: 2, badges: 7, trend: "same", lastActive: "Yesterday", classRank: 7 },
+]
+
+export interface FriendRequest {
+  id: string
+  name: string
+  avatarColor: string
+  level: number
+  mutualFriends: number
+  date: string
+}
+export const FRIEND_REQUESTS: FriendRequest[] = [
+  { id: "fr1", name: "Reyansh Kulkarni", avatarColor: "cyan", level: 9, mutualFriends: 3, date: "2 hours ago" },
+  { id: "fr2", name: "Myra Joshi", avatarColor: "orange", level: 8, mutualFriends: 5, date: "Yesterday" },
+]
+
+export interface EncouragementMessage {
+  id: string
+  from: string
+  avatarColor: string
+  emoji: string
+  message: string
+  time: string
+}
+export const ENCOURAGEMENTS_RECEIVED: EncouragementMessage[] = [
+  { id: "e1", from: "Diya Patel", avatarColor: "rose", emoji: "🔥", message: "Great job on the Math quiz! You're crushing it!", time: "1 hour ago" },
+  { id: "e2", from: "Vivaan Gupta", avatarColor: "emerald", emoji: "💪", message: "Keep the streak going buddy!", time: "3 hours ago" },
+  { id: "e3", from: "Ananya Reddy", avatarColor: "amber", emoji: "🌟", message: "Your science project was amazing!", time: "Yesterday" },
+]
+
+export const ENCOURAGEMENT_EMOJIS = ["🔥", "💪", "🌟", "👏", "🚀", "💯", "🎉", "⭐", "🎓", "✨"]
+export const ENCOURAGEMENT_MESSAGES = [
+  "Great job today!", "Keep it up!", "You're amazing!", "Proud of you!", "Keep the streak going!",
+  "Way to go!", "You're on fire!", "Excellent work!", "Fantastic effort!", "You're a star!",
+]
+
 export const DEMO_ACCOUNTS: {
   role: Role
   name: string

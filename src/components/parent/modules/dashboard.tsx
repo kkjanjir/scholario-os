@@ -304,8 +304,49 @@ export function ParentDashboard() {
         </SectionCard>
       </StaggerItem>
 
+      {/* fee payment reminder widget */}
+      {child.feeTotal - child.feePaid > 0 && (
+        <StaggerItem index={10}>
+          <div className="relative overflow-hidden rounded-3xl border border-rose-500/30 bg-gradient-to-br from-rose-500/10 via-orange-500/5 to-transparent p-5">
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-rose-300/10 blur-2xl" />
+            <div className="relative flex items-center gap-4">
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-500/15 text-3xl"
+              >
+                ⚠️
+              </motion.div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <Wallet className="h-4 w-4 text-rose-500" />
+                  <p className="text-sm font-bold">Fee Payment Reminder</p>
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Outstanding balance of <b className="text-rose-600 dark:text-rose-400">₹{(child.feeTotal - child.feePaid).toLocaleString("en-IN")}</b> for {child.name.split(" ")[0]}'s fees. Due by 15 Dec 2025.
+                </p>
+              </div>
+            </div>
+            <div className="relative mt-4 flex gap-2">
+              <button
+                onClick={() => setModule("parent", "fees")}
+                className="flex-1 rounded-xl bg-rose-500 py-2.5 text-xs font-bold text-white transition-transform hover:scale-105"
+              >
+                Pay Now ₹{(child.feeTotal - child.feePaid).toLocaleString("en-IN")}
+              </button>
+              <button
+                onClick={() => toast.info("Payment reminder snoozed for 3 days")}
+                className="rounded-xl border border-border/60 px-4 py-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent"
+              >
+                Remind Later
+              </button>
+            </div>
+          </div>
+        </StaggerItem>
+      )}
+
       {/* upcoming events */}
-      <StaggerItem index={10}>
+      <StaggerItem index={11}>
         <SectionCard title="Upcoming Events" subtitle="For your child & family">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CALENDAR_EVENTS.slice(0, 6).map((e) => (
