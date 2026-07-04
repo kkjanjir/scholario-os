@@ -1,0 +1,547 @@
+     1→     1→// ============================================================================
+     2→     2→// SCHOLARIO-OS — Central mock data store (realistic Indian school data)
+     3→     3→// All modules import from here so data stays interconnected & believable.
+     4→     4→// ============================================================================
+     5→     5→
+     6→     6→import type { Role } from "@/lib/store"
+     7→     7→
+     8→     8→export const SCHOOL = {
+     9→     9→  name: "Sri Vidya Mandir Senior Secondary School",
+    10→    10→  shortName: "SVM",
+    11→    11→  tagline: "Vidya Dadati Vinayam",
+    12→    12→  address: "42, Education City Road, Sector 18, Pune, Maharashtra 411014",
+    13→    13→  phone: "+91 20 2456 7890",
+    14→    14→  email: "office@srividya-mandir.edu.in",
+    15→    15→  website: "www.srividya-mandir.edu.in",
+    16→    16→  affiliation: "CBSE — Affiliation No. 1130456",
+    17→    17→  session: "2025–2026",
+    18→    18→  estd: 1994,
+    19→    19→  principal: "Dr. Anjali Deshpande",
+    20→    20→  logoColor: "emerald",
+    21→    21→}
+    22→    22→
+    23→    23→// ---------------------------------------------------------------------------
+    24→    24→// Classes, sections, subjects
+    25→    25→// ---------------------------------------------------------------------------
+    26→    26→export const CLASSES = [
+    27→    27→  "Nursery", "LKG", "UKG",
+    28→    28→  "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5",
+    29→    29→  "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10",
+    30→    30→  "Grade 11 Sci", "Grade 11 Comm", "Grade 12 Sci", "Grade 12 Comm",
+    31→    31→]
+    32→    32→export const SECTIONS = ["A", "B", "C"]
+    33→    33→export const SUBJECTS = [
+    34→    34→  "English", "Hindi", "Marathi", "Mathematics", "Science", "Social Science",
+    35→    35→  "Computer Science", "Physics", "Chemistry", "Biology", "Accountancy",
+    36→    36→  "Business Studies", "Economics", "Physical Education", "Art", "Music",
+    37→    37→  "General Knowledge", "Moral Science",
+    38→    38→]
+    39→    39→
+    40→    40→export interface ClassInfo {
+    41→    41→  id: string
+    42→    42→  name: string
+    43→    43→  sections: { name: string; classTeacher: string; strength: number; room: string }[]
+    44→    44→}
+    45→    45→
+    46→    46→export const CLASSES_INFO: ClassInfo[] = [
+    47→    47→  { id: "g10", name: "Grade 10", sections: [
+    48→    48→    { name: "A", classTeacher: "tch_003", strength: 38, room: "B-201" },
+    49→    49→    { name: "B", classTeacher: "tch_007", strength: 36, room: "B-202" },
+    50→    50→  ]},
+    51→    51→  { id: "g9", name: "Grade 9", sections: [
+    52→    52→    { name: "A", classTeacher: "tch_002", strength: 40, room: "B-101" },
+    53→    53→    { name: "B", classTeacher: "tch_009", strength: 39, room: "B-102" },
+    54→    54→  ]},
+    55→    55→  { id: "g8", name: "Grade 8", sections: [
+    56→    56→    { name: "A", classTeacher: "tch_004", strength: 42, room: "A-301" },
+    57→    57→    { name: "B", classTeacher: "tch_010", strength: 41, room: "A-302" },
+    58→    58→  ]},
+    59→    59→  { id: "g7", name: "Grade 7", sections: [
+    60→    60→    { name: "A", classTeacher: "tch_005", strength: 37, room: "A-201" },
+    61→    61→  ]},
+    62→    62→  { id: "g6", name: "Grade 6", sections: [
+    63→    63→    { name: "A", classTeacher: "tch_006", strength: 35, room: "A-101" },
+    64→    64→  ]},
+    65→    65→]
+    66→    66→
+    67→    67→// ---------------------------------------------------------------------------
+    68→    68→// Teachers
+    69→    69→// ---------------------------------------------------------------------------
+    70→    70→export interface Teacher {
+    71→    71→  id: string
+    72→    72→  empId: string
+    73→    73→  name: string
+    74→    74→  gender: "Male" | "Female"
+    75→    75→  designation: string
+    76→    76→  department: string
+    77→    77→  subjects: string[]
+    78→    78→  classes: string[]
+    79→    79→  qualification: string
+    80→    80→  experience: number
+    81→    81→  joiningDate: string
+    82→    82→  email: string
+    83→    83→  phone: string
+    84→    84→  salary: number
+    85→    85→  attendance: number
+    86→    86→  avatarColor: string
+    87→    87→  bloodGroup: string
+    88→    88→  address: string
+    89→    89→}
+    90→    90→
+    91→    91→export const TEACHERS: Teacher[] = [
+    92→    92→  { id: "tch_001", empId: "SVM-EMP-1001", name: "Dr. Anjali Deshpande", gender: "Female", designation: "Principal", department: "Administration", subjects: ["Physics"], classes: ["Grade 12 Sci"], qualification: "Ph.D. Physics, M.Ed.", experience: 22, joiningDate: "2008-06-15", email: "anjali.d@srividya-mandir.edu.in", phone: "+91 98220 14523", salary: 145000, attendance: 98, avatarColor: "emerald", bloodGroup: "O+", address: "Kothrud, Pune" },
+    93→    93→  { id: "tch_002", empId: "SVM-EMP-1002", name: "Rajesh Kulkarni", gender: "Male", designation: "Senior PGT", department: "Mathematics", subjects: ["Mathematics"], classes: ["Grade 9 A", "Grade 10 A"], qualification: "M.Sc. Maths, B.Ed.", experience: 15, joiningDate: "2011-07-01", email: "rajesh.k@srividya-mandir.edu.in", phone: "+91 98225 33412", salary: 78000, attendance: 96, avatarColor: "amber", bloodGroup: "B+", address: "Baner, Pune" },
+    94→    94→  { id: "tch_003", empId: "SVM-EMP-1003", name: "Meera Nair", gender: "Female", designation: "PGT", department: "English", subjects: ["English"], classes: ["Grade 10 A", "Grade 10 B"], qualification: "M.A. English, B.Ed.", experience: 11, joiningDate: "2014-06-10", email: "meera.n@srividya-mandir.edu.in", phone: "+91 98700 23110", salary: 72000, attendance: 99, avatarColor: "rose", bloodGroup: "A+", address: "Aundh, Pune" },
+    95→    95→  { id: "tch_004", empId: "SVM-EMP-1004", name: "Suresh Patil", gender: "Male", designation: "TGT", department: "Science", subjects: ["Science", "Physics"], classes: ["Grade 8 A", "Grade 9 A"], qualification: "M.Sc. Physics, B.Ed.", experience: 9, joiningDate: "2016-07-12", email: "suresh.p@srividya-mandir.edu.in", phone: "+91 91580 45678", salary: 62000, attendance: 94, avatarColor: "violet", bloodGroup: "AB+", address: "Wakad, Pune" },
+    96→    96→  { id: "tch_005", empId: "SVM-EMP-1005", name: "Priya Sharma", gender: "Female", designation: "TGT", department: "Social Science", subjects: ["Social Science", "History"], classes: ["Grade 7 A", "Grade 8 A"], qualification: "M.A. History, B.Ed.", experience: 7, joiningDate: "2018-06-20", email: "priya.s@srividya-mandir.edu.in", phone: "+91 99230 18765", salary: 58000, attendance: 97, avatarColor: "teal", bloodGroup: "O-", address: "Hinjawadi, Pune" },
+    97→    97→  { id: "tch_006", empId: "SVM-EMP-1006", name: "Amit Verma", gender: "Male", designation: "TGT", department: "Computer Science", subjects: ["Computer Science"], classes: ["Grade 6 A", "Grade 7 A"], qualification: "MCA, B.Ed.", experience: 6, joiningDate: "2019-07-01", email: "amit.v@srividya-mandir.edu.in", phone: "+91 98330 56712", salary: 56000, attendance: 95, avatarColor: "sky", bloodGroup: "B-", address: "Pimpri, Pune" },
+    98→    98→  { id: "tch_007", empId: "SVM-EMP-1007", name: "Lakshmi Iyer", gender: "Female", designation: "PGT", department: "Chemistry", subjects: ["Chemistry"], classes: ["Grade 10 B", "Grade 11 Sci"], qualification: "M.Sc. Chemistry, B.Ed.", experience: 13, joiningDate: "2013-06-18", email: "lakshmi.i@srividya-mandir.edu.in", phone: "+91 90011 23456", salary: 75000, attendance: 98, avatarColor: "orange", bloodGroup: "A-", address: "Kalyani Nagar, Pune" },
+    99→    99→  { id: "tch_008", empId: "SVM-EMP-1008", name: "Vikram Singh", gender: "Male", designation: "PTI", department: "Physical Education", subjects: ["Physical Education"], classes: ["All"], qualification: "M.P.Ed.", experience: 8, joiningDate: "2017-07-05", email: "vikram.s@srividya-mandir.edu.in", phone: "+91 98600 78901", salary: 48000, attendance: 93, avatarColor: "lime", bloodGroup: "O+", address: "Camp, Pune" },
+   100→   100→  { id: "tch_009", empId: "SVM-EMP-1009", name: "Sneha Joshi", gender: "Female", designation: "TGT", department: "Hindi", subjects: ["Hindi", "Marathi"], classes: ["Grade 9 B", "Grade 8 B"], qualification: "M.A. Hindi, B.Ed.", experience: 10, joiningDate: "2015-06-25", email: "sneha.j@srividya-mandir.edu.in", phone: "+91 90210 34567", salary: 60000, attendance: 96, avatarColor: "pink", bloodGroup: "AB-", address: "Hadapsar, Pune" },
+   101→   101→  { id: "tch_010", empId: "SVM-EMP-1010", name: "Rohan Mehta", gender: "Male", designation: "TGT", department: "Biology", subjects: ["Biology", "Science"], classes: ["Grade 8 B", "Grade 9 B"], qualification: "M.Sc. Botany, B.Ed.", experience: 5, joiningDate: "2020-07-01", email: "rohan.m@srividya-mandir.edu.in", phone: "+91 97300 11223", salary: 54000, attendance: 92, avatarColor: "cyan", bloodGroup: "A+", address: "Viman Nagar, Pune" },
+   102→   102→  { id: "tch_011", empId: "SVM-EMP-1011", name: "Fatima Sheikh", gender: "Female", designation: "PRT", department: "Primary", subjects: ["English", "EVS"], classes: ["Grade 3", "Grade 4"], qualification: "B.A., D.Ed.", experience: 4, joiningDate: "2021-06-15", email: "fatima.s@srividya-mandir.edu.in", phone: "+91 98440 55667", salary: 42000, attendance: 97, avatarColor: "indigo", bloodGroup: "B+", address: "Kondhwa, Pune" },
+   103→   103→  { id: "tch_012", empId: "SVM-EMP-1012", name: "Arjun Reddy", gender: "Male", designation: "PGT", department: "Commerce", subjects: ["Accountancy", "Business Studies"], classes: ["Grade 11 Comm", "Grade 12 Comm"], qualification: "M.Com., B.Ed.", experience: 12, joiningDate: "2014-07-08", email: "arjun.r@srividya-mandir.edu.in", phone: "+91 99110 67890", salary: 74000, attendance: 95, avatarColor: "fuchsia", bloodGroup: "O+", address: "Boat Club Road, Pune" },
+   104→   104→]
+   105→   105→
+   106→   106→// ---------------------------------------------------------------------------
+   107→   107→// Students
+   108→   108→// ---------------------------------------------------------------------------
+   109→   109→export interface Student {
+   110→   110→  id: string
+   111→   111→  admissionNo: string
+   112→   112→  rollNo: number
+   113→   113→  name: string
+   114→   114→  gender: "Male" | "Female"
+   115→   115→  className: string
+   116→   116→  section: string
+   117→   117→  fatherName: string
+   118→   118→  motherName: string
+   119→   119→  guardianPhone: string
+   120→   120→  dob: string
+   121→   121→  bloodGroup: string
+   122→   122→  address: string
+   123→   123→  admissionDate: string
+   124→   124→  feeStatus: "Paid" | "Partial" | "Pending"
+   125→   125→  feePaid: number
+   126→   126→  feeTotal: number
+   127→   127→  attendancePct: number
+   128→   128→  avgMarks: number
+   129→   129→  avatarColor: string
+   130→   130→  transport: boolean
+   131→   131→  hostel: boolean
+   132→   132→  libraryId: string
+   133→   133→  transportId?: string
+   134→   134→}
+   135→   135→
+   136→   136→const FIRST_M = ["Aarav", "Vivaan", "Aditya", "Vihaan", "Arjun", "Sai", "Reyansh", "Krishna", "Ishaan", "Rohan", "Dhruv", "Kabir", "Ayaan", "Ansh", "Atharv", "Aryan", "Shivansh", "Pranav", "Yash", "Naksh", "Ved", "Rudra", "Arnav", "Advik", "Shaurya", "Parth", "Manav", "Daksh", "Kian", "Veer"]
+   137→   137→const FIRST_F = ["Ananya", "Diya", "Saanvi", "Aadhya", "Pari", "Myra", "Anika", "Navya", "Aaradhya", "Ira", "Ishita", "Saumya", "Riya", "Sara", "Aanya", "Kavya", "Pooja", "Shreya", "Tanvi", "Nisha", "Avni", "Mahi", "Sneha", "Zara", "Khushi", "Aishwarya", "Bhavya", "Trisha", "Meera", "Kiara"]
+   138→   138→const LAST = ["Sharma", "Verma", "Patel", "Gupta", "Reddy", "Nair", "Iyer", "Kulkarni", "Deshpande", "Joshi", "Mehta", "Patil", "Shetty", "Rao", "Desai", "Pawar", "Jadhav", "More", "Kamble", "Bhosale", "Sinha", "Kapoor", "Malhotra", "Chopra", "Agarwal", "Bhat", "Pillai", "Menon", "Ghosh", "Das"]
+   139→   139→const AREAS = ["Kothrud", "Baner", "Aundh", "Wakad", "Hinjawadi", "Pimpri", "Kalyani Nagar", "Hadapsar", "Viman Nagar", "Kondhwa", "Boat Club Road", "Camp", "Wagholi", "Kharadi", "Magarpatta"]
+   140→   140→
+   141→   141→function pick<T>(arr: T[], i: number): T { return arr[i % arr.length] }
+   142→   142→
+   143→   143→function buildStudents(): Student[] {
+   144→   144→  const out: Student[] = []
+   145→   145→  const cls = [["Grade 10","A",38],["Grade 10","B",36],["Grade 9","A",40],["Grade 9","B",39],["Grade 8","A",42],["Grade 8","B",41],["Grade 7","A",37],["Grade 6","A",35]] as const
+   146→   146→  let idx = 0
+   147→   147→  let adm = 2401
+   148→   148→  for (const [cn, sec, n] of cls) {
+   149→   149→    for (let r = 1; r <= n; r++) {
+   150→   150→      const female = (idx * 7 + r) % 5 < 2
+   151→   151→      const name = `${female ? pick(FIRST_F, idx) : pick(FIRST_M, idx)} ${pick(LAST, idx + r)}`
+   152→   152→      const total = cn.includes("10") || cn.includes("9") ? 58500 : cn.includes("8") ? 48500 : 42500
+   153→   153→      const paidRatio = [1, 1, 1, 1, 0.5, 0, 1, 0.5][(idx + r) % 8]
+   154→   154→      const feePaid = Math.round((total * (paidRatio === 0 ? 0 : paidRatio)) / 100) * 100
+   155→   155→      idx++
+   156→   156→      out.push({
+   157→   157→        id: `stu_${idx}`,
+   158→   158→        admissionNo: `SVM2025${String(adm).padStart(4, "0")}`,
+   159→   159→        rollNo: r,
+   160→   160→        name,
+   161→   161→        gender: female ? "Female" : "Male",
+   162→   162→        className: cn,
+   163→   163→        section: sec,
+   164→   164→        fatherName: `${pick(FIRST_M, idx + 3)} ${name.split(" ")[1]}`,
+   165→   165→        motherName: `${pick(FIRST_F, idx + 5)} ${name.split(" ")[1]}`,
+   166→   166→        guardianPhone: `+91 9${String(800000000 + idx * 12345).slice(0, 9)}`,
+   167→   167→        dob: `${2010 - (cn.includes("10") ? 0 : cn.includes("9") ? 1 : cn.includes("8") ? 2 : cn.includes("7") ? 3 : 4)}-0${(idx % 9) + 1}-1${(idx % 9)}`,
+   168→   168→        bloodGroup: pick(["A+", "B+", "O+", "AB+", "A-", "O-"], idx),
+   169→   169→        address: `${10 + idx}, ${pick(AREAS, idx)}, Pune`,
+   170→   170→        admissionDate: `2024-0${(idx % 6) + 1}-1${(idx % 9)}`,
+   171→   171→        feeStatus: feePaid === total ? "Paid" : feePaid === 0 ? "Pending" : "Partial",
+   172→   172→        feePaid,
+   173→   173→        feeTotal: total,
+   174→   174→        attendancePct: 70 + ((idx * 13) % 30),
+   175→   175→        avgMarks: 52 + ((idx * 7) % 46),
+   176→   176→        avatarColor: pick(["emerald","violet","amber","rose","teal","sky","cyan","orange","pink","lime"], idx),
+   177→   177→        transport: (idx % 3) === 0,
+   178→   178→        hostel: (idx % 11) === 0,
+   179→   179→        libraryId: `LIB-${2400 + idx}`,
+   180→   180→        transportId: (idx % 3) === 0 ? `TRP-${100 + (idx % 6)}` : undefined,
+   181→   181→      })
+   182→   182→      adm++
+   183→   183→    }
+   184→   184→  }
+   185→   185→  return out
+   186→   186→}
+   187→   187→
+   188→   188→export const STUDENTS: Student[] = buildStudents()
+   189→   189→
+   190→   190→// ---------------------------------------------------------------------------
+   191→   191→// Finance — fees, salary, revenue
+   192→   192→// ---------------------------------------------------------------------------
+   193→   193→export const FEE_STRUCTURE = [
+   194→   194→  { category: "Tuition Fee", grade: "Grade 10", amount: 42000, frequency: "Annual" },
+   195→   195→  { category: "Tuition Fee", grade: "Grade 9", amount: 38000, frequency: "Annual" },
+   196→   196→  { category: "Tuition Fee", grade: "Grade 8", amount: 32000, frequency: "Annual" },
+   197→   197→  { category: "Tuition Fee", grade: "Grade 7", amount: 28000, frequency: "Annual" },
+   198→   198→  { category: "Transport Fee", grade: "All", amount: 12000, frequency: "Annual" },
+   199→   199→  { category: "Library Fee", grade: "All", amount: 1500, frequency: "Annual" },
+   200→   200→  { category: "Lab Fee", grade: "Grade 9+", amount: 3500, frequency: "Annual" },
+   201→   201→  { category: "Exam Fee", grade: "All", amount: 2000, frequency: "Annual" },
+   202→   202→  { category: "Hostel Fee", grade: "Optional", amount: 65000, frequency: "Annual" },
+   203→   203→]
+   204→   204→
+   205→   205→export const REVENUE_TREND = [
+   206→   206→  { month: "Apr", revenue: 38.2, collection: 34.5, pending: 3.7 },
+   207→   207→  { month: "May", revenue: 42.1, collection: 39.8, pending: 2.3 },
+   208→   208→  { month: "Jun", revenue: 56.4, collection: 48.2, pending: 8.2 },
+   209→   209→  { month: "Jul", revenue: 49.8, collection: 44.1, pending: 5.7 },
+   210→   210→  { month: "Aug", revenue: 47.3, collection: 43.6, pending: 3.7 },
+   211→   211→  { month: "Sep", revenue: 52.9, collection: 47.2, pending: 5.7 },
+   212→   212→  { month: "Oct", revenue: 44.6, collection: 40.1, pending: 4.5 },
+   213→   213→  { month: "Nov", revenue: 51.2, collection: 46.8, pending: 4.4 },
+   214→   214→  { month: "Dec", revenue: 48.7, collection: 45.3, pending: 3.4 },
+   215→   215→  { month: "Jan", revenue: 46.1, collection: 42.9, pending: 3.2 },
+   216→   216→  { month: "Feb", revenue: 50.4, collection: 47.6, pending: 2.8 },
+   217→   217→  { month: "Mar", revenue: 54.8, collection: 50.2, pending: 4.6 },
+   218→   218→]
+   219→   219→
+   220→   220→export interface FeeInvoice {
+   221→   221→  id: string
+   222→   222→  studentName: string
+   223→   223→  admissionNo: string
+   224→   224→  className: string
+   225→   225→  amount: number
+   226→   226→  paid: number
+   227→   227→  status: "Paid" | "Partial" | "Pending"
+   228→   228→  dueDate: string
+   229→   229→  invoiceNo: string
+   230→   230→  method?: string
+   231→   231→}
+   232→   232→export const FEE_INVOICES: FeeInvoice[] = STUDENTS.slice(0, 40).map((s, i) => ({
+   233→   233→  id: `inv_${i + 1}`,
+   234→   234→  invoiceNo: `INV-2025-${String(1001 + i)}`,
+   235→   235→  studentName: s.name,
+   236→   236→  admissionNo: s.admissionNo,
+   237→   237→  className: `${s.className}-${s.section}`,
+   238→   238→  amount: s.feeTotal,
+   239→   239→  paid: s.feePaid,
+   240→   240→  status: s.feeStatus,
+   241→   241→  dueDate: `2025-${String(((i % 12) + 1)).padStart(2, "0")}-15`,
+   242→   242→  method: s.feePaid > 0 ? pick(["UPI", "Card", "Net Banking", "Cash", "Cheque"], i) : undefined,
+   243→   243→}))
+   244→   244→
+   245→   245→export interface SalarySlip {
+   246→   246→  id: string
+   247→   247→  empId: string
+   248→   248→  name: string
+   249→   249→  designation: string
+   250→   250→  month: string
+   251→   251→  basic: number
+   252→   252→  hra: number
+   253→   253→  allowances: number
+   254→   254→  deductions: number
+   255→   255→  net: number
+   256→   256→  status: "Paid" | "Pending"
+   257→   257→  paidOn?: string
+   258→   258→}
+   259→   259→export const SALARY_SLIPS: SalarySlip[] = TEACHERS.map((t, i) => {
+   260→   260→  const basic = Math.round(t.salary * 0.55)
+   261→   261→  const hra = Math.round(t.salary * 0.2)
+   262→   262→  const allowances = Math.round(t.salary * 0.15)
+   263→   263→  const deductions = Math.round(t.salary * 0.1)
+   264→   264→  return {
+   265→   265→    id: `sal_${i + 1}`,
+   266→   266→    empId: t.empId,
+   267→   267→    name: t.name,
+   268→   268→    designation: t.designation,
+   269→   269→    month: "November 2025",
+   270→   270→    basic, hra, allowances, deductions,
+   271→   271→    net: basic + hra + allowances - deductions,
+   272→   272→    status: i % 5 === 0 ? "Pending" : "Paid",
+   273→   273→    paidOn: i % 5 === 0 ? undefined : "2025-12-01",
+   274→   274→  }
+   275→   275→})
+   276→   276→
+   277→   277→// ---------------------------------------------------------------------------
+   278→   278→// Attendance
+   279→   279→// ---------------------------------------------------------------------------
+   280→   280→export function attendanceForClass(className: string, section: string) {
+   281→   281→  const days = 30
+   282→   282→  const data: { date: string; present: number; absent: number; late: number; leave: number }[] = []
+   283→   283→  const total = STUDENTS.filter((s) => s.className === className && s.section === section).length || 38
+   284→   284→  const today = new Date("2025-12-01")
+   285→   285→  for (let i = days - 1; i >= 0; i--) {
+   286→   286→    const d = new Date(today)
+   287→   287→    d.setDate(d.getDate() - i)
+   288→   288→    const weekend = d.getDay() === 0 || d.getDay() === 6
+   289→   289→    const present = weekend ? 0 : total - (3 + ((i * 5) % 6))
+   290→   290→    const absent = weekend ? 0 : 1 + ((i * 3) % 4)
+   291→   291→    const late = weekend ? 0 : 1 + ((i * 2) % 3)
+   292→   292→    const leave = weekend ? 0 : 1 + (i % 2)
+   293→   293→    data.push({ date: d.toISOString().slice(0, 10), present, absent, late, leave })
+   294→   294→  }
+   295→   295→  return { data, total }
+   296→   296→}
+   297→   297→
+   298→   298→export function studentAttendanceHeatmap(studentId: string) {
+   299→   299→  const seed = studentId.charCodeAt(5) || 1
+   300→   300→  const grid: { week: number; day: number; status: "present" | "absent" | "late" | "leave" | "holiday" }[] = []
+   301→   301→  for (let w = 0; w < 12; w++) {
+   302→   302→    for (let d = 0; d < 7; d++) {
+   303→   303→      if (d === 0 || d === 6) { grid.push({ week: w, day: d, status: "holiday" }); continue }
+   304→   304→      const r = (seed + w * 7 + d * 3) % 20
+   305→   305→      const status = r === 0 ? "absent" : r === 1 ? "late" : r === 2 ? "leave" : "present"
+   306→   306→      grid.push({ week: w, day: d, status })
+   307→   307→    }
+   308→   308→  }
+   309→   309→  return grid
+   310→   310→}
+   311→   311→
+   312→   312→// ---------------------------------------------------------------------------
+   313→   313→// Examinations & results
+   314→   314→// ---------------------------------------------------------------------------
+   315→   315→export interface Exam { id: string; name: string; term: string; startDate: string; endDate: string; className: string; status: "Scheduled" | "Ongoing" | "Completed" }
+   316→   316→export const EXAMS: Exam[] = [
+   317→   317→  { id: "ex1", name: "First Term Examination", term: "Term 1", startDate: "2025-09-10", endDate: "2025-09-20", className: "All Grades", status: "Completed" },
+   318→   318→  { id: "ex2", name: "Half-Yearly Examination", term: "Term 1", startDate: "2025-10-05", endDate: "2025-10-16", className: "Grade 6–12", status: "Completed" },
+   319→   319→  { id: "ex3", name: "Unit Test 2", term: "Term 2", startDate: "2025-12-08", endDate: "2025-12-12", className: "Grade 6–10", status: "Ongoing" },
+   320→   320→  { id: "ex4", name: "Annual Examination", term: "Term 2", startDate: "2026-02-20", endDate: "2026-03-05", className: "All Grades", status: "Scheduled" },
+   321→   321→  { id: "ex5", name: "Pre-Board Examination", term: "Term 2", startDate: "2026-01-12", endDate: "2026-01-22", className: "Grade 10 & 12", status: "Scheduled" },
+   322→   322→]
+   323→   323→
+   324→   324→export function studentResult(studentId: string) {
+   325→   325→  const s = STUDENTS.find((x) => x.id === studentId) || STUDENTS[0]
+   326→   326→  const subj = s.className.includes("Comm")
+   327→   327→    ? ["English", "Accountancy", "Business Studies", "Economics", "Mathematics", "Computer Science"]
+   328→   328→    : s.className.includes("Sci")
+   329→   329→    ? ["English", "Physics", "Chemistry", "Mathematics", "Biology", "Computer Science"]
+   330→   330→    : ["English", "Hindi", "Mathematics", "Science", "Social Science", "Computer Science"]
+   331→   331→  const seed = s.name.charCodeAt(0)
+   332→   332→  return subj.map((sub, i) => {
+   333→   333→    const marks = 52 + ((seed + i * 17) % 46)
+   334→   334→    const grade = marks >= 90 ? "A1" : marks >= 80 ? "A2" : marks >= 70 ? "B1" : marks >= 60 ? "B2" : marks >= 50 ? "C1" : "C2"
+   335→   335→    return { subject: sub, marks, max: 100, grade }
+   336→   336→  })
+   337→   337→}
+   338→   338→
+   339→   339→export function topPerformers(className: string) {
+   340→   340→  return STUDENTS
+   341→   341→    .filter((s) => s.className === className)
+   342→   342→    .sort((a, b) => b.avgMarks - a.avgMarks)
+   343→   343→    .slice(0, 8)
+   344→   344→    .map((s, i) => ({ rank: i + 1, ...s }))
+   345→   345→}
+   346→   346→
+   347→   347→// ---------------------------------------------------------------------------
+   348→   348→// Homework & assignments
+   349→   349→// ---------------------------------------------------------------------------
+   350→   350→export interface Homework {
+   351→   351→  id: string
+   352→   352→  title: string
+   353→   353→  subject: string
+   354→   354→  className: string
+   355→   355→  assignedBy: string
+   356→   356→  dueDate: string
+   357→   357→  status: "Pending" | "Submitted" | "Reviewed" | "Late"
+   358→   358→  submissions: number
+   359→   359→  total: number
+   360→   360→  description: string
+   361→   361→}
+   362→   362→export const HOMEWORK: Homework[] = [
+   363→   363→  { id: "hw1", title: "Quadratic Equations — Exercise 4.3", subject: "Mathematics", className: "Grade 10 A", assignedBy: "Rajesh Kulkarni", dueDate: "2025-12-05", status: "Pending", submissions: 28, total: 38, description: "Solve problems 1–12 from NCERT Exercise 4.3. Show complete working." },
+   364→   364→  { id: "hw2", title: "Letter to Editor — Climate Change", subject: "English", className: "Grade 10 A", assignedBy: "Meera Nair", dueDate: "2025-12-06", status: "Submitted", submissions: 36, total: 38, description: "Write a formal letter to the editor of a national daily about climate change impact." },
+   365→   365→  { id: "hw3", title: "Chemical Reactions — Lab Report", subject: "Science", className: "Grade 9 A", assignedBy: "Suresh Patil", dueDate: "2025-12-04", status: "Reviewed", submissions: 40, total: 40, description: "Submit observations and conclusions from the acid-base titration experiment." },
+   366→   366→  { id: "hw4", title: "Mughal Empire — Map Work", subject: "Social Science", className: "Grade 8 A", assignedBy: "Priya Sharma", dueDate: "2025-12-08", status: "Pending", submissions: 12, total: 42, description: "Mark important Mughal cities on the outline map of India." },
+   367→   367→  { id: "hw5", title: "Python — Loops Worksheet", subject: "Computer Science", className: "Grade 7 A", assignedBy: "Amit Verma", dueDate: "2025-12-07", status: "Late", submissions: 30, total: 37, description: "Complete the for/while loop worksheet problems 1–15." },
+   368→   368→  { id: "hw6", title: "Trigonometry — Identities", subject: "Mathematics", className: "Grade 10 B", assignedBy: "Rajesh Kulkarni", dueDate: "2025-12-09", status: "Pending", submissions: 18, total: 36, description: "Prove trigonometric identities from worksheet 3." },
+   369→   369→]
+   370→   370→
+   371→   371→export interface Assignment {
+   372→   372→  id: string
+   373→   373→  title: string
+   374→   374→  subject: string
+   375→   375→  className: string
+   376→   376→  marks: number
+   377→   377→  dueDate: string
+   378→   378→  status: "Open" | "Submitted" | "Evaluated"
+   379→   379→  obtained?: number
+   380→   380→  rubric: string
+   381→   381→}
+   382→   382→export const ASSIGNMENTS: Assignment[] = [
+   383→   383→  { id: "as1", title: "Investigatory Project — Renewable Energy", subject: "Science", className: "Grade 10 A", marks: 50, dueDate: "2025-12-20", status: "Open", rubric: "Research (15) | Experimentation (20) | Presentation (10) | Viva (5)" },
+   384→   384→  { id: "as2", title: "Poetry Analysis — 'The Road Not Taken'", subject: "English", className: "Grade 10 A", marks: 25, dueDate: "2025-12-12", status: "Submitted", rubric: "Comprehension (10) | Literary devices (8) | Personal response (7)" },
+   385→   385→  { id: "as3", title: "Case Study — Monopolistic Competition", subject: "Economics", className: "Grade 11 Comm", marks: 40, dueDate: "2025-12-15", status: "Evaluated", obtained: 34, rubric: "Analysis (15) | Application (15) | Conclusion (10)" },
+   386→   386→  { id: "as4", title: "Geometry — Construction Portfolio", subject: "Mathematics", className: "Grade 9 A", marks: 30, dueDate: "2025-12-18", status: "Open", rubric: "Accuracy (12) | Presentation (10) | Steps (8)" },
+   387→   387→]
+   388→   388→
+   389→   389→// ---------------------------------------------------------------------------
+   390→   390→// Library
+   391→   391→// ---------------------------------------------------------------------------
+   392→   392→export const LIBRARY_BOOKS = [
+   393→   393→  { id: "bk1", title: "Wings of Fire", author: "Dr. A.P.J. Abdul Kalam", category: "Biography", copies: 8, available: 3, isbn: "978-8173711466" },
+   394→   394→  { id: "bk2", title: "The Discovery of India", author: "Jawaharlal Nehru", category: "History", copies: 5, available: 2, isbn: "978-0143031031" },
+   395→   395→  { id: "bk3", title: "NCERT Mathematics X", author: "NCERT", category: "Textbook", copies: 40, available: 12, isbn: "978-8174506634" },
+   396→   396→  { id: "bk4", title: "A Brief History of Time", author: "Stephen Hawking", category: "Science", copies: 6, available: 4, isbn: "978-0553380163" },
+   397→   397→  { id: "bk5", title: "Train to Pakistan", author: "Khushwant Singh", category: "Fiction", copies: 7, available: 1, isbn: "978-8129135610" },
+   398→   398→  { id: "bk6", title: "The Argumentative Indian", author: "Amartya Sen", category: "Essays", copies: 4, available: 2, isbn: "978-0141012117" },
+   399→   399→  { id: "bk7", title: "Atomic Habits", author: "James Clear", category: "Self-Help", copies: 10, available: 5, isbn: "978-1847941831" },
+   400→   400→  { id: "bk8", title: "Sapiens", author: "Yuval Noah Harari", category: "History", copies: 6, available: 0, isbn: "978-0062316110" },
+   401→   401→]
+   402→   402→export const LIBRARY_ISSUES = [
+   403→   403→  { id: "li1", book: "Wings of Fire", student: "Aarav Sharma", admNo: "SVM20252401", issueDate: "2025-11-20", dueDate: "2025-12-04", status: "Overdue", fine: 15 },
+   404→   404→  { id: "li2", book: "A Brief History of Time", student: "Diya Patel", admNo: "SVM20252402", issueDate: "2025-11-25", dueDate: "2025-12-09", status: "Issued", fine: 0 },
+   405→   405→  { id: "li3", book: "Sapiens", student: "Vivaan Gupta", admNo: "SVM20252403", issueDate: "2025-11-15", dueDate: "2025-11-29", status: "Overdue", fine: 30 },
+   406→   406→  { id: "li4", book: "Atomic Habits", student: "Ananya Reddy", admNo: "SVM20252404", issueDate: "2025-11-28", dueDate: "2025-12-12", status: "Issued", fine: 0 },
+   407→   407→  { id: "li5", book: "Train to Pakistan", student: "Aditya Nair", admNo: "SVM20252405", issueDate: "2025-11-10", dueDate: "2025-11-24", status: "Returned", fine: 0 },
+   408→   408→]
+   409→   409→
+   410→   410→// ---------------------------------------------------------------------------
+   411→   411→// Transport
+   412→   412→// ---------------------------------------------------------------------------
+   413→   413→export const TRANSPORT_ROUTES = [
+   414→   414→  { id: "r1", routeNo: "R-01", name: "Kothrud — Baner Loop", stops: 12, students: 42, driver: "Ramesh Pawar", vehicle: "MH-12 AB 4521", capacity: 48, status: "On Route" },
+   415→   415→  { id: "r2", routeNo: "R-02", name: "Aundh — Wakad Express", stops: 9, students: 38, driver: "Suresh Jadhav", vehicle: "MH-14 CD 8832", capacity: 48, status: "Reached School" },
+   416→   416→  { id: "r3", routeNo: "R-03", name: "Hadapsar — Magarpatta", stops: 14, students: 51, driver: "Prakash More", vehicle: "MH-12 EF 1190", capacity: 52, status: "On Route" },
+   417→   417→  { id: "r4", routeNo: "R-04", name: "Kharadi — Viman Nagar", stops: 10, students: 33, driver: "Dilip Kamble", vehicle: "MH-14 GH 7765", capacity: 48, status: "Maintenance" },
+   418→   418→  { id: "r5", routeNo: "R-05", name: "Pimpri — Chinchwad", stops: 11, students: 45, driver: "Anil Bhosale", vehicle: "MH-12 IJ 3344", capacity: 52, status: "Reached School" },
+   419→   419→]
+   420→   420→export const DRIVERS = [
+   421→   421→  { id: "d1", name: "Ramesh Pawar", phone: "+91 98220 11234", license: "MH1220190001234", experience: 9, routes: "R-01" },
+   422→   422→  { id: "d2", name: "Suresh Jadhav", phone: "+91 98220 22345", license: "MH1420180002345", experience: 12, routes: "R-02" },
+   423→   423→  { id: "d3", name: "Prakash More", phone: "+91 98220 33456", license: "MH1220170003456", experience: 15, routes: "R-03" },
+   424→   424→  { id: "d4", name: "Dilip Kamble", phone: "+91 98220 44567", license: "MH1420160004567", experience: 7, routes: "R-04" },
+   425→   425→  { id: "d5", name: "Anil Bhosale", phone: "+91 98220 55678", license: "MH1220150005678", experience: 18, routes: "R-05" },
+   426→   426→]
+   427→   427→
+   428→   428→// ---------------------------------------------------------------------------
+   429→   429→// Inventory
+   430→   430→// ---------------------------------------------------------------------------
+   431→   431→export const INVENTORY = [
+   432→   432→  { id: "i1", category: "Furniture", item: "Student Desks", total: 420, available: 412, condition: "Good", value: 630000 },
+   433→   433→  { id: "i2", category: "Furniture", item: "Chairs", total: 420, available: 415, condition: "Good", value: 252000 },
+   434→   434→  { id: "i3", category: "Lab Equipment", item: "Microscopes", total: 36, available: 34, condition: "Good", value: 180000 },
+   435→   435→  { id: "i4", category: "Lab Equipment", item: "Beakers (Set)", total: 240, available: 198, condition: "Fair", value: 48000 },
+   436→   436→  { id: "i5", category: "Stationery", item: "Notebooks", total: 5000, available: 1240, condition: "New", value: 62000 },
+   437→   437→  { id: "i6", category: "Electronics", item: "Projectors", total: 18, available: 16, condition: "Good", value: 540000 },
+   438→   438→  { id: "i7", category: "Sports", item: "Cricket Kits", total: 12, available: 9, condition: "Good", value: 36000 },
+   439→   439→  { id: "i8", category: "Lab Equipment", item: "Chemicals (Kits)", total: 80, available: 22, condition: "Reorder", value: 96000 },
+   440→   440→]
+   441→   441→
+   442→   442→// ---------------------------------------------------------------------------
+   443→   443→// Communication / notices
+   444→   444→// ---------------------------------------------------------------------------
+   445→   445→export const ANNOUNCEMENTS = [
+   446→   446→  { id: "a1", title: "Winter Break Notice", body: "School will remain closed from 24th December 2025 to 1st January 2026 for winter break. Classes resume on 2nd January.", date: "2025-12-01", priority: "high", channel: "All", audience: "Everyone" },
+   447→   447→  { id: "a2", title: "Pre-Board Examination Schedule Released", body: "Pre-board exams for Grade 10 & 12 begin 12th January 2026. Detailed timetable available in the Examination module.", date: "2025-11-29", priority: "high", channel: "Parents + Students", audience: "Grade 10 & 12" },
+   448→   448→  { id: "a3", title: "Annual Sports Day — 18th December", body: "The 31st Annual Sports Day will be held on 18th December. Field events begin at 9:00 AM. Parents are cordially invited.", date: "2025-11-27", priority: "medium", channel: "All", audience: "Everyone" },
+   449→   449→  { id: "a4", title: "Parent-Teacher Meeting — Grade 9 & 10", body: "PTM scheduled for Saturday, 13th December, 9:00 AM to 12:30 PM. Slot booking opens on the parent portal.", date: "2025-11-25", priority: "medium", channel: "Parents", audience: "Grade 9 & 10" },
+   450→   450→  { id: "a5", title: "Library Overdue Reminder", body: "Students with books overdue beyond 7 days are requested to return them immediately. Fines apply @ ₹5/day.", date: "2025-11-22", priority: "low", channel: "Students", audience: "All Students" },
+   451→   451→  { id: "a6", title: "Inter-House Quiz Competition", body: "The Inter-House General Knowledge Quiz will be conducted on 11th December during 6th & 7th period.", date: "2025-11-20", priority: "low", channel: "Students", audience: "Grade 6–10" },
+   452→   452→]
+   453→   453→
+   454→   454→// ---------------------------------------------------------------------------
+   455→   455→// Calendar events
+   456→   456→// ---------------------------------------------------------------------------
+   457→   457→export const CALENDAR_EVENTS = [
+   458→   458→  { id: "e1", date: "2025-12-08", title: "Unit Test 2 Begins", type: "exam", time: "08:00" },
+   459→   459→  { id: "e2", date: "2025-12-11", title: "Science Exhibition", type: "event", time: "10:00" },
+   460→   460→  { id: "e3", date: "2025-12-13", title: "PTM — Grade 9 & 10", type: "ptm", time: "09:00" },
+   461→   461→  { id: "e4", date: "2025-12-15", title: "Aarav Sharma — Birthday", type: "birthday", time: "—" },
+   462→   462→  { id: "e5", date: "2025-12-18", title: "Annual Sports Day", type: "event", time: "09:00" },
+   463→   463→  { id: "e6", date: "2025-12-20", title: "Staff Meeting", type: "meeting", time: "15:30" },
+   464→   464→  { id: "e7", date: "2025-12-24", title: "Winter Break Begins", type: "holiday", time: "—" },
+   465→   465→  { id: "e8", date: "2026-01-01", title: "New Year Holiday", type: "holiday", time: "—" },
+   466→   466→  { id: "e9", date: "2026-01-12", title: "Pre-Board Exams Begin", type: "exam", time: "08:00" },
+   467→   467→  { id: "e10", date: "2025-12-05", title: "Diya Patel — Birthday", type: "birthday", time: "—" },
+   468→   468→  { id: "e11", date: "2025-12-09", title: "Vivaan Gupta — Birthday", type: "birthday", time: "—" },
+   469→   469→  { id: "e12", date: "2025-12-22", title: "Christmas Celebration", type: "event", time: "11:00" },
+   470→   470→]
+   471→   471→
+   472→   472→export const TODAY_BIRTHDAYS = [
+   473→   473→  { name: "Aarav Sharma", class: "Grade 10 A", avatarColor: "emerald" },
+   474→   474→  { name: "Saanvi Patel", class: "Grade 8 B", avatarColor: "rose" },
+   475→   475→  { name: "Reyansh Gupta", class: "Grade 7 A", avatarColor: "amber" },
+   476→   476→]
+   477→   477→export const NEW_ADMISSIONS = [
+   478→   478→  { name: "Kiara Desai", class: "Grade 6 A", date: "2025-11-28", fee: "Paid" },
+   479→   479→  { name: "Veer Kulkarni", class: "Nursery", date: "2025-11-26", fee: "Paid" },
+   480→   480→  { name: "Myra Reddy", class: "Grade 3 B", date: "2025-11-25", fee: "Partial" },
+   481→   481→  { name: "Atharv Nair", class: "Grade 5 A", date: "2025-11-22", fee: "Paid" },
+   482→   482→  { name: "Anika Joshi", class: "LKG", date: "2025-11-20", fee: "Paid" },
+   483→   483→]
+   484→   484→
+   485→   485→// ---------------------------------------------------------------------------
+   486→   486→// Timetable
+   487→   487→// ---------------------------------------------------------------------------
+   488→   488→export const TIMETABLE = [
+   489→   489→  { period: 1, time: "08:00–08:45", subject: "Mathematics", teacher: "Rajesh Kulkarni", room: "B-201" },
+   490→   490→  { period: 2, time: "08:45–09:30", subject: "English", teacher: "Meera Nair", room: "B-201" },
+   491→   491→  { period: 3, time: "09:30–10:15", subject: "Science", teacher: "Suresh Patil", room: "Lab-1" },
+   492→   492→  { period: 4, time: "10:30–11:15", subject: "Social Science", teacher: "Priya Sharma", room: "B-201" },
+   493→   493→  { period: 5, time: "11:15–12:00", subject: "Hindi", teacher: "Sneha Joshi", room: "B-201" },
+   494→   494→  { period: 6, time: "13:00–13:45", subject: "Computer Science", teacher: "Amit Verma", room: "Lab-2" },
+   495→   495→  { period: 7, time: "13:45–14:30", subject: "Physical Education", teacher: "Vikram Singh", room: "Ground" },
+   496→   496→  { period: 8, time: "14:30–15:15", subject: "Art", teacher: "Fatima Sheikh", room: "Art Room" },
+   497→   497→]
+   498→   498→
+   499→   499→// ---------------------------------------------------------------------------
+   500→   500→// Demo accounts
+   501→   501→// ---------------------------------------------------------------------------
+   502→   502→export const DEMO_ACCOUNTS: {
+   503→   503→  role: Role
+   504→   504→  name: string
+   505→   505→  title: string
+   506→   506→  username: string
+   507→   507→  password: string
+   508→   508→  email: string
+   509→   509→  avatarColor: string
+   510→   510→  accent: string
+   511→   511→  desc: string
+   512→   512→}[] = [
+   513→   513→  {
+   514→   514→    role: "principal",
+   515→   515→    name: "Dr. Anjali Deshpande",
+   516→   516→    title: "Principal / School Administrator",
+   517→   517→    username: "principal",
+   518→   518→    password: "scholario",
+   519→   519→    email: "anjali.d@srividya-mandir.edu.in",
+   520→   520→    avatarColor: "emerald",
+   521→   521→    accent: "from-emerald-500 to-teal-600",
+   522→   522→    desc: "Full control center — admissions, finance, academics, analytics & operations.",
+   523→   523→  },
+   524→   524→  {
+   525→   525→    role: "teacher",
+   526→   526→    name: "Rajesh Kulkarni",
+   527→   527→    title: "Senior PGT — Mathematics",
+   528→   528→    username: "teacher",
+   529→   529→    password: "scholario",
+   530→   530→    email: "rajesh.k@srividya-mandir.edu.in",
+   531→   531→    avatarColor: "amber",
+   532→   532→    accent: "from-amber-500 to-orange-600",
+   533→   533→    desc: "Focused productivity — attendance, homework, marks entry & student progress.",
+   534→   534→  },
+   535→   535→  {
+   536→   536→    role: "student",
+   537→   537→    name: "Aarav Sharma",
+   538→   538→    title: "Grade 10 A • Roll No. 01",
+   539→   539→    username: "student",
+   540→   540→    password: "scholario",
+   541→   541→    email: "aarav.s@srividya-mandir.edu.in",
+   542→   542→    avatarColor: "violet",
+   543→   543→    accent: "from-violet-500 to-fuchsia-600",
+   544→   544→    desc: "Modern & youthful — timetable, results, homework, fees & announcements.",
+   545→   545→  },
+   546→   546→]
+   547→   547→
