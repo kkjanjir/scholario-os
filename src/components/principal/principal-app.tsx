@@ -4,6 +4,7 @@ import { useAppStore } from "@/lib/store"
 import { AppShell } from "@/components/shared/app-shell"
 import { PRINCIPAL_NAV } from "./nav"
 import { PrincipalDashboard } from "./modules/dashboard"
+import { ActionCenterModule } from "./modules/action-center"
 import { AdmissionModule } from "./modules/admission"
 import { TeachersModule } from "./modules/teachers"
 import { ClassesModule } from "./modules/classes"
@@ -31,6 +32,7 @@ export function PrincipalApp() {
   const render = () => {
     switch (activeModule) {
       case "dashboard": return <PrincipalDashboard />
+      case "action-center": return <ActionCenterModule />
       case "admission": return <AdmissionModule />
       case "teachers": return <TeachersModule />
       case "classes": return <ClassesModule />

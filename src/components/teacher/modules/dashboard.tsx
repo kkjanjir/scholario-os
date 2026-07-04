@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { DonutChart, SimpleBar, RadialGauge } from "@/components/shared/charts"
-import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS, LESSON_PLANS, CHAT_THREADS } from "@/lib/mock/data"
+import { TIMETABLE, HOMEWORK, ASSIGNMENTS, STUDENTS, EXAMS, LESSON_PLANS, CHAT_THREADS, TODAY_BIRTHDAYS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   CalendarClock, CalendarCheck, BookOpen, FileText, ClipboardList,
-  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell, NotebookPen, MessagesSquare,
+  TrendingUp, Users, Clock, CheckCircle2, ArrowUpRight, Sparkles, Bell, NotebookPen, MessagesSquare, Cake,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -253,8 +253,48 @@ export function TeacherDashboard() {
         </SectionCard>
       </StaggerItem>
 
-      {/* quick actions */}
+      {/* student birthdays widget */}
       <StaggerItem index={9}>
+        <div className="relative overflow-hidden rounded-3xl border border-pink-500/30 bg-gradient-to-br from-pink-500/10 via-rose-500/5 to-transparent p-5">
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-pink-300/10 blur-2xl" />
+          <div className="relative flex items-center gap-3">
+            <motion.div
+              animate={{ rotate: [0, -10, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+              className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pink-500/15 text-2xl"
+            >
+              🎂
+            </motion.div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Cake className="h-4 w-4 text-pink-500" />
+                <p className="text-sm font-bold">Today's Birthdays</p>
+              </div>
+              <p className="mt-0.5 text-xs text-muted-foreground">Wish your students on their special day!</p>
+            </div>
+          </div>
+          <div className="relative mt-4 space-y-2">
+            {TODAY_BIRTHDAYS.map((b) => (
+              <div key={b.name} className="flex items-center gap-3 rounded-xl bg-card/60 p-2.5 backdrop-blur-sm">
+                <Avatar name={b.name} color={b.avatarColor} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{b.name}</p>
+                  <p className="text-xs text-muted-foreground">{b.class}</p>
+                </div>
+                <button
+                  onClick={() => toast.success(`🎂 Birthday wish sent to ${b.name}!`)}
+                  className="inline-flex items-center gap-1 rounded-lg bg-pink-500/15 px-2.5 py-1 text-xs font-medium text-pink-600 transition-colors hover:bg-pink-500/25 dark:text-pink-300"
+                >
+                  Wish 🎉
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </StaggerItem>
+
+      {/* quick actions */}
+      <StaggerItem index={10}>
         <SectionCard title="Quick Actions" subtitle="Jump straight into your daily tasks">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[

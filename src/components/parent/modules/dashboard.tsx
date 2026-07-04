@@ -275,8 +275,37 @@ export function ParentDashboard() {
         </div>
       </StaggerItem>
 
-      {/* upcoming events */}
+      {/* child's daily schedule widget */}
       <StaggerItem index={9}>
+        <SectionCard
+          title={`${child.name.split(" ")[0]}'s Today Schedule`}
+          subtitle="Monday • 8 periods"
+          action={<button onClick={() => setModule("parent", "calendar")} className="text-xs font-medium text-primary hover:underline">Full calendar</button>}
+          bodyClassName="p-0"
+        >
+          <div className="divide-y divide-border/50">
+            {TIMETABLE.slice(0, 5).map((t, i) => {
+              const sc = t.subject === "Mathematics" ? "emerald" : t.subject === "English" ? "rose" : t.subject === "Science" ? "teal" : "violet"
+              const c = colorOf(sc)
+              return (
+                <div key={i} className="flex items-center gap-3 px-5 py-2.5">
+                  <div className={cn("rounded-lg p-1.5", c.soft)}>
+                    <Clock className={cn("h-3.5 w-3.5", c.text)} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">{t.subject}</p>
+                    <p className="text-[11px] text-muted-foreground">{t.time} • {t.room} • {t.teacher}</p>
+                  </div>
+                  {i === 0 && <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" /> Now</span>}
+                </div>
+              )
+            })}
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* upcoming events */}
+      <StaggerItem index={10}>
         <SectionCard title="Upcoming Events" subtitle="For your child & family">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CALENDAR_EVENTS.slice(0, 6).map((e) => (
