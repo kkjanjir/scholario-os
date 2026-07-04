@@ -6,12 +6,12 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { AnimatedCounter, StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf, formatINR } from "@/components/shared/brand"
 import { RevenueAreaChart, AttendanceBarChart, DonutChart, RadialGauge } from "@/components/shared/charts"
-import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK, AT_RISK_STUDENTS, FEE_DEFAULTERS } from "@/lib/mock/data"
+import { attendanceForClass, REVENUE_TREND, TODAY_BIRTHDAYS, NEW_ADMISSIONS, ANNOUNCEMENTS, CALENDAR_EVENTS, TRANSPORT_ROUTES, STUDENTS, TEACHERS, HOMEWORK, AT_RISK_STUDENTS, FEE_DEFAULTERS, LESSON_PLANS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   Users, GraduationCap, CalendarCheck, Wallet, AlertCircle, Banknote,
   Cake, UserPlus, CalendarDays, Bus, BookOpen, Package, ClipboardList,
-  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles, AlertTriangle, ShieldAlert, Send,
+  FileText, Megaphone, ArrowUpRight, TrendingUp, Sparkles, AlertTriangle, ShieldAlert, Send, NotebookPen,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -351,8 +351,56 @@ export function PrincipalDashboard() {
         </SectionCard>
       </StaggerItem>
 
-      {/* transport quick view */}
+      {/* teacher lesson plan completion widget */}
       <StaggerItem index={12}>
+        <SectionCard
+          title="Teacher Lesson Plans"
+          subtitle="Planning & completion across faculty"
+          action={<button onClick={() => toast.info("Open teacher module to view details")} className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">View details <ArrowUpRight className="h-3 w-3" /></button>}
+        >
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-emerald-600">{LESSON_PLANS.filter((p) => p.status === "completed").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Completed</p>
+                </div>
+                <div className="rounded-lg bg-emerald-500/15 p-2"><NotebookPen className="h-4 w-4 text-emerald-600" /></div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-amber-600">{LESSON_PLANS.filter((p) => p.status === "in-progress").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">In Progress</p>
+                </div>
+                <div className="rounded-lg bg-amber-500/15 p-2"><NotebookPen className="h-4 w-4 text-amber-600" /></div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-sky-500/30 bg-sky-500/5 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-2xl font-bold text-sky-600">{LESSON_PLANS.filter((p) => p.status === "planned").length}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Planned</p>
+                </div>
+                <div className="rounded-lg bg-sky-500/15 p-2"><NotebookPen className="h-4 w-4 text-sky-600" /></div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="mb-1.5 flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Completion Rate</span>
+              <span className="font-semibold">{Math.round((LESSON_PLANS.filter((p) => p.status === "completed").length / LESSON_PLANS.length) * 100)}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-muted">
+              <motion.div initial={{ width: 0 }} animate={{ width: `${(LESSON_PLANS.filter((p) => p.status === "completed").length / LESSON_PLANS.length) * 100}%` }} transition={{ duration: 1, delay: 0.3 }} className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" />
+            </div>
+          </div>
+        </SectionCard>
+      </StaggerItem>
+
+      {/* transport quick view */}
+      <StaggerItem index={13}>
         <SectionCard title="Transport Fleet Status" subtitle="Live bus tracking overview" action={<button onClick={() => setModule("principal", "transport")} className="text-xs font-medium text-primary hover:underline">Track all <ArrowUpRight className="h-3 w-3" /></button>}>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {TRANSPORT_ROUTES.map((r) => {

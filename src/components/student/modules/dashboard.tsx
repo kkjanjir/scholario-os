@@ -1,11 +1,13 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
 import { useAppStore } from "@/lib/store"
 import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared/ui"
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine, RadialGauge, DonutChart } from "@/components/shared/charts"
+import { triggerReward } from "@/components/shared/reward-notification"
 import { studentResult, studentAttendanceHeatmap, TIMETABLE, HOMEWORK, ASSIGNMENTS, ANNOUNCEMENTS, CALENDAR_EVENTS, STUDENTS, ACHIEVEMENTS, LEADERBOARD, DAILY_CHALLENGES } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
@@ -19,6 +21,23 @@ export function StudentDashboard() {
   const me = STUDENTS[0]
   const result = studentResult(me.id)
   const overall = Math.round(result.reduce((a, r) => a + r.marks, 0) / result.length)
+  const [streakShown, setStreakShown] = useState(false)
+
+  // Daily login streak reward — show once on dashboard load
+  useEffect(() => {
+    if (streakShown) return
+    const t = setTimeout(() => {
+      setStreakShown(true)
+      triggerReward({
+        type: "streak",
+        title: "7-Day Streak! 🔥",
+        desc: "Welcome back! You earned +25 XP for your daily login streak.",
+        icon: "🔥",
+        color: "amber",
+      })
+    }, 1500)
+    return () => clearTimeout(t)
+  }, [streakShown])
 
   const progress = [
     { name: "Aug", marks: 72 },

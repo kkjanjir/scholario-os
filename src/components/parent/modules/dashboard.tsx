@@ -6,11 +6,11 @@ import { KpiCard, SectionCard, StatusBadge, MiniStat } from "@/components/shared
 import { StaggerItem } from "@/components/shared/motion"
 import { Avatar, colorOf } from "@/components/shared/brand"
 import { SimpleLine, RadialGauge, DonutChart } from "@/components/shared/charts"
-import { STUDENTS, studentResult, studentAttendanceHeatmap, PARENT_MESSAGES, PARENT_NOTICES, HOMEWORK, TIMETABLE, CALENDAR_EVENTS, CHAT_THREADS } from "@/lib/mock/data"
+import { STUDENTS, studentResult, studentAttendanceHeatmap, PARENT_MESSAGES, PARENT_NOTICES, HOMEWORK, TIMETABLE, CALENDAR_EVENTS, CHAT_THREADS, ACHIEVEMENTS } from "@/lib/mock/data"
 import { cn } from "@/lib/utils"
 import {
   TrendingUp, CalendarCheck, Award, BookOpen, MessageSquare,
-  Sparkles, ArrowUpRight, Wallet, Clock, Megaphone, Heart, MessagesSquare,
+  Sparkles, ArrowUpRight, Wallet, Clock, Megaphone, Heart, MessagesSquare, Trophy,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -230,8 +230,53 @@ export function ParentDashboard() {
         </SectionCard>
       </StaggerItem>
 
-      {/* upcoming events */}
+      {/* child achievements celebration */}
       <StaggerItem index={8}>
+        <div className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent p-5">
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-amber-300/10 blur-2xl" />
+          <div className="relative flex items-center gap-4">
+            <motion.div
+              animate={{ rotate: [0, -8, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/15 text-3xl"
+            >
+              🏆
+            </motion.div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <Trophy className="h-4 w-4 text-amber-500" />
+                <p className="text-sm font-bold">Child Achievements</p>
+              </div>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {child.name.split(" ")[0]} has unlocked <b className="text-amber-600 dark:text-amber-400">{ACHIEVEMENTS.filter((a) => a.unlocked).length} badges</b> this term!
+              </p>
+            </div>
+          </div>
+          <div className="relative mt-4 flex flex-wrap gap-2">
+            {ACHIEVEMENTS.filter((a) => a.unlocked).slice(0, 6).map((a) => (
+              <span
+                key={a.id}
+                title={a.title}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg shadow-sm ring-1 ring-amber-500/20 dark:bg-card/60"
+              >
+                {a.icon}
+              </span>
+            ))}
+            <span className="flex h-9 items-center rounded-xl bg-amber-500/15 px-3 text-xs font-bold text-amber-600 dark:text-amber-400">
+              +{ACHIEVEMENTS.filter((a) => a.unlocked).length - 6 > 0 ? ACHIEVEMENTS.filter((a) => a.unlocked).length - 6 : 0} more
+            </span>
+          </div>
+          <button
+            onClick={() => toast.success(`${child.name.split(" ")[0]} is doing great! 🌟`)}
+            className="relative mt-4 w-full rounded-xl bg-amber-500/15 py-2 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-500/25 dark:text-amber-300"
+          >
+            Celebrate {child.name.split(" ")[0]}'s success 🎉
+          </button>
+        </div>
+      </StaggerItem>
+
+      {/* upcoming events */}
+      <StaggerItem index={9}>
         <SectionCard title="Upcoming Events" subtitle="For your child & family">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CALENDAR_EVENTS.slice(0, 6).map((e) => (
