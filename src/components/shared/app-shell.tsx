@@ -8,7 +8,7 @@ import { SCHOOL } from "@/lib/mock/data"
 import { Logo, Avatar, colorOf } from "@/components/shared/brand"
 import { PageTransition } from "@/components/shared/motion"
 import { RewardNotificationHost, triggerReward } from "@/components/shared/reward-notification"
-import { TopbarClock, DigitalClockUpdater } from "@/components/shared/topbar-clock"
+import { TopbarClock } from "@/components/shared/topbar-clock"
 import { cn } from "@/lib/utils"
 import type { LucideIcon } from "lucide-react"
 import {
@@ -489,7 +489,6 @@ export function AppShell({
 
       {/* reward notification host */}
       <RewardNotificationHost />
-      <DigitalClockUpdater />
     </div>
   )
 }
