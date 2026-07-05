@@ -22,6 +22,7 @@ const AuditSection = lazy(() => import("./sections/audit").then(m => ({ default:
 const FeatureFlagsSection = lazy(() => import("./sections/feature-flags").then(m => ({ default: m.FeatureFlagsSection })))
 const ModulesSection = lazy(() => import("./sections/modules").then(m => ({ default: m.ModulesSection })))
 const BrandingSection = lazy(() => import("./sections/branding").then(m => ({ default: m.BrandingSection })))
+const WebsiteSection = lazy(() => import("./sections/website").then(m => ({ default: m.WebsiteSection })))
 const DeploymentSection = lazy(() => import("./sections/deployment").then(m => ({ default: m.DeploymentSection })))
 const ImpersonateSection = lazy(() => import("./sections/impersonate").then(m => ({ default: m.ImpersonateSection })))
 const SecuritySection = lazy(() => import("./sections/security").then(m => ({ default: m.SecuritySection })))
@@ -51,6 +52,7 @@ export function SchoolControlPlane() {
       case "feature-flags": return <FeatureFlagsSection />
       case "modules": return <ModulesSection />
       case "branding": return <BrandingSection school={school} />
+      case "website": return <WebsiteSection />
       case "deployment": return <DeploymentSection school={school} />
       case "impersonate": return <ImpersonateSection school={school} />
       case "security": return <SecuritySection />

@@ -1,7 +1,7 @@
 import type { NavGroup } from "@/components/shared/app-shell"
 import {
   LayoutDashboard, Settings, Activity, Flag, Palette, Globe,
-  Users, Shield, History, Package, Rocket,
+  Users, Shield, History, Package, Rocket, Monitor,
 } from "lucide-react"
 
 export const CONTROL_PLANE_NAV: NavGroup[] = [
@@ -19,7 +19,8 @@ export const CONTROL_PLANE_NAV: NavGroup[] = [
     items: [
       { id: "feature-flags", label: "Feature Flags", icon: Flag },
       { id: "modules", label: "Modules & Extensions", icon: Package },
-      { id: "branding", label: "Branding & Website", icon: Palette },
+      { id: "branding", label: "Branding & Theme", icon: Palette },
+      { id: "website", label: "Website Builder", icon: Globe },
       { id: "deployment", label: "Deployment", icon: Rocket },
     ],
   },
