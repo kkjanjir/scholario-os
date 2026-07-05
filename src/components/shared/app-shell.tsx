@@ -142,14 +142,14 @@ function SidebarInner({
   return (
     <div className="flex h-full w-full flex-col">
       {/* brand */}
-      <div className={cn("flex h-16 items-center gap-2.5 border-b border-border/60 px-4", collapsed && "justify-center px-0")}>
-        <Logo size={collapsed ? 32 : 34} />
+      <div className={cn("flex h-14 items-center gap-2.5 border-b border-sidebar-border/50 px-4", collapsed && "justify-center px-0")}>
+        <Logo size={collapsed ? 28 : 30} />
         {!collapsed && (
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold leading-tight">
+            <p className="truncate text-[13px] font-bold leading-tight tracking-tight">
               SCHOLARIO<span className="text-primary">-OS</span>
             </p>
-            <p className="truncate text-[10px] text-muted-foreground">{SCHOOL.shortName} • {ROLE_LABEL[role]}</p>
+            <p className="truncate text-[9px] font-medium uppercase tracking-wider text-muted-foreground/60">{SCHOOL.shortName} • {ROLE_LABEL[role]}</p>
           </div>
         )}
       </div>
@@ -157,13 +157,13 @@ function SidebarInner({
       {/* nav */}
       <nav className="scroll-area flex-1 overflow-y-auto px-3 py-4">
         {nav.map((g) => (
-          <div key={g.group} className="mb-5">
+          <div key={g.group} className="mb-4">
             {!collapsed && (
-              <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+              <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/50">
                 {g.group}
               </p>
             )}
-            <div className="space-y-0.5">
+            <div className="space-y-0.5 px-2">
               {g.items.map((item) => {
                 const isActive = active === item.id
                 const Icon = item.icon
@@ -173,25 +173,26 @@ function SidebarInner({
                     onClick={() => onSelect(item.id)}
                     title={collapsed ? item.label : undefined}
                     className={cn(
-                      "group relative flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-sm font-medium transition-all",
+                      "group relative flex w-full items-center gap-3 rounded-lg px-2.5 py-[7px] text-[13px] font-medium transition-all duration-200",
                       collapsed && "justify-center px-0",
                       isActive
                         ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                        : "text-muted-foreground/80 hover:bg-accent/60 hover:text-foreground"
                     )}
                   >
                     {isActive && (
                       <motion.span
                         layoutId={`nav-active-${role}`}
-                        className="pointer-events-none absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary"
+                        className="pointer-events-none absolute left-0 top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-r-full bg-primary"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-                    <Icon className={cn("h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-110", isActive && "text-primary")} />
-                    {!collapsed && <span className="flex-1 truncate text-left">{item.label}</span>}
+                    <Icon className={cn("h-[17px] w-[17px] shrink-0 transition-all duration-200", isActive ? "text-primary" : "text-muted-foreground/60 group-hover:text-foreground group-hover:scale-105")} />
+                    {!collapsed && <span className={cn("flex-1 truncate text-left transition-opacity", isActive && "font-semibold")}>{item.label}</span>}
                     {!collapsed && item.badge && (
                       <span className={cn(
-                        "rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
-                        isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                        "rounded-full px-1.5 py-0.5 text-[9px] font-bold tabular-nums transition-all",
+                        isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground/70"
                       )}>
                         {item.badge}
                       </span>
@@ -252,36 +253,36 @@ function Topbar({
   return (
     <header
       className={cn(
-        "sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/60 bg-background/80 px-4 backdrop-blur-xl lg:px-6",
+        "sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border/50 bg-background/70 px-4 backdrop-blur-2xl lg:px-6",
       )}
       style={{ marginLeft: undefined }}
     >
       <button
         onClick={onOpenMobile}
-        className="rounded-lg p-2 text-muted-foreground hover:bg-accent lg:hidden"
+        className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent lg:hidden"
       >
-        <Menu className="h-5 w-5" />
+        <Menu className="h-[18px] w-[18px]" />
       </button>
 
-      <div className="hidden items-center gap-2 lg:flex">
-        <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", colorOf(role).soft)}>
-          <RoleIcon className={cn("h-4 w-4", colorOf(role).text)} />
+      <div className="hidden items-center gap-2.5 lg:flex">
+        <div className={cn("flex h-7 w-7 items-center justify-center rounded-lg", colorOf(role).soft)}>
+          <RoleIcon className={cn("h-3.5 w-3.5", colorOf(role).text)} />
         </div>
         <div>
-          <h1 className="text-base font-semibold tracking-tight leading-none">{activeItem?.label}</h1>
-          <p className="text-[11px] text-muted-foreground mt-0.5">{ROLE_LABEL[role]} Workspace</p>
+          <h1 className="text-[15px] font-semibold tracking-tight leading-none">{activeItem?.label}</h1>
+          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50 mt-0.5">{ROLE_LABEL[role]} Workspace</p>
         </div>
       </div>
 
-      <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+      <div className="ml-auto flex items-center gap-1 sm:gap-1.5">
         {/* search */}
         <button
           onClick={onSearch}
-          className="hidden items-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent sm:flex"
+          className="hidden items-center gap-2 rounded-lg border border-border/50 bg-card/40 px-3 py-1.5 text-sm text-muted-foreground/70 transition-all hover:bg-accent/60 hover:text-foreground sm:flex"
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-3.5 w-3.5" />
           <span className="text-xs">Search…</span>
-          <kbd className="ml-4 inline-flex items-center gap-0.5 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium">
+          <kbd className="ml-6 inline-flex items-center gap-0.5 rounded border border-border/60 bg-muted/50 px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground/70">
             <Command className="h-2.5 w-2.5" />K
           </kbd>
         </button>

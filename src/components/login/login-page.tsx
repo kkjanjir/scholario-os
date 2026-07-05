@@ -171,8 +171,8 @@ export function LoginPage() {
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.7 }}
-            className="text-4xl font-bold leading-[1.1] tracking-tight lg:text-5xl"
+            transition={{ delay: 0.25, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl font-bold leading-[1.05] tracking-tight lg:text-[3.25rem]"
           >
             The operating system
             <br />
@@ -239,7 +239,7 @@ export function LoginPage() {
           transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-md"
         >
-          <div className="glass-strong rounded-3xl border border-white/40 p-7 shadow-premium dark:border-white/10">
+          <div className="glass-strong rounded-[1.75rem] border border-white/30 p-7 shadow-premium-xl dark:border-white/10">
             <div className="mb-6">
               <h2 className="text-xl font-semibold tracking-tight">Sign in to your workspace</h2>
               <p className="mt-1 text-sm text-muted-foreground">

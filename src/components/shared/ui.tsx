@@ -34,17 +34,18 @@ export function KpiCard({
   const c = colorOf(color)
   return (
     <motion.div
-      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      initial={{ opacity: 0, y: 14, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -4 }}
+      transition={{ duration: 0.4, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(onClick && "cursor-pointer")}
     >
-      <Card className="relative overflow-hidden p-5 shadow-premium border-border/60 group">
+      <Card className="relative overflow-hidden p-5 border-border/50 group card-lift">
         <div
           className={cn(
-            "absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl opacity-20 transition-opacity group-hover:opacity-40",
+            "absolute -right-10 -top-10 h-28 w-28 rounded-full blur-2xl opacity-15 transition-opacity duration-500 group-hover:opacity-30",
             c.bg
           )}
         />
@@ -96,12 +97,12 @@ export function SectionCard({
   bodyClassName?: string
 }) {
   return (
-    <Card className={cn("shadow-premium border-border/60", className)}>
+    <Card className={cn("border-border/50 shadow-premium", className)}>
       {(title || action) && (
-        <div className="flex items-center justify-between gap-3 border-b border-border/60 px-5 py-4">
+        <div className="flex items-center justify-between gap-3 border-b border-border/50 px-5 py-3.5">
           <div>
-            {title && <h3 className="font-semibold tracking-tight">{title}</h3>}
-            {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
+            {title && <h3 className="text-[15px] font-semibold tracking-tight">{title}</h3>}
+            {subtitle && <p className="text-[11px] text-muted-foreground/70 mt-0.5">{subtitle}</p>}
           </div>
           {action}
         </div>
