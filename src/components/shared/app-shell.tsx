@@ -8,6 +8,7 @@ import { SCHOOL } from "@/lib/mock/data"
 import { Logo, Avatar, colorOf } from "@/components/shared/brand"
 import { PageTransition } from "@/components/shared/motion"
 import { RewardNotificationHost, triggerReward } from "@/components/shared/reward-notification"
+import { TopbarClock, DigitalClockUpdater } from "@/components/shared/topbar-clock"
 import { cn } from "@/lib/utils"
 import type { LucideIcon } from "lucide-react"
 import {
@@ -287,6 +288,9 @@ function Topbar({
           </kbd>
         </button>
 
+        {/* clock */}
+        <TopbarClock />
+
         <button
           onClick={toggleTheme}
           className="rounded-xl p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
@@ -485,6 +489,7 @@ export function AppShell({
 
       {/* reward notification host */}
       <RewardNotificationHost />
+      <DigitalClockUpdater />
     </div>
   )
 }
