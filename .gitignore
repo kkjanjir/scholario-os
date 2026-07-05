@@ -36,7 +36,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -52,3 +51,22 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Database
+*.db
+*.db-journal
+db/
+
+# Upload/Download
+upload/
+download/
+
+# Agent browser
+agent-browser-*
+
+# Swap files
+swapfile
+*.swap
+
+# OS files
+Thumbs.db
